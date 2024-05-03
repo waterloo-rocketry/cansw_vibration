@@ -56,10 +56,16 @@ int main(void) {
         uint8_t whoami = fxls_get_whoami();
         uint8_t prod_rev = fxls_get_prod_rev();
 
+        adc_result_t adc_value = ADCC_GetSingleConversion(channel_ANA0);
+
         BLUE_LED_TOGGLE();
 
         can_msg_t msg;
         build_board_stat_msg(millis(), E_NOMINAL, NULL, 0, &msg);
+        can_send(&msg);
+
+        while (!can_send_rdy()) {}
+        build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP_1, adc_value, &msg);
         can_send(&msg);
     }
 }

@@ -7,6 +7,9 @@
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
+        <logicalFolder name="adc" displayName="adc" projectFiles="true">
+          <itemPath>mcc_generated_files/adc/adcc.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="system" displayName="system" projectFiles="true">
           <itemPath>mcc_generated_files/system/config_bits.h</itemPath>
           <itemPath>mcc_generated_files/system/pins.h</itemPath>
@@ -43,6 +46,11 @@
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
+        <logicalFolder name="adc" displayName="adc" projectFiles="true">
+          <logicalFolder name="src" displayName="src" projectFiles="true">
+            <itemPath>mcc_generated_files/adc/src/adcc.c</itemPath>
+          </logicalFolder>
+        </logicalFolder>
         <logicalFolder name="system" displayName="system" projectFiles="true">
           <logicalFolder name="src" displayName="src" projectFiles="true">
             <itemPath>mcc_generated_files/system/src/pins.c</itemPath>

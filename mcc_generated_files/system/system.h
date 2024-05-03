@@ -41,6 +41,7 @@
 #include "config_bits.h"
 #include "../system/clock.h"
 #include "../system/pins.h"
+#include "../adc/adcc.h"
 #include "../system/interrupt.h"
 
 /**
