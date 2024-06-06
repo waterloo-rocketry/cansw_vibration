@@ -226,18 +226,6 @@ int main(void) {
             can_send(&msg);
             while (!can_send_rdy()) {}
         }
-        
-        // Testing purposes to read accelerometer data 
-        // Disable buffer mode
-        uint8_t buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1);
-        buf_config1 &= ~BUF_MODE_MASK;  // Clear BUF_MODE1 and BUF_MODE0 bits
-        i2c_write_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, buf_config1);
-    
-        // Variables to hold accelerometer data
-        int16_t x, y, z;
-
-        // Read accelerometer data anyways - test function
-        fxls_read_accel_data(&x, &y, &z);
                 
         // Converts analog signal to digital
         adc_result_t adc_value = ADCC_GetSingleConversion(channel_ANA0);
