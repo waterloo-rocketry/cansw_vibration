@@ -17,6 +17,8 @@
 
 #define FXLS_INT_EN 0x20
 
+#define FXLS_INT_PIN_SEL 0x21
+
 #define FXLS_SENS_CONFIG4 0x18
 #define DRDY_EN_MASK 0x01
 
