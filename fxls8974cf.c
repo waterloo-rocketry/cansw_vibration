@@ -5,38 +5,39 @@
 
 void fxls_init(void) {
     i2c_init(0b000); // I2C at 100 kHz SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
-
-    // Disable buffer mode - good
-    uint8_t buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1);
-    buf_config1 &= ~BUF_MODE_MASK;  // Clear BUF_MODE1 and BUF_MODE0 bits
-    i2c_write_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, buf_config1);
     
-    // Enable I2C - good
+    // SENS_CONFIG1: Enable Active Mode for I2C communication
     uint8_t sens_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG1);
     sens_config1 |= SENS_CONFIG1_MASK;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG1, sens_config1);
     
-    // Set ODR to 100Hz: set bits 7:4 to 0101 - works
+    // SENS_CONFIG2 register - using default setup?
+
+    // BUF_CONFIG1: Disable buffer mode
+    uint8_t buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1);
+    buf_config1 &= ~BUF_MODE_MASK;  // Clear BUF_MODE1 and BUF_MODE0 bits
+    i2c_write_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, buf_config1);
+        
+    // SENS_CONFIG3: Set ODR to 100Hz: set bits 7:4 to 0101
     uint8_t sens_config3 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG3);
     sens_config3 &= 0x0F;
     sens_config3 |= 0b01010000;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG3, sens_config3);
     
-    // Enable interrupts - 7th bit data ready interrupt - works
+    // Set the DRDY_EN bit (bit 7) in the INT_EN register to enable the data-ready interrupt.
     uint8_t int_en = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_EN);
     int_en |= 0b10000000;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_INT_EN, int_en);
     
-    // INT_PIN_SEL register - set bit 7 to 1 to route data interrupt to INT2
+    // Set the DRDY_INT2 bit (bit 7) in the INT_PIN_SEL register to route the data-ready interrupt to the INT2 pin.
     uint8_t int_pin_sel = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_PIN_SEL);
     int_pin_sel |= 0b10000000;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_INT_PIN_SEL, int_pin_sel);
 
-
-    // Enable data ready interrupt - is this even needed? bit 0 defaults to 1
-//    uint8_t sens_config4 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4);
-//    sens_config4 |= DRDY_EN_MASK;  // Set DRDY_EN bit
-//    i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4, sens_config4);
+    // Set the INT_POL bit (bit 0) in the SENS_CONFIG4 register to configure the polarity of the interrupt (default active high).
+    uint8_t sens_config4 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4);
+    sens_config4 |= INT_POL_MASK;  // Set INT_POL bit to 1 (active high interrupt on INT2 pin)
+    i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4, sens_config4);
 }
 
 uint8_t fxls_get_prod_rev(void) {
@@ -47,6 +48,7 @@ uint8_t fxls_get_whoami(void) {
     return i2c_read_reg8(FXLS_I2C_ADDR, FXLS_WHO_AM_I);
 }
 
+// Do I need this if ISR handles interrupts from INT2?
 int data_ready() {
     // INT_STATUS_REG = 0x00
     i2c_init(0b000); // I2C at 100 kHz SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);

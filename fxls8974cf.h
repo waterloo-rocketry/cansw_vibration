@@ -20,7 +20,7 @@
 #define FXLS_INT_PIN_SEL 0x21
 
 #define FXLS_SENS_CONFIG4 0x18
-#define DRDY_EN_MASK 0x01
+#define INT_POL_MASK 0x01
 
 #define FXLS_BUF_CONFIG1 0x26
 #define BUF_MODE_MASK 0x03

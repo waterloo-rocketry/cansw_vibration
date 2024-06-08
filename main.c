@@ -13,7 +13,8 @@
 #define MAX_BUS_DEAD_TIME_ms 1000
 #define MAX_LOOP_TIME_DIFF_ms 250
 
-bool flag = false;
+bool SLF3S_flag = false;
+bool FXLS_flag = false;
 volatile bool seen_can_message = false;
 
 // Instance of CAN message struct
@@ -162,15 +163,17 @@ int main(void) {
     
     // Flow sensor interrupt pin (IRQn)
     TRISC6 = 1;     // Flow sensor input
-    ANSELCbits.ANSELC6 = 0;
-    IOCCNbits.IOCCN6 = 1;    
-    
+    ANSELCbits.ANSELC6 = 0;   
 
     SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
     i2c_init(0b000); // I2C at 100 kHz
+    
+    IOCBPbits.IOCBP3 = 1;    // Accelerometer active high interrupt (RB3: INT2)
+    IOCCNbits.IOCCN6 = 1;    // Flow sensor active low interrupt (RC6: IRQn)
 
+    
 //    uint32_t last_millis = 0;    // old timer
-    bool heartbeat = false;
+    bool heartbeat = false;        // Where is this used?
 
     while (1) {
         CLRWDT();   // Watchdog timer
@@ -204,7 +207,9 @@ int main(void) {
         
         
         
-        if (data_ready() == 1) {
+        if (FXLS_flag) {
+            FXLS_flag = false;
+            
             // Variables to hold accelerometer data
             int16_t x, y, z;
         
@@ -237,27 +242,14 @@ int main(void) {
 //        build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP_1, adc_value, &msg);
 //        can_send(&msg);
 //        while (!can_send_rdy()) {}
-//
-//        // Accelerometer serial test message
-//        build_analog_data_msg(millis(), SENSOR_MOTOR_CURR, whoami, &msg);
-//        can_send(&msg);
-//        while (!can_send_rdy()) {}
-//
-//        // Accelerometer product test message
-//        build_analog_data_msg(millis(), SENSOR_MOTOR_CURR, prod_rev, &msg);
-//        can_send(&msg);
-//        while (!can_send_rdy()) {}
         
         // Liquid flow sensor 
-        if (flag) {
-            flag = false;
+        if (SLF3S_flag) {
+            SLF3S_flag = false;
 
-            // Read data from SDA line
+            // Read liquid flow sensor data
             read_flow_sensor_data();
         }
-
-
-        
         
         // What sector of the SD card?
         uint32_t sector = 0;
@@ -279,9 +271,15 @@ static void __interrupt() interrupt_handler() {
         PIR3bits.TMR0IF = 0;
     }
     
-    // Interrupt from flow sensor - falling edge detected
+    // Interrupt from accelerometer - rising edge detected (active high)
+    if (IOCBFbits.IOCBF3 == 1) {
+        IOCBFbits.IOCBF3 = 0;   // Clear interrupt flag
+        FXLS_flag = true;
+    }
+    
+    // Interrupt from flow sensor - falling edge detected (active low)
     if (IOCCFbits.IOCCF6 == 1) {
         IOCCFbits.IOCCF6 = 0;   // Clear interrupt flag
-        flag = true;
+        SLF3S_flag = true;
     }
 }
