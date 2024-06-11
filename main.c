@@ -164,6 +164,10 @@ int main(void) {
     // Flow sensor interrupt pin (IRQn)
     TRISC6 = 1;     // Flow sensor input
     ANSELCbits.ANSELC6 = 0;   
+    
+    // Accelerometer interrupt pin (INT2)
+    TRISB3 = 1;     // Flow sensor input
+    ANSELBbits.ANSELB3 = 0; 
 
     SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
     i2c_init(0b000); // I2C at 100 kHz
@@ -205,8 +209,9 @@ int main(void) {
         uint8_t whoami = fxls_get_whoami();
         uint8_t prod_rev = fxls_get_prod_rev();
         
-        
-        
+        // Ensure any previous interrupts are cleared by reading the INT_STATUS register - is this needed?
+        uint8_t int_status = i2c_read_reg8(FXLS_I2C_ADDR, INT_STATUS_REG);  
+
         if (FXLS_flag) {
             FXLS_flag = false;
             
@@ -231,13 +236,14 @@ int main(void) {
             can_send(&msg);
             while (!can_send_rdy()) {}
         }
+        
+        int test_data_ready = data_ready();
                 
         // Converts analog signal to digital
         adc_result_t adc_value = ADCC_GetSingleConversion(channel_ANA0);
 
-        BLUE_LED_TOGGLE();
+        BLUE_LED_TOGGLE();  // heartbeat?
         
-//
 //        // External thermistor
 //        build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP_1, adc_value, &msg);
 //        can_send(&msg);
