@@ -123,6 +123,9 @@ int main(void) {
 
     // Enable global interrupts
     INTCON0bits.GIE = 1;
+    
+    // Enable interrupt-on-change interrupt
+    PIE0bits.IOCIE = 1;  
 
     // Set up CAN TX
     TRISC1 = 0;
@@ -166,14 +169,17 @@ int main(void) {
     ANSELCbits.ANSELC6 = 0;   
     
     // Accelerometer interrupt pin (INT2)
-    TRISB3 = 1;     // Flow sensor input
+    TRISB3 = 1;     // Accelerometer input
     ANSELBbits.ANSELB3 = 0; 
 
     SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
     i2c_init(0b000); // I2C at 100 kHz
     
     IOCBPbits.IOCBP3 = 1;    // Accelerometer active high interrupt (RB3: INT2)
+    IOCBFbits.IOCBF3 = 0;  // Clear the interrupt-on-change flag for RB3 initially
+
     IOCCNbits.IOCCN6 = 1;    // Flow sensor active low interrupt (RC6: IRQn)
+    IOCCFbits.IOCCF6 = 0;   // Clear the interrupt-on-change flag for RC6 initially
 
     
 //    uint32_t last_millis = 0;    // old timer
@@ -237,7 +243,7 @@ int main(void) {
             while (!can_send_rdy()) {}
         }
         
-        int test_data_ready = data_ready();
+        uint8_t status = i2c_read_reg8(FXLS_I2C_ADDR, INT_STATUS_REG);
                 
         // Converts analog signal to digital
         adc_result_t adc_value = ADCC_GetSingleConversion(channel_ANA0);

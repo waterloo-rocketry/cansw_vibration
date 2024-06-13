@@ -21,6 +21,7 @@ void fxls_init(void) {
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2, sens_config2);
 
     // BUF_CONFIG1: Disable buffer mode
+    // BUF_MODE_MASK 0x60;
     uint8_t buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1);
     buf_config1 &= ~BUF_MODE_MASK;  // Clear BUF_MODE1 and BUF_MODE0 bits
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, buf_config1);

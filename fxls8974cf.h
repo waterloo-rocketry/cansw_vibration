@@ -23,7 +23,7 @@
 #define INT_POL_MASK 0x01
 
 #define FXLS_BUF_CONFIG1 0x26
-#define BUF_MODE_MASK 0x03
+#define BUF_MODE_MASK 0x60;
 
 #define FXLS_REG_OUT_X_MSB 0x05
 #define FXLS_REG_OUT_X_LSB 0x04
