@@ -243,7 +243,34 @@ int main(void) {
             while (!can_send_rdy()) {}
         }
         
-        uint8_t status = i2c_read_reg8(FXLS_I2C_ADDR, INT_STATUS_REG);
+        // Testing without interrupts - does not return anything
+        // Variables to hold accelerometer data
+        int16_t x, y, z;
+
+        // Read accelerometer data
+        fxls_read_accel_data(&x, &y, &z);
+
+        // Accelerometer x-axis data (SENSOR_VELOCITY)
+//        build_analog_data_msg(millis(), SENSOR_MAG_1, x, &msg);
+//        can_send(&msg);
+//        while (!can_send_rdy()) {}
+
+        // Accelerometer y-axis data (SENSOR_VENT_TEMP)
+//        build_analog_data_msg(millis(), SENSOR_MAG_2, y, &msg);
+//        can_send(&msg);
+//        while (!can_send_rdy()) {}
+
+        // Accelerometer z-axis data (SENSOR_RADIO_CURR)
+//        build_analog_data_msg(millis(), SENSOR_MAG_2, z, &msg);
+//        can_send(&msg);
+//        while (!can_send_rdy()) {}
+
+        // TEMP_OUT: Read temperature data from accelerometer ()
+        uint8_t temp_out_8bit = i2c_read_reg8(FXLS_I2C_ADDR, 0x01);
+        uint16_t temp_out_16bit = (uint16_t)temp_out_8bit;
+        build_analog_data_msg(millis(), SENSOR_MAG_2, temp_out_16bit, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
                 
         // Converts analog signal to digital
         adc_result_t adc_value = ADCC_GetSingleConversion(channel_ANA0);
