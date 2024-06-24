@@ -11,6 +11,8 @@ void fxls_init(void) {
     sens_config1 |= SENS_CONFIG1_MASK;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG1, sens_config1);
     
+    volatile uint8_t sys_mode = i2c_read_reg8(FXLS_I2C_ADDR, 0x14);
+    
     // SENS_CONFIG2: Configure wake and sleep modes, endian format, and read mode
     uint8_t sens_config2 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2);
     sens_config2 &= ~(0x01 << 3); // Clear LE_BE bit
@@ -19,29 +21,29 @@ void fxls_init(void) {
     sens_config2 |= (0x01 << 6);  // Set WAKE_PM to high-performance mode (01b)
     sens_config2 |= (0x00 << 4);  // Set SLEEP_PM to low-power mode (00b)
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2, sens_config2);
-
+//
     // BUF_CONFIG1: Disable buffer mode
-    // BUF_MODE_MASK 0x60;
+    BUF_MODE_MASK 0x60;
     uint8_t buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1);
     buf_config1 &= ~BUF_MODE_MASK;  // Clear BUF_MODE1 and BUF_MODE0 bits
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, buf_config1);
-        
+//        
     // SENS_CONFIG3: Set ODR to 100Hz: set bits 7:4 to 0101
     uint8_t sens_config3 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG3);
     sens_config3 &= 0x0F;
     sens_config3 |= 0b01010000;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG3, sens_config3);
-    
+//    
     // Set the DRDY_EN bit (bit 7) in the INT_EN register to enable the data-ready interrupt.
     uint8_t int_en = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_EN);
     int_en |= 0x80;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_INT_EN, int_en);
-    
+//    
     // Set the DRDY_INT2 bit (bit 7) in the INT_PIN_SEL register to route the data-ready interrupt to the INT2 pin.
     uint8_t int_pin_sel = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_PIN_SEL);
     int_pin_sel |= 0x80;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_INT_PIN_SEL, int_pin_sel);
-
+//
     // Set the INT_POL bit (bit 0) in the SENS_CONFIG4 register to configure the polarity of the interrupt (default active high).
     uint8_t sens_config4 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4);
     sens_config4 |= INT_POL_MASK;  // Set INT_POL bit to 1 (active high interrupt on INT2 pin)
@@ -49,10 +51,12 @@ void fxls_init(void) {
 }
 
 uint8_t fxls_get_prod_rev(void) {
+    i2c_init(0b000); // Initialize I2C at 100 kHz
     return i2c_read_reg8(FXLS_I2C_ADDR, FXLS_PROD_REV);
 }
 
 uint8_t fxls_get_whoami(void) {
+    i2c_init(0b000); // Initialize I2C at 100 kHz
     return i2c_read_reg8(FXLS_I2C_ADDR, FXLS_WHO_AM_I);
 }
 
