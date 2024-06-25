@@ -82,7 +82,12 @@ void fxls_read_accel_data(int16_t *x, int16_t *y, int16_t *z) {
     z_msb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Z_MSB);
 
     // Combine the LSB and MSB for each axis
-    *x = (int16_t)((x_msb << 8) | x_lsb);
-    *y = (int16_t)((y_msb << 8) | y_lsb);
-    *z = (int16_t)((z_msb << 8) | z_lsb);
+    *x = (((int16_t)x_msb << 8) | x_lsb);
+    *y = (((int16_t)y_msb << 8) | y_lsb);
+    *z = (((int16_t)z_msb << 8) | z_lsb);
+    
+    // Convert to g units from default ±4 g mode (1.95 mg/LSB)
+    *x = (*x) * 1.95 / 1000.0;
+    *y = (*y) * 1.95 / 1000.0;
+    *z = (*z) * 1.95 / 1000.0;
 }

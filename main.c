@@ -73,6 +73,7 @@ int main(void) {
         can_send(&msg);
         while (!can_send_rdy()) {}
         
+        // Read accelerometer data
         LATB3 = 1;
         while(!data_ready()) {
             for (int i = 0; i < 5; i++){
@@ -100,10 +101,8 @@ int main(void) {
         while (!can_send_rdy()) {}
         
         
-        // TEMP_OUT: Read temperature data from accelerometer ()
-//        i2c_init(0b000); // Initialize I2C at 100 kHz
-//        uint8_t temp_out_8bit = i2c_read_reg8(FXLS_I2C_ADDR, 0x01);
-//        uint16_t temp_out_16bit = (uint16_t)temp_out_8bit;
+        // Read liquid flow sensor data
+        
     }
 }
 
