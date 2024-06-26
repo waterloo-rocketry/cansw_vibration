@@ -57,8 +57,8 @@ void spi1_init (uint8_t baud_prescaler) {
 
 void spi1_send(uint8_t data)
 {
-    // ToDo: error/timeout handling
-    // Todo: need to consider full vs half duplex
+    // ToDo: error/timeout handling. Then get rid of inefficient/unnecessary "Wait until TX buffer is empty" poll.
+    // Todo: need to consider full vs half duplex. Currently half duplex.
     // ToDO: maybe incorportate SRMTIF & TCZIF to determine end of transmission (interrupt stuff). Otherwise, just rely on polling of SPI1CON2bits.BUSY == 1
     
     while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
@@ -66,7 +66,7 @@ void spi1_send(uint8_t data)
     SPI1CON2bits.TXR = 1; // Enable Tx
     
     SPI1TCNT = 1; // set the transfer count to 1
-    while (SPI1STATUS.TXBE == 0) // Wait until TX buffer is empty
+    while (SPI1STATUS.TXBE == 0) // Wait until TX buffer is empty. !! this line is inefficient, we shouldnt have to wait
     SPI1TXB = data; // load the TX buffer
     
     while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
@@ -76,18 +76,17 @@ void spi1_send(uint8_t data)
 
 void spi1_send_buffer(uint8_t *data, uint16_t data_len)
 {
-    // ToDo: error/timeout handling
-    // Todo: need to consider full vs half duplex
+    // ToDo: error/timeout handling. Then get rid of inefficient/unnecessary "Wait until TX buffer is empty" poll.
+    // Todo: need to consider full vs half duplex. Currently half duplex.
     // ToDO: maybe incorportate SRMTIF & TCZIF to determine end of transmission (interrupt stuff). Otherwise, just rely on polling of SPI1CON2bits.BUSY == 1
     
     while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
-    
     SPI1CON2bits.TXR = 1; // Enable Tx
     
     SPI1TCNT = data_len; // set the transfer count
     
     while (data_len) {
-        while (SPI1STATUS.TXBE == 0) // Wait until TX buffer is empty
+        while (SPI1STATUS.TXBE == 0) // Wait until TX buffer is empty. !! this line is inefficient, we shouldnt have to wait
         SPI1TXB = *data; // load the TX buffer
         data++; 
         data_len--;
@@ -100,28 +99,55 @@ void spi1_send_buffer(uint8_t *data, uint16_t data_len)
 
 uint8_t spi1_read(void)
 {
-    // ToDo: error/timeout handling
+    // ToDo: error/timeout handling. Then get rid of inefficient/unnecessary "Wait until Rx buffer is full" poll.
+    // Todo: need to use spixtct and SPIxTWIDTH registers, and TXR/RXR for this operation?
+    // Todo: need to consider full vs half duplex. Currently half duplex.
+    // Todo: consider interrupts involving spixrif, SRMTIF, and tczif
+    // Todo: consider CLRBF necessity
     
-    //Todo: need to use spixtct and SPIxTWIDTH registers, and TXR/RXR for this operation?
-    //Todo: need to consider full vs half duplex
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
+    SPI1STATUSbits.CLRBF = 1; //Clear the Rx (and Tx) buffers
+    SPI1CON2bits.RXR = 1; // Enable Rx
     
-    while (SPI1STATUS.RXBF == 0){}; // Wait until RX FIFO is full
-    return SPI1RXB;
+    SPI1TCNT = 1; // set the transfer count to 1
+    
+    //while (SPI1STATUS.RXBF == 0){}; // Wait until RX buffer is full. !! This code line is wrong since we dont exxpect/neeed the buffer to become full
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
+    SPI1CON2bits.RXR = 0; // Disable Rx
+    
+    //Critical Todo: we have to make sure the RX buffer is not empty before reading. How?
+    
+    return SPI1RXB; // Value from Rx buffer
 }
 
 
 void spi1_read_buffer(uint8_t *data, uint16_t data_len)
 {
-    // ToDo: error/timeout handling
+    // ToDo: error/timeout handling. Then get rid of inefficient/unnecessary "Wait until Rx buffer is full" poll.
+    // Todo: need to use spixtct and SPIxTWIDTH registers, and TXR/RXR for this operation?
+    // Todo: need to consider full vs half duplex. Currently half duplex.
+    // Todo: consider interrupts involving spixrif, SRMTIF, and tczif
+    // Todo: consider CLRBF necessity
     
-    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation, and TXR/RXR. Will be better
-    //Todo: need to consider full vs half duplex
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
+    SPI1STATUSbits.CLRBF = 1; // Clear the Rx (and Tx) buffers
+    SPI1CON2bits.RXR = 1; // Enable Rx
+    
+    SPI1TCNT = data_len; // set the transfer count
     
     while (data_len) {
-        *data = spi1_read();
+        //while (SPI1STATUS.RXBF == 0){}; // Wait until RX buffer is full. !! This code line is wrong since we dont exxpect/neeed the buffer to become full
+        
+        //Todo: add handling when less than expected data is recieved.
+        //Critical Todo: we have to make sure the RX buffer is not empty before reading. How?
+        
+        
+        *data = SPI1RXB; // Value from Rx buffer
         data++;
         data_len--;
     }
     
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
+    SPI1CON2bits.RXR = 0; // Disable Rx
 }
 
