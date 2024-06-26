@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define cs_high() (LATBbits.LATB9 = 1)
-#define cs_low()  (LATBbits.LATB9 = 0)
+#define cs_high() (LATBbits.LATB9 = 1) // ToDo: remove any instance of this. It's irrelevant to the new SPI driver 
+#define cs_low()  (LATBbits.LATB9 = 0) // ToDo: remove any instance of this. It's irrelevant to the new SPI driver 
 
 static char GLOBAL_FILENAME[20];
 
