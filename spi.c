@@ -5,6 +5,12 @@
 void spi1_init (uint8_t baud_prescaler) {
 /*Configure and enable SPI module 1*/
    
+    
+    
+    //Todo: need to configure TXR and RXR bits to control whether full or half duplex.
+    //Todo: need to configure SPIxTWIDTH register for 8 bit packet size
+    
+    
     // Clear enable before configuring other bits
     SPI1CON0bits.EN = 0; 
     //SPI1STATUSbits.CLRBF = 1;// clear the RX and TX FIFOs
@@ -16,7 +22,7 @@ void spi1_init (uint8_t baud_prescaler) {
     // Configure SPI Master mode settings
     SPI1CON0bits.LSBF = 0; //MSB first as in traditional SPI
     SPI1CON0bits.MST = 1; // set as master mode
-    SPI1CON0bits.BMODE = 0; // send 8 bit packets <----------------------------------this involves transfer counter stuff. may need to modify later as needed.
+    SPI1CON0bits.BMODE = 1; // send 8 bit packets <----------------------------------this involves transfer counter stuff. may need to modify later as needed.
     
     SPI1CON1bits.SMP = 0; //sample bits in the middle of a clock cycle
     SPI1CON1bits.CKE = 0; //use rising edge of clock
@@ -49,6 +55,8 @@ void spi1_send(uint8_t data)
 {
     // ToDo: error/timeout handling
     
+    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation
+    
     while (SPI1STATUS.TXBE == 0){}; // Wait until TX FIFO is empty
     SPI1TXB = data; // load the TX FIFO
 }
@@ -57,6 +65,8 @@ uint8_t spi1_read(void)
 {
     // ToDo: error/timeout handling
     
+    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation?
+    
     while (SPI1STATUS.RXBF == 0){}; // Wait until RX FIFO is full
     return SPI1RXB;
 }
@@ -64,6 +74,8 @@ uint8_t spi1_read(void)
 void spi1_send_buffer(uint8_t *data, uint16_t data_len)
 {
     // ToDo: error/timeout handling
+    
+    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation. Will be better
     
     while (data_len) {
         spi1_send(*data);
@@ -75,6 +87,8 @@ void spi1_send_buffer(uint8_t *data, uint16_t data_len)
 void spi1_read_buffer(uint8_t *data, uint16_t data_len)
 {
     // ToDo: error/timeout handling
+    
+    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation. Will be better
     
     while (data_len) {
         *data = spi1_read();

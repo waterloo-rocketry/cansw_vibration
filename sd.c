@@ -1,7 +1,7 @@
 #include "sd.h"
 #include <xc.h>
 #include <libpic30.h>
-#include "platform.h"
+//#include "platform.h" --> not applicable to this board
 #include "error.h"
 #include "fat_io_lib/fat_filelib.h"
 #include <stdbool.h>
@@ -181,7 +181,7 @@ int media_write(unsigned long sector,
 
 void sd_card_log_to_file(const char *buffer, uint16_t length)
 {
-    LED_2_ON();
+    //LED_2_ON(); --> not applicable to this board
     FL_FILE *file = fl_fopen(GLOBAL_FILENAME, "a");
     if (!file) {
         error(E_SD_FAIL_OPEN_FILE);
@@ -193,7 +193,7 @@ void sd_card_log_to_file(const char *buffer, uint16_t length)
     }
 
     fl_fclose(file);
-    LED_2_OFF();
+    //LED_2_OFF(); --> not applicable to this board
 }
 
 uint8_t init_sd_card2()
