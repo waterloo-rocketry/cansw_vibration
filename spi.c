@@ -42,13 +42,11 @@ void spi1_init (uint8_t baud_prescaler) {
     
 }
 
-bool spi1_write();
+void spi1_send(uint8_t data);
 
-static void spi1_send(uint8_t data);
+void spi1_send_buffer(uint8_t *data, uint16_t data_len);
 
-static void spi1_send_buffer(uint8_t *data, uint16_t data_len);
-
-static void spi1_read_buffer(uint8_t *data, uint16_t data_len);
+void spi1_read_buffer(uint8_t *data, uint16_t data_len);
 
 
 
