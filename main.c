@@ -41,6 +41,14 @@ int main(void) {
     TRISC2 = 0; // Acccelerometer I2C select pin output enable
 
     SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
+    
+    
+    // Setup clock reference to be base (500khz)/32
+    uint8_t clkdiv = 0b000;
+    CLKRCON = 0b10010000 | clkdiv;
+    CLKRCLK = 0b00000011;
+    
+    
     i2c_init(0b000); // I2C at 100 kHz
     
     // Accelerometer interrupt pin (INT2)
