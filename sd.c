@@ -1,6 +1,6 @@
 #include "sd.h"
 #include <xc.h>
-#include <libpic30.h>
+#include "spi.h"
 //#include "platform.h" --> not applicable to this board
 #include "error.h"
 #include "fat_io_lib/fat_filelib.h"
@@ -11,38 +11,6 @@
 #define cs_low()  (LATBbits.LATB9 = 0)
 
 static char GLOBAL_FILENAME[20];
-
-static void spi2_send(uint8_t data)
-{
-    SPI2BUF = data;
-    while (!SPI2STATbits.SPIRBF) {}
-    uint8_t __attribute__((unused)) temp = SPI2BUF;
-}
-
-static void spi2_send_buffer(uint8_t *data, uint16_t data_len)
-{
-    while (data_len) {
-        spi2_send(*data);
-        data++;
-        data_len--;
-    }
-}
-
-static uint8_t spi2_read(void)
-{
-    SPI2BUF = 0xFF;
-    while (!SPI2STATbits.SPIRBF) {}
-    return SPI2BUF;
-}
-
-static void spi2_read_buffer(uint8_t *data, uint16_t data_len)
-{
-    while (data_len) {
-        *data = spi2_read();
-        data++;
-        data_len--;
-    }
-}
 
 //SD card commands
 #define GO_IDLE_STATE             0 //software reset
@@ -301,34 +269,3 @@ uint8_t init_sd_card2()
     return retval;
 }
 
-void init_spi()
-{
-    //enable spi module 2 as master mode
-    SPI2CON1bits.DISSCK = 0; //enable sck
-    SPI2CON1bits.DISSDO = 0; //enable SDO
-    SPI2CON1bits.MODE16 = 0; //8 bit things
-    SPI2CON1bits.SMP    = 0; //sample at middle of data time
-    SPI2CON1bits.CKE    = 0; //switch output on rising edge of SCK
-    SPI2CON1bits.SSEN   = 0; //we are not in slave mode, leave CS GPIO
-    SPI2CON1bits.CKP    = 1; //idle clock level high.
-    SPI2CON1bits.MSTEN  = 1; //use master mode
-    SPI2CON1bits.SPRE   = 6; //secondary prescale 2:1
-    SPI2CON1bits.PPRE   = 3; //primary prescale 1:1
-    SPI2CON2bits.FRMEN  = 0; //don't use framed mode
-    SPI2CON2bits.SPIBEN = 0; //use standard mode, not enhanced mode
-
-    //set SCK output to RP39, and input to RP32 (both must be set)
-    RPOR2bits.RP39R = 0x09;
-    RPINR22bits.SCK2R = 0x27;
-    //set MOSI output to RP40
-    RPOR3bits.RP40R = 0x08;
-    //set MISO input to RP38 (RB6)
-    RPINR22bits.SDI2R = 0x26;
-    TRISBbits.TRISB6 = 1;
-    //set CS as GPIO output on RB9. Start high.
-    TRISBbits.TRISB9 = 0;
-    LATBbits.LATB9 = 1;
-
-    //enable spi module 1
-    SPI2STATbits.SPIEN = 1;
-}

@@ -47,8 +47,8 @@ void spi1_init (uint8_t baud_prescaler) {
     SPI1SDIPPS &= ~(0b111111);
     SPI1SDIPPS|= 0b1 0100;
     
-    SPI1SSPPS &= ~(0b111111);
-    SPI1SSPPS |= 0b0 0101;
+    SPI1SSPPS &= ~(0b111111); 
+    SPI1SSPPS |= 0b0 0101; // Todo: Remove this line if it interferes with auto SS control
     
     // Set the enable bit after configuration is complete
     SPI1CON0bits.EN = 1; 
@@ -88,6 +88,8 @@ void spi1_send_buffer(uint8_t *data, uint16_t data_len)
     while (data_len) {
         while (SPI1STATUS.TXBE == 0) // Wait until TX buffer is empty. !! this line is inefficient, we shouldnt have to wait
         SPI1TXB = *data; // load the TX buffer
+        
+        
         data++; 
         data_len--;
     }
@@ -111,7 +113,7 @@ uint8_t spi1_read(void)
     
     SPI1TCNT = 1; // set the transfer count to 1
     
-    //while (SPI1STATUS.RXBF == 0){}; // Wait until RX buffer is full. !! This code line is wrong since we dont exxpect/neeed the buffer to become full
+    //while (SPI1STATUS.RXBF == 0){}; // Wait until RX buffer is full. !! This code line is wrong since we dont expect/neeed the buffer to become full
     while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
     SPI1CON2bits.RXR = 0; // Disable Rx
     
@@ -136,7 +138,7 @@ void spi1_read_buffer(uint8_t *data, uint16_t data_len)
     SPI1TCNT = data_len; // set the transfer count
     
     while (data_len) {
-        //while (SPI1STATUS.RXBF == 0){}; // Wait until RX buffer is full. !! This code line is wrong since we dont exxpect/neeed the buffer to become full
+        //while (SPI1STATUS.RXBF == 0){}; // Wait until RX buffer is full. !! This code line is wrong since we dont expect/neeed the buffer to become full
         
         //Todo: add handling when less than expected data is recieved.
         //Critical Todo: we have to make sure the RX buffer is not empty before reading. How?
