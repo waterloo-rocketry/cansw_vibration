@@ -45,13 +45,42 @@ void spi1_init (uint8_t baud_prescaler) {
 
 void spi1_send(uint8_t data)
 {
-    while (SPI1STATUS.TXBE == 0){}; //Wait until TX FIFO is empty
-    SPI1TXB = data;
+    // ToDo: error/timeout handling
+    
+    while (SPI1STATUS.TXBE == 0){}; // Wait until TX FIFO is empty
+    SPI1TXB = data; // load the TX FIFO
 }
 
-void spi1_send_buffer(uint8_t *data, uint16_t data_len);
+uint8_t spi1_read(void)
+{
+    // ToDo: error/timeout handling
+    
+    while (SPI1STATUS.RXBF == 0){}; // Wait until RX FIFO is full
+    return SPI1RXB;
+}
 
-void spi1_read_buffer(uint8_t *data, uint16_t data_len);
+void spi1_send_buffer(uint8_t *data, uint16_t data_len)
+{
+    // ToDo: error/timeout handling
+    
+    while (data_len) {
+        spi1_send(*data);
+        data++;
+        data_len--;
+    }
+}
+
+void spi1_read_buffer(uint8_t *data, uint16_t data_len)
+{
+    // ToDo: error/timeout handling
+    
+    while (data_len) {
+        *data = spi1_read();
+        data++;
+        data_len--;
+    }
+    
+}
 
 
 
