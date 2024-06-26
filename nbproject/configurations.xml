@@ -37,6 +37,7 @@
       <itemPath>fxls8974cf_regs.h</itemPath>
       <itemPath>sd.h</itemPath>
       <itemPath>error.h</itemPath>
+      <itemPath>spi.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -94,6 +95,7 @@
       <itemPath>fxls8974cf.c</itemPath>
       <itemPath>sd.c</itemPath>
       <itemPath>error.c</itemPath>
+      <itemPath>spi.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
