@@ -18,7 +18,7 @@ void spi1_init (uint8_t baud_prescaler) {
     SPI1CON1bits.SMP = 0; //sample bits in the middle of a clock cycle
     SPI1CON1bits.CKE = 0; //use rising edge of clock
     SPI1CON1bits.CKP = 0; //active-high clock
-    SPI1CON1bits.SSP = 0; //active-high SS
+    SPI1CON1bits.SSP = 1; //active-low SS
     SPI1CON1bits.SDIP = 0; //active-high SDI 
     SPI1CON1bits.SDOP = 0; //active-high SDO
     
