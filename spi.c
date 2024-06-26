@@ -4,12 +4,9 @@
 
 void spi1_init (uint8_t baud_prescaler) {
 /*Configure and enable SPI module 1*/
-   
     
-    
-    //Todo: need to configure TXR and RXR bits to control whether full or half duplex.
-    //Todo: need to configure SPIxTWIDTH register for 8 bit packet size
-    
+    //Todo: should we check SPI1CON2bits.BUSY before initialization?
+    //Todo: consider whether to use SPI interrupt registers.
     
     // Clear enable before configuring other bits
     SPI1CON0bits.EN = 0; 
@@ -20,9 +17,11 @@ void spi1_init (uint8_t baud_prescaler) {
     SPI1BAUDbits.BAUD = baud_prescaler; // SCK toggle frequency = clock reference/(2*(baud_prescaler + 1))
             
     // Configure SPI Master mode settings
-    SPI1CON0bits.LSBF = 0; //MSB first as in traditional SPI
+    SPI1CON0bits.LSBF = 0; // MSB first as in traditional SPI
     SPI1CON0bits.MST = 1; // set as master mode
-    SPI1CON0bits.BMODE = 1; // send 8 bit packets <----------------------------------this involves transfer counter stuff. may need to modify later as needed.
+      
+    SPI1CON0bits.BMODE = 0; //For BMODE = 0,  total bits sent is SPIxTWIDTH + (SPIxTCNT*8)  
+    SPI1TWIDTHbits.TWIDTH = 0b000; 
     
     SPI1CON1bits.SMP = 0; //sample bits in the middle of a clock cycle
     SPI1CON1bits.CKE = 0; //use rising edge of clock
@@ -32,6 +31,11 @@ void spi1_init (uint8_t baud_prescaler) {
     SPI1CON1bits.SDOP = 0; //active-high SDO
     
     SPI1CON2bits.SSET = 0; // SS is driven to active state while the transmit counter is not zero
+    
+    SPI1CON2bits.TXR = 0; // Initially disable Tx
+    SPI1CON2bits.RXR = 0; // Initially disable Rx
+    
+    SPI1INTE = 0x00; // Disable all SPI interrupts. 
     
     //PPS remap RC5 as SDO pin, RC3 as SCK pin, RC4 as SDI pin, RA5 as SS pin
     RC5PPS &= ~(0b111111);
@@ -54,41 +58,64 @@ void spi1_init (uint8_t baud_prescaler) {
 void spi1_send(uint8_t data)
 {
     // ToDo: error/timeout handling
+    // Todo: need to consider full vs half duplex
+    // ToDO: maybe incorportate SRMTIF & TCZIF to determine end of transmission (interrupt stuff). Otherwise, just rely on polling of SPI1CON2bits.BUSY == 1
     
-    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
     
-    while (SPI1STATUS.TXBE == 0){}; // Wait until TX FIFO is empty
-    SPI1TXB = data; // load the TX FIFO
+    SPI1CON2bits.TXR = 1; // Enable Tx
+    
+    SPI1TCNT = 1; // set the transfer count to 1
+    while (SPI1STATUS.TXBE == 0) // Wait until TX buffer is empty
+    SPI1TXB = data; // load the TX buffer
+    
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
+    SPI1CON2bits.TXR = 0; // Disable Tx
+    
+}
+
+void spi1_send_buffer(uint8_t *data, uint16_t data_len)
+{
+    // ToDo: error/timeout handling
+    // Todo: need to consider full vs half duplex
+    // ToDO: maybe incorportate SRMTIF & TCZIF to determine end of transmission (interrupt stuff). Otherwise, just rely on polling of SPI1CON2bits.BUSY == 1
+    
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
+    
+    SPI1CON2bits.TXR = 1; // Enable Tx
+    
+    SPI1TCNT = data_len; // set the transfer count
+    
+    while (data_len) {
+        while (SPI1STATUS.TXBE == 0) // Wait until TX buffer is empty
+        SPI1TXB = *data; // load the TX buffer
+        data++; 
+        data_len--;
+    }
+    
+    while (SPI1CON2bits.BUSY == 1){}; // Wait until no data exchange in progress
+    SPI1CON2bits.TXR = 0; // Disable Tx
+
 }
 
 uint8_t spi1_read(void)
 {
     // ToDo: error/timeout handling
     
-    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation?
+    //Todo: need to use spixtct and SPIxTWIDTH registers, and TXR/RXR for this operation?
+    //Todo: need to consider full vs half duplex
     
     while (SPI1STATUS.RXBF == 0){}; // Wait until RX FIFO is full
     return SPI1RXB;
 }
 
-void spi1_send_buffer(uint8_t *data, uint16_t data_len)
-{
-    // ToDo: error/timeout handling
-    
-    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation. Will be better
-    
-    while (data_len) {
-        spi1_send(*data);
-        data++;
-        data_len--;
-    }
-}
 
 void spi1_read_buffer(uint8_t *data, uint16_t data_len)
 {
     // ToDo: error/timeout handling
     
-    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation. Will be better
+    //Todo: need to use spixtct and SPIxTWIDTH registers for this operation, and TXR/RXR. Will be better
+    //Todo: need to consider full vs half duplex
     
     while (data_len) {
         *data = spi1_read();
