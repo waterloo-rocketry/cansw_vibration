@@ -1,6 +1,13 @@
 #ifndef SPI_H
 #define	SPI_H
 
+
+#define SPI_POLL_TIMEOUT 2000
+#define SPI_MAX_TXWE_CNT 1000
+#define SPI_MAX_RXRE_CNT 1000
+
+
+
 #include <stdbool.h>
 #include <stdint.h>
 
