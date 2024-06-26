@@ -1,5 +1,7 @@
 #include <xc.h>
 
+#include "spi.h"
+
 void spi1_init (uint8_t baud_prescaler) {
 /*Configure and enable SPI module 1*/
    
@@ -81,11 +83,4 @@ void spi1_read_buffer(uint8_t *data, uint16_t data_len)
     }
     
 }
-
-
-
-
-#include "spi.h"
-
-
 
