@@ -5,15 +5,16 @@ void spi1_init (uint8_t baud_prescaler) {
    
     // Clear enable before configuring other bits
     SPI1CON0bits.EN = 0; 
+    //SPI1STATUSbits.CLRBF = 1;// clear the RX and TX FIFOs
     
     // Set the baud rate
     SPI1CLKbits.CLKSEL = 0x04; //CLK clock reference
     SPI1BAUDbits.BAUD = baud_prescaler; // SCK toggle frequency = clock reference/(2*(baud_prescaler + 1))
             
     // Configure SPI Master mode settings
-    SPI1CON0bits.LSBF = 0; //msb first as in traditional spi
+    SPI1CON0bits.LSBF = 0; //MSB first as in traditional SPI
     SPI1CON0bits.MST = 1; // set as master mode
-    SPI1CON0bits.BMODE = 0; // send 8 bit packets 
+    SPI1CON0bits.BMODE = 0; // send 8 bit packets <----------------------------------this involves transfer counter stuff. may need to modify later as needed.
     
     SPI1CON1bits.SMP = 0; //sample bits in the middle of a clock cycle
     SPI1CON1bits.CKE = 0; //use rising edge of clock
@@ -42,7 +43,11 @@ void spi1_init (uint8_t baud_prescaler) {
     
 }
 
-void spi1_send(uint8_t data);
+void spi1_send(uint8_t data)
+{
+    while (SPI1STATUS.TXBE == 0){}; //Wait until TX FIFO is empty
+    SPI1TXB = data;
+}
 
 void spi1_send_buffer(uint8_t *data, uint16_t data_len);
 
