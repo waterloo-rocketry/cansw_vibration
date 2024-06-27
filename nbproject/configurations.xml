@@ -21,6 +21,7 @@
       <itemPath>common.h</itemPath>
       <itemPath>fxls8974cf.h</itemPath>
       <itemPath>fxls8974cf_regs.h</itemPath>
+      <itemPath>slf3s4000b.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -66,11 +67,11 @@
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>fxls8974cf.c</itemPath>
+      <itemPath>slf3s4000b.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>rocketlib/pic18f26k83</Elem>
-    <Elem>canlib</Elem>
+    <Elem>.</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -209,6 +210,7 @@
         <property key="event.recorder.debugger.behavior" value="Running"/>
         <property key="event.recorder.enabled" value="false"/>
         <property key="event.recorder.scvd.files" value=""/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="lastid" value=""/>
         <property key="memories.aux" value="false"/>
@@ -266,6 +268,7 @@
         <property key="event.recorder.debugger.behavior" value="Running"/>
         <property key="event.recorder.enabled" value="false"/>
         <property key="event.recorder.scvd.files" value=""/>
+        <property key="firmware.download.all" value="false"/>
         <property key="freeze.timers" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="lastid" value=""/>

@@ -87,7 +87,7 @@ void fxls_read_accel_data(int16_t *x, int16_t *y, int16_t *z) {
     *z = (((int16_t)z_msb << 8) | z_lsb);
     
     // Convert to g units from default ±4 g mode (1.95 mg/LSB)
-    *x = (*x) * 1.95 / 1000.0;
-    *y = (*y) * 1.95 / 1000.0;
-    *z = (*z) * 1.95 / 1000.0;
+//    *x = (*x) * 1.95 / 1000.0;
+//    *y = (*y) * 1.95 / 1000.0;
+//    *z = (*z) * 1.95 / 1000.0;
 }

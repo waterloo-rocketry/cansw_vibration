@@ -94,27 +94,31 @@ int main(void) {
         // Read accelerometer data
         fxls_read_accel_data(&x, &y, &z);
         
-//        build_analog_data_msg(millis(), SENSOR_MAG_2, x, &msg);
-//        can_send(&msg);
-//        while (!can_send_rdy()) {}
-//        build_analog_data_msg(millis(), SENSOR_VELOCITY, y, &msg);
-//        can_send(&msg);
-//        while (!can_send_rdy()) {}
-//        build_analog_data_msg(millis(), SENSOR_ARM_BATT_1, z, &msg);
-//        can_send(&msg);
-//        while (!can_send_rdy()) {}
+        build_analog_data_msg(millis(), SENSOR_MAG_2, x, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
+        build_analog_data_msg(millis(), SENSOR_VELOCITY, y, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
+        build_analog_data_msg(millis(), SENSOR_ARM_BATT_1, z, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
         
         
         // Read liquid flow sensor data
         LATC6 = 0;
-        int16_t flow = 0;
-        int16_t temperature = 0;
-        read_flow_sensor_data(int16_t *flow, int16_t *temperature);
+        uint16_t flow = 0;
+        uint16_t temperature = 0;
+        read_flow_sensor_data(&flow, &temperature);
         LATC6 = 1;
         
         build_analog_data_msg(millis(), SENSOR_MAG_2, flow, &msg);
         can_send(&msg);
         while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
         build_analog_data_msg(millis(), SENSOR_VELOCITY, temperature, &msg);
         can_send(&msg);
         while (!can_send_rdy()) {}
