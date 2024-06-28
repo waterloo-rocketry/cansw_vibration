@@ -43,15 +43,19 @@ void spi1_init (uint8_t baud_prescaler) {
     //Critical todo: need to modify TRIS registers to configure below as input or output appropriately???
     
     //PPS remap RC5 as SDO pin, RC3 as SCK pin, RC4 as SDI pin, RA5 as SS pin
+    TRISCbits.TRISC5 = 0; // RC5 is an output pin
     RC5PPS &= ~(0b111111);
     RC5PPS |= 0b011111;
     
+    TRISCbits.TRISC3 = 0; // RC3 is an output pin
     RC3PPS &= ~(0b000000);
     RC5PPS |= 0b011110;
     
+    TRISCbits.TRISC4 = 1; // RC4 is an input pin
     SPI1SDIPPS &= ~(0b111111);
     SPI1SDIPPS|= 0b1 0100;
     
+    TRISAbits.TRISA5 = 0; // RC4 is an output pin
     RA5PPS &= 0b000000; //Set SS pin to manual control via LATA5 register
     
     // Set the enable bit after configuration is complete
