@@ -3,6 +3,7 @@
 #include "canlib.h"
 #include "common.h"
 #include "fxls8974cf.h"
+#include "slf3s4000b.h"
 #include "i2c.h"
 #include "mcc_generated_files/system/system.h"
 
@@ -38,23 +39,24 @@ int main(void) {
     TRISA2 = 0; // Blue LED output enable
     TRISA3 = 0; // Green LED output enable
     TRISA4 = 0; // Red LED output enable
-    TRISC2 = 0; // Acccelerometer I2C select pin output enable
+    TRISC2 = 0; // Accelerometer I2C select pin output enable
 
     SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
-    
     
     // Setup clock reference to be base (500khz)/32
     uint8_t clkdiv = 0b000;
     CLKRCON = 0b10010000 | clkdiv;
     CLKRCLK = 0b00000011;
     
-    
     i2c_init(0b000); // I2C at 100 kHz
     
     // Accelerometer interrupt pin (INT2)
     TRISB3 = 0;     // Accelerometer output from PIC
-    //ANSELBbits.ANSELB3 = 0; 
-    LATB3 = 0;
+    LATB3 = 0;      // Active high 
+    
+    // Flow sensor interrupt pin (IRQn)
+    TRISC6 = 0;     // Flow sensor output from PIC
+    LATC6 = 1;      // Active low
 
     uint32_t last_millis = 0;
 
@@ -101,16 +103,31 @@ int main(void) {
         build_analog_data_msg(millis(), SENSOR_MAG_2, x, &msg);
         can_send(&msg);
         while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
         build_analog_data_msg(millis(), SENSOR_VELOCITY, y, &msg);
         can_send(&msg);
         while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
         build_analog_data_msg(millis(), SENSOR_ARM_BATT_1, z, &msg);
         can_send(&msg);
         while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
         
         
         // Read liquid flow sensor data
+        LATC6 = 0;
+        uint16_t flow = 0;
+        uint16_t temperature = 0;
+        read_flow_sensor_data(&flow, &temperature);
+        LATC6 = 1;
         
+        build_analog_data_msg(millis(), SENSOR_MAG_2, flow, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
+        for(int i = 0; i < 525; ++i);
+        build_analog_data_msg(millis(), SENSOR_VELOCITY, temperature, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
     }
 }
 
