@@ -7,8 +7,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define cs_high() (LATBbits.LATB9 = 1) // ToDo: remove any instance of this. It's irrelevant to the new SPI driver 
-#define cs_low()  (LATBbits.LATB9 = 0) // ToDo: remove any instance of this. It's irrelevant to the new SPI driver 
+//ToDo: figure out whether toggling SS on and off so much is a problem.
 
 static char GLOBAL_FILENAME[20];
 
@@ -36,39 +35,42 @@ static uint8_t sd_send_command(uint8_t command,
 {
     //step 0, if the card is busy, wait (unless CMD0)
     if (command != GO_IDLE_STATE) {
-        while (spi2_read() != 0xFF) {};
+        while (spi1_read() != 0xFF) {};
     }
 
-    //step 1, write the command out onto spi
-    spi2_send(0x40 | command);
-    //step 2, write the 32 bits of argument, MSB first
-    spi2_send((argument >> 24) & 0xFF);
-    spi2_send((argument >> 16) & 0xFF);
-    spi2_send((argument >> 8) & 0xFF);
-    spi2_send((argument >> 0) & 0xFF);
-    //step 3, write out the CRC
-    spi2_send(crc);
+    //step 1, send the command
+    //step 2, send the 32 bits of argument, MSB first
+    //step 3, send out the CRC
+    uint8_t send_buffer[6] = {
+        (0x40 | command), 
+        (argument >> 24) & 0xFF, 
+        (argument >> 16) & 0xFF,
+        (argument >> 8) & 0xFF,
+        (argument >> 0) & 0xFF, 
+        crc
+    };
+    spi1_send_buffer(send_buffer, 6, 0);
+    
     //step 3.5, discard the first fill byte because reasons
-    spi2_read();
+    spi1_read();
+    
     //step 4, wait for a R1 response
-    uint16_t status = spi2_read();
+    uint16_t status = spi1_read();
     int i;
     for (i = 0; i < 10; ++i) {
         if ((status & 0x80) == 0) {
             break;
         }
-        status = spi2_read();
+        status = spi1_read();
     }
     //step 5, if we're expecting a R1b response, wait for DO to go high before we return
     if (expected_response == RESP_R1b) {
-        while (spi2_read() != 0xFF) {}
+        while (spi1_read() != 0xFF) {}
     }
     //step 6, if we're waiting for an R3 or R7 response, read the next 4 bytes into output
     else if (expected_response == RESP_R3 || expected_response == RESP_R7) {
-        output[0] = spi2_read();
-        output[1] = spi2_read();
-        output[2] = spi2_read();
-        output[3] = spi2_read();
+        
+        spi1_read_buffer(output, 4);
     }
 
     return status;
@@ -81,20 +83,18 @@ int media_read(unsigned long sector,
     uint32_t address = sector;
     uint8_t i;
     for (i = 0; i < sector_count; ++i) {
-        cs_low();
         uint8_t status = sd_send_command(READ_SINGLE_BLOCK, RESP_R1, address, 0, 0);
         if (status != 0) {
             error(E_SD_FAIL_READ_BLOCK);
         }
         uint8_t token;
-        while ((token = spi2_read()) == 0xFF) {}
+        while ((token = spi1_read()) == 0xFF) {}
 
-        spi2_read_buffer(buffer, 512);
+        spi1_read_buffer(buffer, 512);
 
-        uint16_t crc = spi2_read();
+        uint16_t crc = spi1_read();
         crc <<= 8;
-        crc |= spi2_read();
-        cs_high();
+        crc |= spi1_read();
 
         buffer += 512;
         address += 512;
@@ -110,37 +110,34 @@ int media_write(unsigned long sector,
     uint32_t address = sector;
     uint8_t i;
     for (i = 0; i < sector_count; ++i) {
-        cs_low();
         uint8_t status = sd_send_command(WRITE_BLOCK, RESP_R1, address, 0, 0);
         if (status != 0) {
             error(E_SD_FAIL_WRITE_BLOCK);
         }
-        //send out 10 bytes of FF to give the card time to get ready
-        uint16_t j;
-        for (j = 0; j < 10; ++j) {
-            spi2_send(0xFF);
-        }
-        spi2_send(0xFF);
-        //write the token out
-        spi2_send(0xFE);
+        
+        //setup for the write
+        uint8_t setup_buffer[12] = {
+            0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF, //send out 11 bytes of FF to give the card time to get ready //ToDo: confirm whether 11 or 10 bytes is correct here
+            0xFE //write the token out
+        };
+        spi1_send_buffer(setup_buffer, 12, 0);
+        
         //write out 512 bytes of buffer
-
-        spi2_send_buffer(buffer, 512);
+        spi1_send_buffer(buffer, 512, 0);
 
         //write out 2 bytes of CRC. These aren't used
-        spi2_send(0);
-        spi2_send(0);
+        spi1_send(0);
+        spi1_send(0);
 
         //read the data response (0bxxx00101)
-        uint8_t data_resp = spi2_read();
+        uint8_t data_resp = spi1_read();
         if ((data_resp & 0x1f) != 5) {
             error(E_SD_FAIL_WRITE_DATA_RESP);
         }
 
         //wait until the card stops being busy
-        while (spi2_read() != 0xFF);
+        while (spi1_read() != 0xFF);
 
-        cs_high();
         buffer += 512;
         address += 512;
     }
@@ -149,7 +146,7 @@ int media_write(unsigned long sector,
 
 void sd_card_log_to_file(const char *buffer, uint16_t length)
 {
-    //LED_2_ON(); --> not applicable to this board
+    //LED_2_ON(); --> not applicable to this board. Todo: Maybe make this applicable
     FL_FILE *file = fl_fopen(GLOBAL_FILENAME, "a");
     if (!file) {
         error(E_SD_FAIL_OPEN_FILE);
@@ -161,22 +158,16 @@ void sd_card_log_to_file(const char *buffer, uint16_t length)
     }
 
     fl_fclose(file);
-    //LED_2_OFF(); --> not applicable to this board
+    //LED_2_OFF(); --> not applicable to this board. Todo: Maybe make this applicable
 }
 
 uint8_t init_sd_card2()
 {
-    //based on a tutorial, set CS and MOSI high, and toggle SCK 74 times
-    cs_high();
-    int i;
-    for (i = 0; i < 10; ++i) {
-        spi2_send(0xFF);
-    }
-    for (i = 0; i < 1000; ++i) ;
+    //based on a tutorial, set SS inactive and MOSI high, and toggle SCK at least 74 times
+    uint8_t setup_buffer[12] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+    spi1_send_buffer(setup_buffer, 12, 1);
 
-    cs_low();
     uint8_t status = sd_send_command(GO_IDLE_STATE, RESP_R1, 0, 0x95, 0);
-    cs_high();
 
     if (status != 0x01) {
         error(E_SD_FAIL_GO_IDLE);
@@ -184,9 +175,7 @@ uint8_t init_sd_card2()
     }
 
     uint8_t response[4];
-    cs_low();
     status = sd_send_command(SEND_IF_COND, RESP_R7, 0x1AA, 0x87, response);
-    cs_high();
     if (status != 0x01) {
         error(E_SD_FAIL_SEND_IF_COND);
         //illegal command, using a weird version of SD card. Return false
@@ -199,25 +188,17 @@ uint8_t init_sd_card2()
     }
 
     while (status != 0) {
-        cs_low();
         status = sd_send_command(APP_CMD, RESP_R1, 0, 0x87, 0);
-        cs_high();
-        cs_low();
         status = sd_send_command(APP_SEND_OP_COND, RESP_R1, 0x40000000, 0x87, 0);
-        cs_high();
     }
 
     //read the OCR register
-    cs_low();
     status = sd_send_command(APP_CMD, RESP_R1, 0, 0x87, 0);
-    cs_high();
     if (status != 0x00) {
         while (1);
         return false;
     }
-    cs_low();
     status = sd_send_command(READ_OCR, RESP_R3, 0, 0x87, response);
-    cs_high();
 
     uint32_t ocr = response[0];
     ocr <<= 8;
