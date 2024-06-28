@@ -53,7 +53,7 @@ void spi1_init (uint8_t baud_prescaler) {
     
     TRISCbits.TRISC4 = 1; // RC4 is an input pin
     SPI1SDIPPS &= ~(0b111111);
-    SPI1SDIPPS|= 0b1 0100;
+    SPI1SDIPPS|= 0b10100;
     
     TRISAbits.TRISA5 = 0; // RC4 is an output pin
     RA5PPS &= 0b000000; //Set SS pin to manual control via LATA5 register

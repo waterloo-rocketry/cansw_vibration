@@ -1,5 +1,5 @@
 #include "error.h"
-#include "platform.h"
+//#include "platform.h"
 
 static cansw_logger_error_t last_error;
 static bool any_errors_happened = false;

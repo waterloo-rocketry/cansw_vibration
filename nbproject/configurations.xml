@@ -35,13 +35,9 @@
       <itemPath>common.h</itemPath>
       <itemPath>fxls8974cf.h</itemPath>
       <itemPath>fxls8974cf_regs.h</itemPath>
-<<<<<<< HEAD
       <itemPath>sd.h</itemPath>
       <itemPath>error.h</itemPath>
       <itemPath>spi.h</itemPath>
-=======
-      <itemPath>slf3s4000b.h</itemPath>
->>>>>>> 49ae2e64c2e216be25b18763e01e896b96a6ef96
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -97,13 +93,9 @@
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>fxls8974cf.c</itemPath>
-<<<<<<< HEAD
       <itemPath>sd.c</itemPath>
       <itemPath>error.c</itemPath>
       <itemPath>spi.c</itemPath>
-=======
-      <itemPath>slf3s4000b.c</itemPath>
->>>>>>> 49ae2e64c2e216be25b18763e01e896b96a6ef96
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -246,7 +238,6 @@
         <property key="event.recorder.debugger.behavior" value="Running"/>
         <property key="event.recorder.enabled" value="false"/>
         <property key="event.recorder.scvd.files" value=""/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="lastid" value=""/>
         <property key="memories.aux" value="false"/>
@@ -304,7 +295,6 @@
         <property key="event.recorder.debugger.behavior" value="Running"/>
         <property key="event.recorder.enabled" value="false"/>
         <property key="event.recorder.scvd.files" value=""/>
-        <property key="firmware.download.all" value="false"/>
         <property key="freeze.timers" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="lastid" value=""/>
