@@ -11,6 +11,7 @@
             <sourceRootList>
                 <sourceRootElem>rocketlib/pic18f26k83</sourceRootElem>
                 <sourceRootElem>canlib</sourceRootElem>
+                <sourceRootElem>mcc_fatfs</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

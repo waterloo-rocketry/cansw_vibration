@@ -69,6 +69,62 @@
 #define IO_RA0_SetAnalogMode()      do { ANSELAbits.ANSELA0 = 1; } while(0)
 #define IO_RA0_SetDigitalMode()     do { ANSELAbits.ANSELA0 = 0; } while(0)
 
+// get/set SDCard_CS aliases
+#define SDCard_CS_TRIS                 TRISAbits.TRISA5
+#define SDCard_CS_LAT                  LATAbits.LATA5
+#define SDCard_CS_PORT                 PORTAbits.RA5
+#define SDCard_CS_WPU                  WPUAbits.WPUA5
+#define SDCard_CS_OD                   ODCONAbits.ODCA5
+#define SDCard_CS_ANS                  ANSELAbits.ANSELA5
+#define SDCard_CS_SetHigh()            do { LATAbits.LATA5 = 1; } while(0)
+#define SDCard_CS_SetLow()             do { LATAbits.LATA5 = 0; } while(0)
+#define SDCard_CS_Toggle()             do { LATAbits.LATA5 = ~LATAbits.LATA5; } while(0)
+#define SDCard_CS_GetValue()           PORTAbits.RA5
+#define SDCard_CS_SetDigitalInput()    do { TRISAbits.TRISA5 = 1; } while(0)
+#define SDCard_CS_SetDigitalOutput()   do { TRISAbits.TRISA5 = 0; } while(0)
+#define SDCard_CS_SetPullup()          do { WPUAbits.WPUA5 = 1; } while(0)
+#define SDCard_CS_ResetPullup()        do { WPUAbits.WPUA5 = 0; } while(0)
+#define SDCard_CS_SetPushPull()        do { ODCONAbits.ODCA5 = 0; } while(0)
+#define SDCard_CS_SetOpenDrain()       do { ODCONAbits.ODCA5 = 1; } while(0)
+#define SDCard_CS_SetAnalogMode()      do { ANSELAbits.ANSELA5 = 1; } while(0)
+#define SDCard_CS_SetDigitalMode()     do { ANSELAbits.ANSELA5 = 0; } while(0)
+
+// get/set RC3 procedures
+#define RC3_SetHigh()            do { LATCbits.LATC3 = 1; } while(0)
+#define RC3_SetLow()             do { LATCbits.LATC3 = 0; } while(0)
+#define RC3_Toggle()             do { LATCbits.LATC3 = ~LATCbits.LATC3; } while(0)
+#define RC3_GetValue()              PORTCbits.RC3
+#define RC3_SetDigitalInput()    do { TRISCbits.TRISC3 = 1; } while(0)
+#define RC3_SetDigitalOutput()   do { TRISCbits.TRISC3 = 0; } while(0)
+#define RC3_SetPullup()             do { WPUCbits.WPUC3 = 1; } while(0)
+#define RC3_ResetPullup()           do { WPUCbits.WPUC3 = 0; } while(0)
+#define RC3_SetAnalogMode()         do { ANSELCbits.ANSELC3 = 1; } while(0)
+#define RC3_SetDigitalMode()        do { ANSELCbits.ANSELC3 = 0; } while(0)
+
+// get/set RC4 procedures
+#define RC4_SetHigh()            do { LATCbits.LATC4 = 1; } while(0)
+#define RC4_SetLow()             do { LATCbits.LATC4 = 0; } while(0)
+#define RC4_Toggle()             do { LATCbits.LATC4 = ~LATCbits.LATC4; } while(0)
+#define RC4_GetValue()              PORTCbits.RC4
+#define RC4_SetDigitalInput()    do { TRISCbits.TRISC4 = 1; } while(0)
+#define RC4_SetDigitalOutput()   do { TRISCbits.TRISC4 = 0; } while(0)
+#define RC4_SetPullup()             do { WPUCbits.WPUC4 = 1; } while(0)
+#define RC4_ResetPullup()           do { WPUCbits.WPUC4 = 0; } while(0)
+#define RC4_SetAnalogMode()         do { ANSELCbits.ANSELC4 = 1; } while(0)
+#define RC4_SetDigitalMode()        do { ANSELCbits.ANSELC4 = 0; } while(0)
+
+// get/set RC5 procedures
+#define RC5_SetHigh()            do { LATCbits.LATC5 = 1; } while(0)
+#define RC5_SetLow()             do { LATCbits.LATC5 = 0; } while(0)
+#define RC5_Toggle()             do { LATCbits.LATC5 = ~LATCbits.LATC5; } while(0)
+#define RC5_GetValue()              PORTCbits.RC5
+#define RC5_SetDigitalInput()    do { TRISCbits.TRISC5 = 1; } while(0)
+#define RC5_SetDigitalOutput()   do { TRISCbits.TRISC5 = 0; } while(0)
+#define RC5_SetPullup()             do { WPUCbits.WPUC5 = 1; } while(0)
+#define RC5_ResetPullup()           do { WPUCbits.WPUC5 = 0; } while(0)
+#define RC5_SetAnalogMode()         do { ANSELCbits.ANSELC5 = 1; } while(0)
+#define RC5_SetDigitalMode()        do { ANSELCbits.ANSELC5 = 0; } while(0)
+
 /**
  * @ingroup  pinsdriver
  * @brief GPIO and peripheral I/O initialization

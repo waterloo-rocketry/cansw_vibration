@@ -43,6 +43,7 @@ void SYSTEM_Initialize(void)
     PIN_MANAGER_Initialize();
     ADCC_Initialize();
     INTERRUPT_Initialize();
+	SPI1_Initialize();
 }
 
 
