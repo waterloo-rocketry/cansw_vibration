@@ -1,0 +1,416 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"88 mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h
+[; ;mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h: 88: _Bool SD_SPI_IsMediaPresent(void);
+[v _SD_SPI_IsMediaPresent `(a ~T0 @X0 0 ef ]
+"86
+[; ;mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h: 86: _Bool SD_SPI_IsMediaInitialized(void);
+[v _SD_SPI_IsMediaInitialized `(a ~T0 @X0 0 ef ]
+"89
+[; ;mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h: 89: _Bool SD_SPI_IsWriteProtected(void);
+[v _SD_SPI_IsWriteProtected `(a ~T0 @X0 0 ef ]
+"50 mcc_generated_files/fatfs/diskio.c
+[; ;mcc_generated_files/fatfs/diskio.c: 50:     }
+[c E85 0 .. ]
+[n E85 DRIVER_LIST DRVA  ]
+"87 mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h
+[; ;mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h: 87: _Bool SD_SPI_MediaInitialize(void);
+[v _SD_SPI_MediaInitialize `(a ~T0 @X0 0 ef ]
+"70 mcc_generated_files/fatfs/diskio.c
+[; ;mcc_generated_files/fatfs/diskio.c: 70:                 stat = RES_OK;
+[c E12 0 1 2 3 4 .. ]
+[n E12 . RES_OK RES_ERROR RES_WRPRT RES_NOTRDY RES_PARERR  ]
+"123 mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h
+[; ;mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h: 123: _Bool SD_SPI_SectorRead(uint32_t sector_address, uint8_t* buffer, uint16_t sector_count);
+[v _SD_SPI_SectorRead `(a ~T0 @X0 0 ef3`ul`*uc`us ]
+"154
+[; ;mcc_generated_files/fatfs/../../mcc_generated_files/sd_spi/sd_spi.h: 154: _Bool SD_SPI_SectorWrite(uint32_t sector_address, const uint8_t* buffer, uint16_t sector_count);
+[v _SD_SPI_SectorWrite `(a ~T0 @X0 0 ef3`ul`*Cuc`us ]
+"23 mcc_generated_files/fatfs/diskio.c
+[; ;mcc_generated_files/fatfs/diskio.c: 23: DSTATUS disk_status (
+[v _disk_status `(uc ~T0 @X0 1 ef1`uc ]
+"26
+[; ;mcc_generated_files/fatfs/diskio.c: 26: {
+{
+[e :U _disk_status ]
+"24
+[; ;mcc_generated_files/fatfs/diskio.c: 24:     BYTE pdrv
+[v _pdrv `uc ~T0 @X0 1 r1 ]
+"26
+[; ;mcc_generated_files/fatfs/diskio.c: 26: {
+[f ]
+"27
+[; ;mcc_generated_files/fatfs/diskio.c: 27:     DSTATUS stat = 0x01;
+[v _stat `uc ~T0 @X0 1 a ]
+[e = _stat -> -> 1 `i `uc ]
+"29
+[; ;mcc_generated_files/fatfs/diskio.c: 29:     switch (pdrv) {
+[e $U 3  ]
+{
+"31
+[; ;mcc_generated_files/fatfs/diskio.c: 31:         case DRVA:
+[e :U 4 ]
+"32
+[; ;mcc_generated_files/fatfs/diskio.c: 32:             if ( SD_SPI_IsMediaPresent() == 0)
+[e $ ! == -> ( _SD_SPI_IsMediaPresent ..  `i -> 0 `i 5  ]
+"33
+[; ;mcc_generated_files/fatfs/diskio.c: 33:             {
+{
+"34
+[; ;mcc_generated_files/fatfs/diskio.c: 34:                stat = 0x02;
+[e = _stat -> -> 2 `i `uc ]
+"35
+[; ;mcc_generated_files/fatfs/diskio.c: 35:             }
+}
+[e $U 6  ]
+"36
+[; ;mcc_generated_files/fatfs/diskio.c: 36:             else if ( SD_SPI_IsMediaInitialized() == 1)
+[e :U 5 ]
+[e $ ! == -> ( _SD_SPI_IsMediaInitialized ..  `i -> 1 `i 7  ]
+"37
+[; ;mcc_generated_files/fatfs/diskio.c: 37:             {
+{
+"38
+[; ;mcc_generated_files/fatfs/diskio.c: 38:                 stat &= ~0x01;
+[e =& _stat -> ~ -> 1 `i `uc ]
+"39
+[; ;mcc_generated_files/fatfs/diskio.c: 39:             }
+}
+[e :U 7 ]
+[e :U 6 ]
+"41
+[; ;mcc_generated_files/fatfs/diskio.c: 41:             if ( SD_SPI_IsWriteProtected() == 1)
+[e $ ! == -> ( _SD_SPI_IsWriteProtected ..  `i -> 1 `i 8  ]
+"42
+[; ;mcc_generated_files/fatfs/diskio.c: 42:             {
+{
+"43
+[; ;mcc_generated_files/fatfs/diskio.c: 43:                 stat |= 0x04;
+[e =| _stat -> -> 4 `i `uc ]
+"44
+[; ;mcc_generated_files/fatfs/diskio.c: 44:             }
+}
+[e :U 8 ]
+"46
+[; ;mcc_generated_files/fatfs/diskio.c: 46:             break;
+[e $U 2  ]
+"48
+[; ;mcc_generated_files/fatfs/diskio.c: 48:         default:
+[e :U 9 ]
+"49
+[; ;mcc_generated_files/fatfs/diskio.c: 49:             break;
+[e $U 2  ]
+"50
+[; ;mcc_generated_files/fatfs/diskio.c: 50:     }
+}
+[e $U 2  ]
+[e :U 3 ]
+[e [\ _pdrv , $ . `E85 0 4
+ 9 ]
+[e :U 2 ]
+"51
+[; ;mcc_generated_files/fatfs/diskio.c: 51:     return stat;
+[e ) _stat ]
+[e $UE 1  ]
+"52
+[; ;mcc_generated_files/fatfs/diskio.c: 52: }
+[e :UE 1 ]
+}
+"60
+[; ;mcc_generated_files/fatfs/diskio.c: 60: DSTATUS disk_initialize (
+[v _disk_initialize `(uc ~T0 @X0 1 ef1`uc ]
+"63
+[; ;mcc_generated_files/fatfs/diskio.c: 63: {
+{
+[e :U _disk_initialize ]
+"61
+[; ;mcc_generated_files/fatfs/diskio.c: 61:     BYTE pdrv
+[v _pdrv `uc ~T0 @X0 1 r1 ]
+"63
+[; ;mcc_generated_files/fatfs/diskio.c: 63: {
+[f ]
+"64
+[; ;mcc_generated_files/fatfs/diskio.c: 64:     DSTATUS stat = 0x01;
+[v _stat `uc ~T0 @X0 1 a ]
+[e = _stat -> -> 1 `i `uc ]
+"66
+[; ;mcc_generated_files/fatfs/diskio.c: 66:     switch (pdrv) {
+[e $U 12  ]
+{
+"67
+[; ;mcc_generated_files/fatfs/diskio.c: 67:         case DRVA :
+[e :U 13 ]
+"68
+[; ;mcc_generated_files/fatfs/diskio.c: 68:             if(SD_SPI_MediaInitialize() == 1)
+[e $ ! == -> ( _SD_SPI_MediaInitialize ..  `i -> 1 `i 14  ]
+"69
+[; ;mcc_generated_files/fatfs/diskio.c: 69:             {
+{
+"70
+[; ;mcc_generated_files/fatfs/diskio.c: 70:                 stat = RES_OK;
+[e = _stat -> . `E12 0 `uc ]
+"71
+[; ;mcc_generated_files/fatfs/diskio.c: 71:             }
+}
+[e $U 15  ]
+"72
+[; ;mcc_generated_files/fatfs/diskio.c: 72:             else
+[e :U 14 ]
+"73
+[; ;mcc_generated_files/fatfs/diskio.c: 73:             {
+{
+"74
+[; ;mcc_generated_files/fatfs/diskio.c: 74:                 stat = RES_ERROR;
+[e = _stat -> . `E12 1 `uc ]
+"75
+[; ;mcc_generated_files/fatfs/diskio.c: 75:             }
+}
+[e :U 15 ]
+"76
+[; ;mcc_generated_files/fatfs/diskio.c: 76:             break;
+[e $U 11  ]
+"77
+[; ;mcc_generated_files/fatfs/diskio.c: 77:         default:
+[e :U 16 ]
+"78
+[; ;mcc_generated_files/fatfs/diskio.c: 78:             break;
+[e $U 11  ]
+"79
+[; ;mcc_generated_files/fatfs/diskio.c: 79:     }
+}
+[e $U 11  ]
+[e :U 12 ]
+[e [\ _pdrv , $ . `E85 0 13
+ 16 ]
+[e :U 11 ]
+"81
+[; ;mcc_generated_files/fatfs/diskio.c: 81:     return stat;
+[e ) _stat ]
+[e $UE 10  ]
+"82
+[; ;mcc_generated_files/fatfs/diskio.c: 82: }
+[e :UE 10 ]
+}
+"90
+[; ;mcc_generated_files/fatfs/diskio.c: 90: DRESULT disk_read (
+[v _disk_read `(E12 ~T0 @X0 1 ef4`uc`*uc`ul`ui ]
+"96
+[; ;mcc_generated_files/fatfs/diskio.c: 96: {
+{
+[e :U _disk_read ]
+"91
+[; ;mcc_generated_files/fatfs/diskio.c: 91:     BYTE pdrv,
+[v _pdrv `uc ~T0 @X0 1 r1 ]
+"92
+[; ;mcc_generated_files/fatfs/diskio.c: 92:     BYTE *buff,
+[v _buff `*uc ~T0 @X0 1 r2 ]
+"93
+[; ;mcc_generated_files/fatfs/diskio.c: 93:     DWORD sector,
+[v _sector `ul ~T0 @X0 1 r3 ]
+"94
+[; ;mcc_generated_files/fatfs/diskio.c: 94:     UINT count
+[v _count `ui ~T0 @X0 1 r4 ]
+"96
+[; ;mcc_generated_files/fatfs/diskio.c: 96: {
+[f ]
+"97
+[; ;mcc_generated_files/fatfs/diskio.c: 97:     DRESULT res = RES_PARERR;
+[v _res `E12 ~T0 @X0 1 a ]
+[e = _res . `E12 4 ]
+"99
+[; ;mcc_generated_files/fatfs/diskio.c: 99:     switch (pdrv) {
+[e $U 19  ]
+{
+"100
+[; ;mcc_generated_files/fatfs/diskio.c: 100:         case DRVA :
+[e :U 20 ]
+"101
+[; ;mcc_generated_files/fatfs/diskio.c: 101:             if(SD_SPI_SectorRead(sector, buff, count) == 1)
+[e $ ! == -> ( _SD_SPI_SectorRead (3 , , _sector _buff -> _count `us `i -> 1 `i 21  ]
+"102
+[; ;mcc_generated_files/fatfs/diskio.c: 102:             {
+{
+"103
+[; ;mcc_generated_files/fatfs/diskio.c: 103:                 res = RES_OK;
+[e = _res . `E12 0 ]
+"104
+[; ;mcc_generated_files/fatfs/diskio.c: 104:             }
+}
+[e $U 22  ]
+"105
+[; ;mcc_generated_files/fatfs/diskio.c: 105:             else
+[e :U 21 ]
+"106
+[; ;mcc_generated_files/fatfs/diskio.c: 106:             {
+{
+"107
+[; ;mcc_generated_files/fatfs/diskio.c: 107:                 res = RES_ERROR;
+[e = _res . `E12 1 ]
+"108
+[; ;mcc_generated_files/fatfs/diskio.c: 108:             }
+}
+[e :U 22 ]
+"109
+[; ;mcc_generated_files/fatfs/diskio.c: 109:             break;
+[e $U 18  ]
+"111
+[; ;mcc_generated_files/fatfs/diskio.c: 111:         default:
+[e :U 23 ]
+"112
+[; ;mcc_generated_files/fatfs/diskio.c: 112:             break;
+[e $U 18  ]
+"113
+[; ;mcc_generated_files/fatfs/diskio.c: 113:     }
+}
+[e $U 18  ]
+[e :U 19 ]
+[e [\ _pdrv , $ . `E85 0 20
+ 23 ]
+[e :U 18 ]
+"115
+[; ;mcc_generated_files/fatfs/diskio.c: 115:     return res;
+[e ) _res ]
+[e $UE 17  ]
+"116
+[; ;mcc_generated_files/fatfs/diskio.c: 116: }
+[e :UE 17 ]
+}
+"124
+[; ;mcc_generated_files/fatfs/diskio.c: 124: DRESULT disk_write (
+[v _disk_write `(E12 ~T0 @X0 1 ef4`uc`*Cuc`ul`ui ]
+"130
+[; ;mcc_generated_files/fatfs/diskio.c: 130: {
+{
+[e :U _disk_write ]
+"125
+[; ;mcc_generated_files/fatfs/diskio.c: 125:     BYTE pdrv,
+[v _pdrv `uc ~T0 @X0 1 r1 ]
+"126
+[; ;mcc_generated_files/fatfs/diskio.c: 126:     const BYTE *buff,
+[v _buff `*Cuc ~T0 @X0 1 r2 ]
+"127
+[; ;mcc_generated_files/fatfs/diskio.c: 127:     DWORD sector,
+[v _sector `ul ~T0 @X0 1 r3 ]
+"128
+[; ;mcc_generated_files/fatfs/diskio.c: 128:     UINT count
+[v _count `ui ~T0 @X0 1 r4 ]
+"130
+[; ;mcc_generated_files/fatfs/diskio.c: 130: {
+[f ]
+"131
+[; ;mcc_generated_files/fatfs/diskio.c: 131:     DRESULT res = RES_PARERR;
+[v _res `E12 ~T0 @X0 1 a ]
+[e = _res . `E12 4 ]
+"133
+[; ;mcc_generated_files/fatfs/diskio.c: 133:     switch (pdrv) {
+[e $U 26  ]
+{
+"134
+[; ;mcc_generated_files/fatfs/diskio.c: 134:         case DRVA :
+[e :U 27 ]
+"135
+[; ;mcc_generated_files/fatfs/diskio.c: 135:             if(SD_SPI_SectorWrite(sector, buff, count) == 1)
+[e $ ! == -> ( _SD_SPI_SectorWrite (3 , , _sector _buff -> _count `us `i -> 1 `i 28  ]
+"136
+[; ;mcc_generated_files/fatfs/diskio.c: 136:             {
+{
+"137
+[; ;mcc_generated_files/fatfs/diskio.c: 137:                 res = RES_OK;
+[e = _res . `E12 0 ]
+"138
+[; ;mcc_generated_files/fatfs/diskio.c: 138:             }
+}
+[e $U 29  ]
+"139
+[; ;mcc_generated_files/fatfs/diskio.c: 139:             else
+[e :U 28 ]
+"140
+[; ;mcc_generated_files/fatfs/diskio.c: 140:             {
+{
+"141
+[; ;mcc_generated_files/fatfs/diskio.c: 141:                 res = RES_ERROR;
+[e = _res . `E12 1 ]
+"142
+[; ;mcc_generated_files/fatfs/diskio.c: 142:             }
+}
+[e :U 29 ]
+"143
+[; ;mcc_generated_files/fatfs/diskio.c: 143:             break;
+[e $U 25  ]
+"145
+[; ;mcc_generated_files/fatfs/diskio.c: 145:         default:
+[e :U 30 ]
+"146
+[; ;mcc_generated_files/fatfs/diskio.c: 146:             break;
+[e $U 25  ]
+"147
+[; ;mcc_generated_files/fatfs/diskio.c: 147:     }
+}
+[e $U 25  ]
+[e :U 26 ]
+[e [\ _pdrv , $ . `E85 0 27
+ 30 ]
+[e :U 25 ]
+"149
+[; ;mcc_generated_files/fatfs/diskio.c: 149:     return res;
+[e ) _res ]
+[e $UE 24  ]
+"150
+[; ;mcc_generated_files/fatfs/diskio.c: 150: }
+[e :UE 24 ]
+}
+"158
+[; ;mcc_generated_files/fatfs/diskio.c: 158: DRESULT disk_ioctl (
+[v _disk_ioctl `(E12 ~T0 @X0 1 ef3`uc`uc`*v ]
+"163
+[; ;mcc_generated_files/fatfs/diskio.c: 163: {
+{
+[e :U _disk_ioctl ]
+"159
+[; ;mcc_generated_files/fatfs/diskio.c: 159:     BYTE pdrv,
+[v _pdrv `uc ~T0 @X0 1 r1 ]
+"160
+[; ;mcc_generated_files/fatfs/diskio.c: 160:     BYTE cmd,
+[v _cmd `uc ~T0 @X0 1 r2 ]
+"161
+[; ;mcc_generated_files/fatfs/diskio.c: 161:     void *buff
+[v _buff `*v ~T0 @X0 1 r3 ]
+"163
+[; ;mcc_generated_files/fatfs/diskio.c: 163: {
+[f ]
+"164
+[; ;mcc_generated_files/fatfs/diskio.c: 164:     DRESULT res = RES_OK;
+[v _res `E12 ~T0 @X0 1 a ]
+[e = _res . `E12 0 ]
+"166
+[; ;mcc_generated_files/fatfs/diskio.c: 166:     switch (pdrv) {
+[e $U 33  ]
+{
+"167
+[; ;mcc_generated_files/fatfs/diskio.c: 167:         case DRVA :
+[e :U 34 ]
+"168
+[; ;mcc_generated_files/fatfs/diskio.c: 168:             return res;
+[e ) _res ]
+[e $UE 31  ]
+"170
+[; ;mcc_generated_files/fatfs/diskio.c: 170:         default:
+[e :U 35 ]
+"171
+[; ;mcc_generated_files/fatfs/diskio.c: 171:             break;
+[e $U 32  ]
+"172
+[; ;mcc_generated_files/fatfs/diskio.c: 172:     }
+}
+[e $U 32  ]
+[e :U 33 ]
+[e [\ _pdrv , $ . `E85 0 34
+ 35 ]
+[e :U 32 ]
+"174
+[; ;mcc_generated_files/fatfs/diskio.c: 174:     return RES_PARERR;
+[e ) . `E12 4 ]
+[e $UE 31  ]
+"175
+[; ;mcc_generated_files/fatfs/diskio.c: 175: }
+[e :UE 31 ]
+}

@@ -1,0 +1,80 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"14 ./rocketlib/include/i2c.h
+[; ;./rocketlib/include/i2c.h: 14: _Bool i2c_write(uint8_t address, const uint8_t *data, uint8_t len);
+[v _i2c_write `(a ~T0 @X0 0 ef3`uc`*Cuc`uc ]
+"13
+[; ;./rocketlib/include/i2c.h: 13: _Bool i2c_read(uint8_t address, uint8_t *data, uint8_t len);
+[v _i2c_read `(a ~T0 @X0 0 ef3`uc`*uc`uc ]
+"5 slf3s4000b.c
+[; ;slf3s4000b.c: 5: void slf3s_init(void) {
+[v _slf3s_init `(v ~T0 @X0 1 ef ]
+{
+[e :U _slf3s_init ]
+[f ]
+"7
+[; ;slf3s4000b.c: 7: }
+[e :UE 3 ]
+}
+"9
+[; ;slf3s4000b.c: 9: void read_flow_sensor_data(uint16_t *flow, uint16_t *temperature) {
+[v _read_flow_sensor_data `(v ~T0 @X0 1 ef2`*us`*us ]
+{
+[e :U _read_flow_sensor_data ]
+[v _flow `*us ~T0 @X0 1 r1 ]
+[v _temperature `*us ~T0 @X0 1 r2 ]
+[f ]
+"10
+[; ;slf3s4000b.c: 10:     uint16_t signaling_flags;
+[v _signaling_flags `us ~T0 @X0 1 a ]
+"11
+[; ;slf3s4000b.c: 11:     uint8_t crc;
+[v _crc `uc ~T0 @X0 1 a ]
+"12
+[; ;slf3s4000b.c: 12:     uint8_t data[9];
+[v _data `uc ~T0 @X0 -> 9 `i a ]
+"13
+[; ;slf3s4000b.c: 13:     uint8_t start_cmd[2];
+[v _start_cmd `uc ~T0 @X0 -> 2 `i a ]
+"14
+[; ;slf3s4000b.c: 14:     uint8_t stop_cmd[2];
+[v _stop_cmd `uc ~T0 @X0 -> 2 `i a ]
+"16
+[; ;slf3s4000b.c: 16:     start_cmd[0] = 0x3608 >> 8;
+[e = *U + &U _start_cmd * -> -> -> 0 `i `ui `ux -> -> # *U &U _start_cmd `ui `ux -> >> -> 13832 `i -> 8 `i `uc ]
+"17
+[; ;slf3s4000b.c: 17:     start_cmd[1] = 0x3608 % 256;
+[e = *U + &U _start_cmd * -> -> -> 1 `i `ui `ux -> -> # *U &U _start_cmd `ui `ux -> % -> 13832 `i -> 256 `i `uc ]
+"19
+[; ;slf3s4000b.c: 19:     stop_cmd[0] = 0x3FF9 >> 8;
+[e = *U + &U _stop_cmd * -> -> -> 0 `i `ui `ux -> -> # *U &U _stop_cmd `ui `ux -> >> -> 16377 `i -> 8 `i `uc ]
+"20
+[; ;slf3s4000b.c: 20:     stop_cmd[1] = 0x3FF9 % 256;
+[e = *U + &U _stop_cmd * -> -> -> 1 `i `ui `ux -> -> # *U &U _stop_cmd `ui `ux -> % -> 16377 `i -> 256 `i `uc ]
+"24
+[; ;slf3s4000b.c: 24:     i2c_write(0x8, start_cmd, 2);
+[e ( _i2c_write (3 , , -> -> 8 `i `uc -> &U _start_cmd `*Cuc -> -> 2 `i `uc ]
+"26
+[; ;slf3s4000b.c: 26:     i2c_read(0x8, data, 9);
+[e ( _i2c_read (3 , , -> -> 8 `i `uc &U _data -> -> 9 `i `uc ]
+"29
+[; ;slf3s4000b.c: 29:     i2c_write(0x8, stop_cmd, 2);
+[e ( _i2c_write (3 , , -> -> 8 `i `uc -> &U _stop_cmd `*Cuc -> -> 2 `i `uc ]
+"31
+[; ;slf3s4000b.c: 31:     *flow = (((uint16_t)data[0] << 8) | data[1]);
+[e = *U _flow -> | << -> -> *U + &U _data * -> -> -> 0 `i `ui `ux -> -> # *U &U _data `ui `ux `us `ui -> 8 `i -> *U + &U _data * -> -> -> 1 `i `ui `ux -> -> # *U &U _data `ui `ux `ui `us ]
+"32
+[; ;slf3s4000b.c: 32:     *temperature = (((uint16_t)data[3] << 8) | data[4]);
+[e = *U _temperature -> | << -> -> *U + &U _data * -> -> -> 3 `i `ui `ux -> -> # *U &U _data `ui `ux `us `ui -> 8 `i -> *U + &U _data * -> -> -> 4 `i `ui `ux -> -> # *U &U _data `ui `ux `ui `us ]
+"33
+[; ;slf3s4000b.c: 33:     signaling_flags = (((uint16_t)data[6] << 8) | data[7]);
+[e = _signaling_flags -> | << -> -> *U + &U _data * -> -> -> 6 `i `ui `ux -> -> # *U &U _data `ui `ux `us `ui -> 8 `i -> *U + &U _data * -> -> -> 7 `i `ui `ux -> -> # *U &U _data `ui `ux `ui `us ]
+"36
+[; ;slf3s4000b.c: 36:     *flow = (*flow) / 32;
+[e = *U _flow -> / -> *U _flow `ui -> -> 32 `i `ui `us ]
+"37
+[; ;slf3s4000b.c: 37:     *temperature = (*temperature) / 200;
+[e = *U _temperature -> / -> *U _temperature `ui -> -> 200 `i `ui `us ]
+"38
+[; ;slf3s4000b.c: 38: }
+[e :UE 4 ]
+}

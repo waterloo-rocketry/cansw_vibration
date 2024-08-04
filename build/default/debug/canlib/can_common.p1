@@ -1,0 +1,3134 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"37 canlib/can.h
+[; ;canlib/can.h: 37: typedef struct {
+[s S2 `us 1 `uc 1 `uc -> 8 `i ]
+[n S2 . sid data_len data ]
+"27 canlib/can_common.c
+[; ;canlib/can_common.c: 27: _Bool build_general_cmd_msg(uint32_t timestamp,
+[c E50 0 .. ]
+[n E50 GEN_CMD BUS_DOWN_WARNING  ]
+"89
+[; ;canlib/can_common.c: 89: _Bool build_actuator_cmd_msg(uint32_t timestamp,
+[c E114 0 1 2 3 4 5 6 7 8 9 10 11 .. ]
+[n E114 ACTUATOR_ID ACTUATOR_VENT_VALVE ACTUATOR_INJECTOR_VALVE ACTUATOR_FILL_DUMP_VALVE ACTUATOR_CAMERA_1 ACTUATOR_CAMERA_2 ACTUATOR_CANBUS ACTUATOR_CHARGE ACTUATOR_RADIO ACTUATOR_PAYLOAD_SERVO ACTUATOR_AIRBRAKES_SERVO ACTUATOR_AIRBRAKES_ENABLE ACTUATOR_ROCKET_POWER  ]
+[c E52 0 1 2 3 .. ]
+[n E52 ACTUATOR_STATE ACTUATOR_ON ACTUATOR_OFF ACTUATOR_UNK ACTUATOR_ILLEGAL  ]
+"144
+[; ;canlib/can_common.c: 144: _Bool build_arm_cmd_msg(uint32_t timestamp,
+[c E57 0 1 .. ]
+[n E57 ARM_STATE DISARMED ARMED  ]
+"189
+[; ;canlib/can_common.c: 189: _Bool build_board_stat_msg(uint32_t timestamp,
+[c E60 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 .. ]
+[n E60 BOARD_STATUS E_NOMINAL E_5V_OVER_CURRENT E_5V_UNDER_VOLTAGE E_5V_OVER_VOLTAGE E_BATT_OVER_CURRENT E_BATT_UNDER_VOLTAGE E_BATT_OVER_VOLTAGE E_13V_OVER_CURRENT E_MOTOR_OVER_CURRENT E_BOARD_FEARED_DEAD E_NO_CAN_TRAFFIC E_MISSING_CRITICAL_BOARD E_RADIO_SIGNAL_LOST E_ACTUATOR_STATE E_CANNOT_INIT_DACS E_VENT_POT_RANGE E_LOGGING E_GPS E_SENSOR E_ILLEGAL_CAN_MSG E_SEGFAULT E_UNHANDLED_INTERRUPT E_CODING_SCREWUP  ]
+"249
+[; ;canlib/can_common.c: 249: _Bool build_state_est_data_msg(uint32_t timestamp,
+[c E127 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 .. ]
+[n E127 STATE_ID STATE_POS_X STATE_POS_Y STATE_POS_Z STATE_VEL_X STATE_VEL_Y STATE_VEL_Z STATE_ACC_X STATE_ACC_Y STATE_ACC_Z STATE_ANGLE_YAW STATE_ANGLE_PITCH STATE_ANGLE_ROLL STATE_RATE_YAW STATE_RATE_PITCH STATE_RATE_ROLL STATE_FILTER_YAW STATE_FILTER_PITCH STATE_FILTER_ROLL  ]
+"27 C:\Program Files\Microchip\xc8\v2.46\pic\include\c99\string.h
+[; ;C:\Program Files\Microchip\xc8\v2.46\pic\include\c99\string.h: 27: void *memcpy (void *restrict, const void *restrict, size_t);
+[v _memcpy `(*v ~T0 @X0 0 ef3`*v`*Cv`ui ]
+"263 canlib/can_common.c
+[; ;canlib/can_common.c: 263: _Bool build_analog_data_msg(uint32_t timestamp,
+[c E84 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 .. ]
+[n E84 SENSOR_ID SENSOR_5V_CURR SENSOR_BATT_CURR SENSOR_BATT_VOLT SENSOR_CHARGE_CURR SENSOR_13V_CURR SENSOR_MOTOR_CURR SENSOR_GROUND_VOLT SENSOR_PRESSURE_OX SENSOR_PRESSURE_FUEL SENSOR_PRESSURE_CC SENSOR_PRESSURE_PNEUMATICS SENSOR_HALL_OX_INJ SENSOR_HALL_FUEL_INJ SENSOR_HALL_FILL SENSOR_BARO SENSOR_ARM_BATT_1 SENSOR_ARM_BATT_2 SENSOR_MAG_1 SENSOR_MAG_2 SENSOR_VELOCITY SENSOR_VENT_TEMP SENSOR_RADIO_CURR SENSOR_PAYLOAD_TEMP_1 SENSOR_PAYLOAD_TEMP_2 SENSOR_9V_BATT_CURR_1 SENSOR_9V_BATT_CURR_2  ]
+"289 canlib/can_common.h
+[; ;canlib/can_common.h: 289: uint16_t get_message_type(const can_msg_t *msg);
+[v _get_message_type `(us ~T0 @X0 0 ef1`*CS2 ]
+"862 canlib/can_common.c
+[; ;canlib/can_common.c: 862: can_debug_level_t message_debug_level(const can_msg_t *msg)
+[c E146 0 1 2 3 4 .. ]
+[n E146 . LVL_NONE LVL_ERROR LVL_WARN LVL_INFO LVL_DEBUG  ]
+"14 canlib/can_common.c
+[; ;canlib/can_common.c: 14: static void write_timestamp_2bytes(uint16_t timestamp, can_msg_t *output)
+[v _write_timestamp_2bytes `(v ~T0 @X0 1 sf2`us`*S2 ]
+"15
+[; ;canlib/can_common.c: 15: {
+{
+[e :U _write_timestamp_2bytes ]
+"14
+[; ;canlib/can_common.c: 14: static void write_timestamp_2bytes(uint16_t timestamp, can_msg_t *output)
+[v _timestamp `us ~T0 @X0 1 r1 ]
+[v _output `*S2 ~T0 @X0 1 r2 ]
+"15
+[; ;canlib/can_common.c: 15: {
+[f ]
+"16
+[; ;canlib/can_common.c: 16:     output->data[0] = (timestamp >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> _timestamp `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"17
+[; ;canlib/can_common.c: 17:     output->data[1] = (timestamp >> 0) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> _timestamp `ui -> 0 `i -> -> 255 `i `ui `uc ]
+"18
+[; ;canlib/can_common.c: 18: }
+[e :UE 4 ]
+}
+"20
+[; ;canlib/can_common.c: 20: static void write_timestamp_3bytes(uint32_t timestamp, can_msg_t *output)
+[v _write_timestamp_3bytes `(v ~T0 @X0 1 sf2`ul`*S2 ]
+"21
+[; ;canlib/can_common.c: 21: {
+{
+[e :U _write_timestamp_3bytes ]
+"20
+[; ;canlib/can_common.c: 20: static void write_timestamp_3bytes(uint32_t timestamp, can_msg_t *output)
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+[v _output `*S2 ~T0 @X0 1 r2 ]
+"21
+[; ;canlib/can_common.c: 21: {
+[f ]
+"22
+[; ;canlib/can_common.c: 22:     output->data[0] = (timestamp >> 16) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _timestamp -> 16 `i -> -> -> 255 `i `l `ul `uc ]
+"23
+[; ;canlib/can_common.c: 23:     output->data[1] = (timestamp >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _timestamp -> 8 `i -> -> -> 255 `i `l `ul `uc ]
+"24
+[; ;canlib/can_common.c: 24:     output->data[2] = (timestamp >> 0) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _timestamp -> 0 `i -> -> -> 255 `i `l `ul `uc ]
+"25
+[; ;canlib/can_common.c: 25: }
+[e :UE 5 ]
+}
+"27
+[; ;canlib/can_common.c: 27: _Bool build_general_cmd_msg(uint32_t timestamp,
+[v _build_general_cmd_msg `(a ~T0 @X0 1 ef3`ul`E50`*S2 ]
+"30
+[; ;canlib/can_common.c: 30: {
+{
+[e :U _build_general_cmd_msg ]
+"27
+[; ;canlib/can_common.c: 27: _Bool build_general_cmd_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"28
+[; ;canlib/can_common.c: 28:                            enum GEN_CMD cmd,
+[v _cmd `E50 ~T0 @X0 1 r2 ]
+"29
+[; ;canlib/can_common.c: 29:                            can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r3 ]
+"30
+[; ;canlib/can_common.c: 30: {
+[f ]
+"31
+[; ;canlib/can_common.c: 31:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 7  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 6  ]
+}
+[e :U 7 ]
+"33
+[; ;canlib/can_common.c: 33:     output->sid = 0x060 | 0x0C;
+[e = . *U _output 0 -> | -> 96 `i -> 12 `i `us ]
+"34
+[; ;canlib/can_common.c: 34:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"35
+[; ;canlib/can_common.c: 35:     output->data[3] = (uint8_t) cmd;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _cmd `uc ]
+"36
+[; ;canlib/can_common.c: 36:     output->data_len = 4;
+[e = . *U _output 1 -> -> 4 `i `uc ]
+"38
+[; ;canlib/can_common.c: 38:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 6  ]
+"39
+[; ;canlib/can_common.c: 39: }
+[e :UE 6 ]
+}
+"41
+[; ;canlib/can_common.c: 41: _Bool build_debug_msg(uint32_t timestamp,
+[v _build_debug_msg `(a ~T0 @X0 1 ef3`ul`*Cuc`*S2 ]
+"44
+[; ;canlib/can_common.c: 44: {
+{
+[e :U _build_debug_msg ]
+"41
+[; ;canlib/can_common.c: 41: _Bool build_debug_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"42
+[; ;canlib/can_common.c: 42:                      const uint8_t *debug_data,
+[v _debug_data `*Cuc ~T0 @X0 1 r2 ]
+"43
+[; ;canlib/can_common.c: 43:                      can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r3 ]
+"44
+[; ;canlib/can_common.c: 44: {
+[f ]
+"45
+[; ;canlib/can_common.c: 45:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 9  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 8  ]
+}
+[e :U 9 ]
+"46
+[; ;canlib/can_common.c: 46:     if (!debug_data) { return 0; }
+[e $ ! ! != _debug_data -> -> 0 `i `*Cuc 10  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 8  ]
+}
+[e :U 10 ]
+"48
+[; ;canlib/can_common.c: 48:     output->sid = 0x180 | 0x0C;
+[e = . *U _output 0 -> | -> 384 `i -> 12 `i `us ]
+"49
+[; ;canlib/can_common.c: 49:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"51
+[; ;canlib/can_common.c: 51:     output->data[3] = debug_data[0];
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux *U + _debug_data * -> -> 0 `i `x -> -> # *U _debug_data `i `x ]
+"52
+[; ;canlib/can_common.c: 52:     output->data[4] = debug_data[1];
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux *U + _debug_data * -> -> 1 `i `x -> -> # *U _debug_data `i `x ]
+"53
+[; ;canlib/can_common.c: 53:     output->data[5] = debug_data[2];
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux *U + _debug_data * -> -> 2 `i `x -> -> # *U _debug_data `i `x ]
+"54
+[; ;canlib/can_common.c: 54:     output->data[6] = debug_data[3];
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux *U + _debug_data * -> -> 3 `i `x -> -> # *U _debug_data `i `x ]
+"55
+[; ;canlib/can_common.c: 55:     output->data[7] = debug_data[4];
+[e = *U + &U . *U _output 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux *U + _debug_data * -> -> 4 `i `x -> -> # *U _debug_data `i `x ]
+"57
+[; ;canlib/can_common.c: 57:     output->data_len = 8;
+[e = . *U _output 1 -> -> 8 `i `uc ]
+"58
+[; ;canlib/can_common.c: 58:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 8  ]
+"59
+[; ;canlib/can_common.c: 59: }
+[e :UE 8 ]
+}
+"61
+[; ;canlib/can_common.c: 61: _Bool build_debug_printf(const uint8_t *input_data,
+[v _build_debug_printf `(a ~T0 @X0 1 ef2`*Cuc`*S2 ]
+"63
+[; ;canlib/can_common.c: 63: {
+{
+[e :U _build_debug_printf ]
+"61
+[; ;canlib/can_common.c: 61: _Bool build_debug_printf(const uint8_t *input_data,
+[v _input_data `*Cuc ~T0 @X0 1 r1 ]
+"62
+[; ;canlib/can_common.c: 62:                         can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r2 ]
+"63
+[; ;canlib/can_common.c: 63: {
+[f ]
+"64
+[; ;canlib/can_common.c: 64:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 12  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 11  ]
+}
+[e :U 12 ]
+"65
+[; ;canlib/can_common.c: 65:     if (!input_data) { return 0; }
+[e $ ! ! != _input_data -> -> 0 `i `*Cuc 13  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 11  ]
+}
+[e :U 13 ]
+"67
+[; ;canlib/can_common.c: 67:     output->sid = 0x1E0 | 0x0C;
+[e = . *U _output 0 -> | -> 480 `i -> 12 `i `us ]
+"68
+[; ;canlib/can_common.c: 68:     for (int i = 0; i < 8; ++i) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 14  ]
+[e $U 15  ]
+[e :U 14 ]
+{
+"69
+[; ;canlib/can_common.c: 69:         output->data[i] = input_data[i];
+[e = *U + &U . *U _output 2 * -> -> _i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux *U + _input_data * -> _i `x -> -> # *U _input_data `i `x ]
+"70
+[; ;canlib/can_common.c: 70:     }
+}
+[e =+ _i -> 1 `i ]
+[e $ < _i -> 8 `i 14  ]
+[e :U 15 ]
+}
+"71
+[; ;canlib/can_common.c: 71:     output->data_len = 8;
+[e = . *U _output 1 -> -> 8 `i `uc ]
+"72
+[; ;canlib/can_common.c: 72:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 11  ]
+"73
+[; ;canlib/can_common.c: 73: }
+[e :UE 11 ]
+}
+"75
+[; ;canlib/can_common.c: 75: _Bool build_reset_msg(uint32_t timestamp,
+[v _build_reset_msg `(a ~T0 @X0 1 ef3`ul`uc`*S2 ]
+"78
+[; ;canlib/can_common.c: 78: {
+{
+[e :U _build_reset_msg ]
+"75
+[; ;canlib/can_common.c: 75: _Bool build_reset_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"76
+[; ;canlib/can_common.c: 76:                      uint8_t board_id,
+[v _board_id `uc ~T0 @X0 1 r2 ]
+"77
+[; ;canlib/can_common.c: 77:                      can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r3 ]
+"78
+[; ;canlib/can_common.c: 78: {
+[f ]
+"79
+[; ;canlib/can_common.c: 79:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 18  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 17  ]
+}
+[e :U 18 ]
+"81
+[; ;canlib/can_common.c: 81:     output->sid = 0x160 | 0x0C;
+[e = . *U _output 0 -> | -> 352 `i -> 12 `i `us ]
+"82
+[; ;canlib/can_common.c: 82:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"83
+[; ;canlib/can_common.c: 83:     output->data[3] = board_id;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _board_id ]
+"84
+[; ;canlib/can_common.c: 84:     output->data_len = 4;
+[e = . *U _output 1 -> -> 4 `i `uc ]
+"86
+[; ;canlib/can_common.c: 86:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 17  ]
+"87
+[; ;canlib/can_common.c: 87: }
+[e :UE 17 ]
+}
+"89
+[; ;canlib/can_common.c: 89: _Bool build_actuator_cmd_msg(uint32_t timestamp,
+[v _build_actuator_cmd_msg `(a ~T0 @X0 1 ef4`ul`E114`E52`*S2 ]
+"93
+[; ;canlib/can_common.c: 93: {
+{
+[e :U _build_actuator_cmd_msg ]
+"89
+[; ;canlib/can_common.c: 89: _Bool build_actuator_cmd_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"90
+[; ;canlib/can_common.c: 90:                             enum ACTUATOR_ID actuator_id,
+[v _actuator_id `E114 ~T0 @X0 1 r2 ]
+"91
+[; ;canlib/can_common.c: 91:                             enum ACTUATOR_STATE actuator_cmd,
+[v _actuator_cmd `E52 ~T0 @X0 1 r3 ]
+"92
+[; ;canlib/can_common.c: 92:                             can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"93
+[; ;canlib/can_common.c: 93: {
+[f ]
+"94
+[; ;canlib/can_common.c: 94:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 20  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 19  ]
+}
+[e :U 20 ]
+"96
+[; ;canlib/can_common.c: 96:     output->sid = 0x0C0 | 0x0C;
+[e = . *U _output 0 -> | -> 192 `i -> 12 `i `us ]
+"97
+[; ;canlib/can_common.c: 97:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"99
+[; ;canlib/can_common.c: 99:     output->data[3] = (uint8_t) actuator_id;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _actuator_id `uc ]
+"100
+[; ;canlib/can_common.c: 100:     output->data[4] = (uint8_t) actuator_cmd;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _actuator_cmd `uc ]
+"101
+[; ;canlib/can_common.c: 101:     output->data_len = 5;
+[e = . *U _output 1 -> -> 5 `i `uc ]
+"103
+[; ;canlib/can_common.c: 103:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 19  ]
+"104
+[; ;canlib/can_common.c: 104: }
+[e :UE 19 ]
+}
+"106
+[; ;canlib/can_common.c: 106: _Bool build_actuator_stat_msg(uint32_t timestamp,
+[v _build_actuator_stat_msg `(a ~T0 @X0 1 ef5`ul`E114`E52`E52`*S2 ]
+"111
+[; ;canlib/can_common.c: 111: {
+{
+[e :U _build_actuator_stat_msg ]
+"106
+[; ;canlib/can_common.c: 106: _Bool build_actuator_stat_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"107
+[; ;canlib/can_common.c: 107:                              enum ACTUATOR_ID actuator_id,
+[v _actuator_id `E114 ~T0 @X0 1 r2 ]
+"108
+[; ;canlib/can_common.c: 108:                              enum ACTUATOR_STATE actuator_state,
+[v _actuator_state `E52 ~T0 @X0 1 r3 ]
+"109
+[; ;canlib/can_common.c: 109:                              enum ACTUATOR_STATE req_actuator_state,
+[v _req_actuator_state `E52 ~T0 @X0 1 r4 ]
+"110
+[; ;canlib/can_common.c: 110:                              can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r5 ]
+"111
+[; ;canlib/can_common.c: 111: {
+[f ]
+"112
+[; ;canlib/can_common.c: 112:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 22  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 21  ]
+}
+[e :U 22 ]
+"114
+[; ;canlib/can_common.c: 114:     output->sid = 0x460 | 0x0C;
+[e = . *U _output 0 -> | -> 1120 `i -> 12 `i `us ]
+"115
+[; ;canlib/can_common.c: 115:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"117
+[; ;canlib/can_common.c: 117:     output->data[3] = (uint8_t) actuator_id;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _actuator_id `uc ]
+"118
+[; ;canlib/can_common.c: 118:     output->data[4] = (uint8_t) actuator_state;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _actuator_state `uc ]
+"119
+[; ;canlib/can_common.c: 119:     output->data[5] = (uint8_t) req_actuator_state;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _req_actuator_state `uc ]
+"120
+[; ;canlib/can_common.c: 120:     output->data_len = 6;
+[e = . *U _output 1 -> -> 6 `i `uc ]
+"122
+[; ;canlib/can_common.c: 122:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 21  ]
+"123
+[; ;canlib/can_common.c: 123: }
+[e :UE 21 ]
+}
+"126
+[; ;canlib/can_common.c: 126: _Bool build_actuator_cmd_analog(uint32_t timestamp,
+[v _build_actuator_cmd_analog `(a ~T0 @X0 1 ef4`ul`E114`uc`*S2 ]
+"130
+[; ;canlib/can_common.c: 130: {
+{
+[e :U _build_actuator_cmd_analog ]
+"126
+[; ;canlib/can_common.c: 126: _Bool build_actuator_cmd_analog(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"127
+[; ;canlib/can_common.c: 127:          enum ACTUATOR_ID actuator_id,
+[v _actuator_id `E114 ~T0 @X0 1 r2 ]
+"128
+[; ;canlib/can_common.c: 128:          uint8_t actuator_cmd,
+[v _actuator_cmd `uc ~T0 @X0 1 r3 ]
+"129
+[; ;canlib/can_common.c: 129:          can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"130
+[; ;canlib/can_common.c: 130: {
+[f ]
+"131
+[; ;canlib/can_common.c: 131:  if(!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 24  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 23  ]
+}
+[e :U 24 ]
+"133
+[; ;canlib/can_common.c: 133:  output->sid = 0x220 | 0x0C;
+[e = . *U _output 0 -> | -> 544 `i -> 12 `i `us ]
+"134
+[; ;canlib/can_common.c: 134:  write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"136
+[; ;canlib/can_common.c: 136:  output->data[3] = actuator_id;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _actuator_id `uc ]
+"137
+[; ;canlib/can_common.c: 137:  output->data[4] = actuator_cmd;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _actuator_cmd ]
+"139
+[; ;canlib/can_common.c: 139:  output->data_len = 5;
+[e = . *U _output 1 -> -> 5 `i `uc ]
+"141
+[; ;canlib/can_common.c: 141:  return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 23  ]
+"142
+[; ;canlib/can_common.c: 142: }
+[e :UE 23 ]
+}
+"144
+[; ;canlib/can_common.c: 144: _Bool build_arm_cmd_msg(uint32_t timestamp,
+[v _build_arm_cmd_msg `(a ~T0 @X0 1 ef4`ul`uc`E57`*S2 ]
+"148
+[; ;canlib/can_common.c: 148: {
+{
+[e :U _build_arm_cmd_msg ]
+"144
+[; ;canlib/can_common.c: 144: _Bool build_arm_cmd_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"145
+[; ;canlib/can_common.c: 145:                        uint8_t alt_num,
+[v _alt_num `uc ~T0 @X0 1 r2 ]
+"146
+[; ;canlib/can_common.c: 146:                        enum ARM_STATE arm_cmd,
+[v _arm_cmd `E57 ~T0 @X0 1 r3 ]
+"147
+[; ;canlib/can_common.c: 147:                        can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"148
+[; ;canlib/can_common.c: 148: {
+[f ]
+"149
+[; ;canlib/can_common.c: 149:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 26  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 25  ]
+}
+[e :U 26 ]
+"151
+[; ;canlib/can_common.c: 151:     output->sid = 0x140 | 0x0C;
+[e = . *U _output 0 -> | -> 320 `i -> 12 `i `us ]
+"152
+[; ;canlib/can_common.c: 152:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"155
+[; ;canlib/can_common.c: 155:     output->data[3] = (arm_cmd << 4) | (alt_num & 0x0F);
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> | << -> _arm_cmd `ui -> 4 `i -> & -> _alt_num `i -> 15 `i `ui `uc ]
+"156
+[; ;canlib/can_common.c: 156:     output->data_len = 4;
+[e = . *U _output 1 -> -> 4 `i `uc ]
+"158
+[; ;canlib/can_common.c: 158:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 25  ]
+"159
+[; ;canlib/can_common.c: 159: }
+[e :UE 25 ]
+}
+"161
+[; ;canlib/can_common.c: 161: _Bool build_arm_stat_msg(uint32_t timestamp,
+[v _build_arm_stat_msg `(a ~T0 @X0 1 ef6`ul`uc`E57`us`us`*S2 ]
+"167
+[; ;canlib/can_common.c: 167: {
+{
+[e :U _build_arm_stat_msg ]
+"161
+[; ;canlib/can_common.c: 161: _Bool build_arm_stat_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"162
+[; ;canlib/can_common.c: 162:                         uint8_t alt_num,
+[v _alt_num `uc ~T0 @X0 1 r2 ]
+"163
+[; ;canlib/can_common.c: 163:                         enum ARM_STATE arm_state,
+[v _arm_state `E57 ~T0 @X0 1 r3 ]
+"164
+[; ;canlib/can_common.c: 164:                         uint16_t v_drogue,
+[v _v_drogue `us ~T0 @X0 1 r4 ]
+"165
+[; ;canlib/can_common.c: 165:                         uint16_t v_main,
+[v _v_main `us ~T0 @X0 1 r5 ]
+"166
+[; ;canlib/can_common.c: 166:                         can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r6 ]
+"167
+[; ;canlib/can_common.c: 167: {
+[f ]
+"168
+[; ;canlib/can_common.c: 168:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 28  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 27  ]
+}
+[e :U 28 ]
+"170
+[; ;canlib/can_common.c: 170:     output->sid = 0x440 | 0x0C;
+[e = . *U _output 0 -> | -> 1088 `i -> 12 `i `us ]
+"171
+[; ;canlib/can_common.c: 171:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"174
+[; ;canlib/can_common.c: 174:     output->data[3] = (arm_state << 4) | (alt_num & 0x0F);
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> | << -> _arm_state `ui -> 4 `i -> & -> _alt_num `i -> 15 `i `ui `uc ]
+"176
+[; ;canlib/can_common.c: 176:     output->data[4] = v_drogue >> 8;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> >> -> _v_drogue `ui -> 8 `i `uc ]
+"177
+[; ;canlib/can_common.c: 177:     output->data[5] = v_drogue & 0x00FF;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & -> _v_drogue `ui -> -> 255 `i `ui `uc ]
+"179
+[; ;canlib/can_common.c: 179:     output->data[6] = v_main >> 8;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> >> -> _v_main `ui -> 8 `i `uc ]
+"180
+[; ;canlib/can_common.c: 180:     output->data[7] = v_main & 0x00FF;
+[e = *U + &U . *U _output 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & -> _v_main `ui -> -> 255 `i `ui `uc ]
+"182
+[; ;canlib/can_common.c: 182:     output->data_len = 8;
+[e = . *U _output 1 -> -> 8 `i `uc ]
+"184
+[; ;canlib/can_common.c: 184:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 27  ]
+"185
+[; ;canlib/can_common.c: 185: }
+[e :UE 27 ]
+}
+"189
+[; ;canlib/can_common.c: 189: _Bool build_board_stat_msg(uint32_t timestamp,
+[v _build_board_stat_msg `(a ~T0 @X0 1 ef5`ul`E60`*Cuc`uc`*S2 ]
+"194
+[; ;canlib/can_common.c: 194: {
+{
+[e :U _build_board_stat_msg ]
+"189
+[; ;canlib/can_common.c: 189: _Bool build_board_stat_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"190
+[; ;canlib/can_common.c: 190:                           enum BOARD_STATUS error_code,
+[v _error_code `E60 ~T0 @X0 1 r2 ]
+"191
+[; ;canlib/can_common.c: 191:                           const uint8_t *error_data,
+[v _error_data `*Cuc ~T0 @X0 1 r3 ]
+"192
+[; ;canlib/can_common.c: 192:                           uint8_t error_data_len,
+[v _error_data_len `uc ~T0 @X0 1 r4 ]
+"193
+[; ;canlib/can_common.c: 193:                           can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r5 ]
+"194
+[; ;canlib/can_common.c: 194: {
+[f ]
+"195
+[; ;canlib/can_common.c: 195:     if (error_data_len > 0 && !error_data) { return 0; }
+[e $ ! && > -> _error_data_len `i -> 0 `i ! != _error_data -> -> 0 `i `*Cuc 30  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 29  ]
+}
+[e :U 30 ]
+"196
+[; ;canlib/can_common.c: 196:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 31  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 29  ]
+}
+[e :U 31 ]
+"197
+[; ;canlib/can_common.c: 197:     if (error_data_len > 4) { return 0; }
+[e $ ! > -> _error_data_len `i -> 4 `i 32  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 29  ]
+}
+[e :U 32 ]
+"199
+[; ;canlib/can_common.c: 199:     output->sid = 0x520 | 0x0C;
+[e = . *U _output 0 -> | -> 1312 `i -> 12 `i `us ]
+"200
+[; ;canlib/can_common.c: 200:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"202
+[; ;canlib/can_common.c: 202:     output->data[3] = (uint8_t) error_code;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _error_code `uc ]
+"203
+[; ;canlib/can_common.c: 203:     for (int i = 0; i < error_data_len; ++i) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $U 36  ]
+[e :U 33 ]
+{
+"205
+[; ;canlib/can_common.c: 205:         output->data[4 + i] = error_data[i];
+[e = *U + &U . *U _output 2 * -> -> + -> 4 `i _i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux *U + _error_data * -> _i `x -> -> # *U _error_data `i `x ]
+"206
+[; ;canlib/can_common.c: 206:     }
+}
+[e =+ _i -> 1 `i ]
+[e :U 36 ]
+[e $ < _i -> _error_data_len `i 33  ]
+[e :U 34 ]
+}
+"209
+[; ;canlib/can_common.c: 209:     output->data_len = 4 + error_data_len;
+[e = . *U _output 1 -> + -> 4 `i -> _error_data_len `i `uc ]
+"211
+[; ;canlib/can_common.c: 211:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 29  ]
+"212
+[; ;canlib/can_common.c: 212: }
+[e :UE 29 ]
+}
+"214
+[; ;canlib/can_common.c: 214: _Bool build_imu_data_msg(uint16_t message_type,
+[v _build_imu_data_msg `(a ~T0 @X0 1 ef4`us`ul`*Cus`*S2 ]
+"218
+[; ;canlib/can_common.c: 218: {
+{
+[e :U _build_imu_data_msg ]
+"214
+[; ;canlib/can_common.c: 214: _Bool build_imu_data_msg(uint16_t message_type,
+[v _message_type `us ~T0 @X0 1 r1 ]
+"215
+[; ;canlib/can_common.c: 215:                         uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r2 ]
+"216
+[; ;canlib/can_common.c: 216:                         const uint16_t *imu_data,
+[v _imu_data `*Cus ~T0 @X0 1 r3 ]
+"217
+[; ;canlib/can_common.c: 217:                         can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"218
+[; ;canlib/can_common.c: 218: {
+[f ]
+"219
+[; ;canlib/can_common.c: 219:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 38  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 37  ]
+}
+[e :U 38 ]
+"220
+[; ;canlib/can_common.c: 220:     if (!imu_data) { return 0; }
+[e $ ! ! != _imu_data -> -> 0 `i `*Cus 39  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 37  ]
+}
+[e :U 39 ]
+"221
+[; ;canlib/can_common.c: 221:     if (!(message_type == 0x580
+[e $ ! ! || || || == -> _message_type `ui -> -> 1408 `i `ui == -> _message_type `ui -> -> 1504 `i `ui == -> _message_type `ui -> -> 1600 `i `ui == -> _message_type `ui -> -> 1440 `i `ui 40  ]
+"224
+[; ;canlib/can_common.c: 224:            || message_type == 0x5A0)) {
+{
+"225
+[; ;canlib/can_common.c: 225:         return 0;
+[e ) -> -> 0 `i `a ]
+[e $UE 37  ]
+"226
+[; ;canlib/can_common.c: 226:     }
+}
+[e :U 40 ]
+"228
+[; ;canlib/can_common.c: 228:     output->sid = message_type | 0x0C;
+[e = . *U _output 0 -> | -> _message_type `ui -> -> 12 `i `ui `us ]
+"229
+[; ;canlib/can_common.c: 229:     write_timestamp_2bytes(timestamp, output);
+[e ( _write_timestamp_2bytes (2 , -> _timestamp `us _output ]
+"232
+[; ;canlib/can_common.c: 232:     output->data[2] = (imu_data[0] >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> *U + _imu_data * -> -> 0 `i `x -> -> # *U _imu_data `i `x `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"233
+[; ;canlib/can_common.c: 233:     output->data[3] = (imu_data[0] >> 0) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> *U + _imu_data * -> -> 0 `i `x -> -> # *U _imu_data `i `x `ui -> 0 `i -> -> 255 `i `ui `uc ]
+"236
+[; ;canlib/can_common.c: 236:     output->data[4] = (imu_data[1] >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> *U + _imu_data * -> -> 1 `i `x -> -> # *U _imu_data `i `x `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"237
+[; ;canlib/can_common.c: 237:     output->data[5] = (imu_data[1] >> 0) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> *U + _imu_data * -> -> 1 `i `x -> -> # *U _imu_data `i `x `ui -> 0 `i -> -> 255 `i `ui `uc ]
+"240
+[; ;canlib/can_common.c: 240:     output->data[6] = (imu_data[2] >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> *U + _imu_data * -> -> 2 `i `x -> -> # *U _imu_data `i `x `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"241
+[; ;canlib/can_common.c: 241:     output->data[7] = (imu_data[2] >> 0) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> *U + _imu_data * -> -> 2 `i `x -> -> # *U _imu_data `i `x `ui -> 0 `i -> -> 255 `i `ui `uc ]
+"244
+[; ;canlib/can_common.c: 244:     output->data_len = 8;
+[e = . *U _output 1 -> -> 8 `i `uc ]
+"246
+[; ;canlib/can_common.c: 246:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 37  ]
+"247
+[; ;canlib/can_common.c: 247: }
+[e :UE 37 ]
+}
+"249
+[; ;canlib/can_common.c: 249: _Bool build_state_est_data_msg(uint32_t timestamp,
+[v _build_state_est_data_msg `(a ~T0 @X0 1 ef4`ul`*Cf`E127`*S2 ]
+"253
+[; ;canlib/can_common.c: 253: {
+{
+[e :U _build_state_est_data_msg ]
+"249
+[; ;canlib/can_common.c: 249: _Bool build_state_est_data_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"250
+[; ;canlib/can_common.c: 250:          const float *data,
+[v _data `*Cf ~T0 @X0 1 r2 ]
+"251
+[; ;canlib/can_common.c: 251:          enum STATE_ID data_id,
+[v _data_id `E127 ~T0 @X0 1 r3 ]
+"252
+[; ;canlib/can_common.c: 252:          can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"253
+[; ;canlib/can_common.c: 253: {
+[f ]
+"254
+[; ;canlib/can_common.c: 254:  output->sid = 0x7A0 | 0x0C;
+[e = . *U _output 0 -> | -> 1952 `i -> 12 `i `us ]
+"255
+[; ;canlib/can_common.c: 255:  write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"256
+[; ;canlib/can_common.c: 256:  memcpy(output->data + 3, data, sizeof(*data));
+[e ( _memcpy (3 , , -> + &U . *U _output 2 * -> -> 3 `i `x -> -> # *U &U . *U _output 2 `i `x `*v -> _data `*Cv -> # *U _data `ui ]
+"257
+[; ;canlib/can_common.c: 257:  output->data[7] = data_id;
+[e = *U + &U . *U _output 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _data_id `uc ]
+"258
+[; ;canlib/can_common.c: 258:  output->data_len = 8;
+[e = . *U _output 1 -> -> 8 `i `uc ]
+"260
+[; ;canlib/can_common.c: 260:  return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 41  ]
+"261
+[; ;canlib/can_common.c: 261: }
+[e :UE 41 ]
+}
+"263
+[; ;canlib/can_common.c: 263: _Bool build_analog_data_msg(uint32_t timestamp,
+[v _build_analog_data_msg `(a ~T0 @X0 1 ef4`ul`E84`us`*S2 ]
+"267
+[; ;canlib/can_common.c: 267: {
+{
+[e :U _build_analog_data_msg ]
+"263
+[; ;canlib/can_common.c: 263: _Bool build_analog_data_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"264
+[; ;canlib/can_common.c: 264:                            enum SENSOR_ID sensor_id,
+[v _sensor_id `E84 ~T0 @X0 1 r2 ]
+"265
+[; ;canlib/can_common.c: 265:                            uint16_t sensor_data,
+[v _sensor_data `us ~T0 @X0 1 r3 ]
+"266
+[; ;canlib/can_common.c: 266:                            can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"267
+[; ;canlib/can_common.c: 267: {
+[f ]
+"268
+[; ;canlib/can_common.c: 268:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 43  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 42  ]
+}
+[e :U 43 ]
+"270
+[; ;canlib/can_common.c: 270:     output->sid = 0x6A0 | 0x0C;
+[e = . *U _output 0 -> | -> 1696 `i -> 12 `i `us ]
+"271
+[; ;canlib/can_common.c: 271:     write_timestamp_2bytes(timestamp, output);
+[e ( _write_timestamp_2bytes (2 , -> _timestamp `us _output ]
+"273
+[; ;canlib/can_common.c: 273:     output->data[2] = (uint8_t) sensor_id;
+[e = *U + &U . *U _output 2 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> _sensor_id `uc ]
+"274
+[; ;canlib/can_common.c: 274:     output->data[3] = (sensor_data >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> _sensor_data `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"275
+[; ;canlib/can_common.c: 275:     output->data[4] = (sensor_data >> 0) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> _sensor_data `ui -> 0 `i -> -> 255 `i `ui `uc ]
+"277
+[; ;canlib/can_common.c: 277:     output->data_len = 5;
+[e = . *U _output 1 -> -> 5 `i `uc ]
+"279
+[; ;canlib/can_common.c: 279:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 42  ]
+"280
+[; ;canlib/can_common.c: 280: }
+[e :UE 42 ]
+}
+"282
+[; ;canlib/can_common.c: 282: _Bool build_temp_data_msg(uint32_t timestamp,
+[v _build_temp_data_msg `(a ~T0 @X0 1 ef4`ul`uc`l`*S2 ]
+"285
+[; ;canlib/can_common.c: 285:                          can_msg_t *output){
+{
+[e :U _build_temp_data_msg ]
+"282
+[; ;canlib/can_common.c: 282: _Bool build_temp_data_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"283
+[; ;canlib/can_common.c: 283:                          uint8_t sensor_num,
+[v _sensor_num `uc ~T0 @X0 1 r2 ]
+"284
+[; ;canlib/can_common.c: 284:                          int32_t temp,
+[v _temp `l ~T0 @X0 1 r3 ]
+"285
+[; ;canlib/can_common.c: 285:                          can_msg_t *output){
+[v _output `*S2 ~T0 @X0 1 r4 ]
+[f ]
+"286
+[; ;canlib/can_common.c: 286:     if(!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 45  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 44  ]
+}
+[e :U 45 ]
+"288
+[; ;canlib/can_common.c: 288:     output->sid = 0x540 | 0x0C;
+[e = . *U _output 0 -> | -> 1344 `i -> 12 `i `us ]
+"289
+[; ;canlib/can_common.c: 289:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"291
+[; ;canlib/can_common.c: 291:     output->data[3] = sensor_num;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _sensor_num ]
+"292
+[; ;canlib/can_common.c: 292:     output->data[4] = (temp >> 16) & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _temp -> 16 `i -> -> 255 `i `l `uc ]
+"293
+[; ;canlib/can_common.c: 293:     output->data[5] = (temp >> 8) & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _temp -> 8 `i -> -> 255 `i `l `uc ]
+"294
+[; ;canlib/can_common.c: 294:     output->data[6] = temp & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & _temp -> -> 255 `i `l `uc ]
+"295
+[; ;canlib/can_common.c: 295:     output->data_len = 7;
+[e = . *U _output 1 -> -> 7 `i `uc ]
+"297
+[; ;canlib/can_common.c: 297:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 44  ]
+"298
+[; ;canlib/can_common.c: 298: }
+[e :UE 44 ]
+}
+"300
+[; ;canlib/can_common.c: 300: _Bool build_altitude_data_msg(uint32_t timestamp,
+[v _build_altitude_data_msg `(a ~T0 @X0 1 ef3`ul`l`*S2 ]
+"303
+[; ;canlib/can_common.c: 303: {
+{
+[e :U _build_altitude_data_msg ]
+"300
+[; ;canlib/can_common.c: 300: _Bool build_altitude_data_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"301
+[; ;canlib/can_common.c: 301:                              int32_t altitude,
+[v _altitude `l ~T0 @X0 1 r2 ]
+"302
+[; ;canlib/can_common.c: 302:                              can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r3 ]
+"303
+[; ;canlib/can_common.c: 303: {
+[f ]
+"304
+[; ;canlib/can_common.c: 304:     if(!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 47  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 46  ]
+}
+[e :U 47 ]
+"306
+[; ;canlib/can_common.c: 306:     output->sid = 0x560 | 0x0C;
+[e = . *U _output 0 -> | -> 1376 `i -> 12 `i `us ]
+"307
+[; ;canlib/can_common.c: 307:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"309
+[; ;canlib/can_common.c: 309:     output->data[3] = (altitude >> 24) & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _altitude -> 24 `i -> -> 255 `i `l `uc ]
+"310
+[; ;canlib/can_common.c: 310:     output->data[4] = (altitude >> 16) & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _altitude -> 16 `i -> -> 255 `i `l `uc ]
+"311
+[; ;canlib/can_common.c: 311:     output->data[5] = (altitude >> 8) & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> _altitude -> 8 `i -> -> 255 `i `l `uc ]
+"312
+[; ;canlib/can_common.c: 312:     output->data[6] = altitude & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & _altitude -> -> 255 `i `l `uc ]
+"313
+[; ;canlib/can_common.c: 313:     output->data_len = 7;
+[e = . *U _output 1 -> -> 7 `i `uc ]
+"315
+[; ;canlib/can_common.c: 315:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 46  ]
+"316
+[; ;canlib/can_common.c: 316: }
+[e :UE 46 ]
+}
+"318
+[; ;canlib/can_common.c: 318: _Bool build_gps_time_msg(uint32_t timestamp,
+[v _build_gps_time_msg `(a ~T0 @X0 1 ef6`ul`uc`uc`uc`uc`*S2 ]
+"324
+[; ;canlib/can_common.c: 324: {
+{
+[e :U _build_gps_time_msg ]
+"318
+[; ;canlib/can_common.c: 318: _Bool build_gps_time_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"319
+[; ;canlib/can_common.c: 319:                         uint8_t utc_hours,
+[v _utc_hours `uc ~T0 @X0 1 r2 ]
+"320
+[; ;canlib/can_common.c: 320:                         uint8_t utc_mins,
+[v _utc_mins `uc ~T0 @X0 1 r3 ]
+"321
+[; ;canlib/can_common.c: 321:                         uint8_t utc_secs,
+[v _utc_secs `uc ~T0 @X0 1 r4 ]
+"322
+[; ;canlib/can_common.c: 322:                         uint8_t utc_dsecs,
+[v _utc_dsecs `uc ~T0 @X0 1 r5 ]
+"323
+[; ;canlib/can_common.c: 323:                         can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r6 ]
+"324
+[; ;canlib/can_common.c: 324: {
+[f ]
+"325
+[; ;canlib/can_common.c: 325:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 49  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 48  ]
+}
+[e :U 49 ]
+"327
+[; ;canlib/can_common.c: 327:     output->sid = 0x6C0 | 0x0C;
+[e = . *U _output 0 -> | -> 1728 `i -> 12 `i `us ]
+"328
+[; ;canlib/can_common.c: 328:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"330
+[; ;canlib/can_common.c: 330:     output->data[3] = utc_hours;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _utc_hours ]
+"331
+[; ;canlib/can_common.c: 331:     output->data[4] = utc_mins;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _utc_mins ]
+"332
+[; ;canlib/can_common.c: 332:     output->data[5] = utc_secs;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _utc_secs ]
+"333
+[; ;canlib/can_common.c: 333:     output->data[6] = utc_dsecs;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _utc_dsecs ]
+"335
+[; ;canlib/can_common.c: 335:     output->data_len = 7;
+[e = . *U _output 1 -> -> 7 `i `uc ]
+"337
+[; ;canlib/can_common.c: 337:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 48  ]
+"338
+[; ;canlib/can_common.c: 338: }
+[e :UE 48 ]
+}
+"340
+[; ;canlib/can_common.c: 340: _Bool build_gps_lat_msg(uint32_t timestamp,
+[v _build_gps_lat_msg `(a ~T0 @X0 1 ef6`ul`uc`uc`us`uc`*S2 ]
+"346
+[; ;canlib/can_common.c: 346: {
+{
+[e :U _build_gps_lat_msg ]
+"340
+[; ;canlib/can_common.c: 340: _Bool build_gps_lat_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"341
+[; ;canlib/can_common.c: 341:                        uint8_t degrees,
+[v _degrees `uc ~T0 @X0 1 r2 ]
+"342
+[; ;canlib/can_common.c: 342:                        uint8_t minutes,
+[v _minutes `uc ~T0 @X0 1 r3 ]
+"343
+[; ;canlib/can_common.c: 343:                        uint16_t dminutes,
+[v _dminutes `us ~T0 @X0 1 r4 ]
+"344
+[; ;canlib/can_common.c: 344:                        uint8_t direction,
+[v _direction `uc ~T0 @X0 1 r5 ]
+"345
+[; ;canlib/can_common.c: 345:                        can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r6 ]
+"346
+[; ;canlib/can_common.c: 346: {
+[f ]
+"347
+[; ;canlib/can_common.c: 347:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 51  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 50  ]
+}
+[e :U 51 ]
+"349
+[; ;canlib/can_common.c: 349:     output->sid = 0x6E0 | 0x0C;
+[e = . *U _output 0 -> | -> 1760 `i -> 12 `i `us ]
+"350
+[; ;canlib/can_common.c: 350:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"352
+[; ;canlib/can_common.c: 352:     output->data[3] = degrees;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _degrees ]
+"353
+[; ;canlib/can_common.c: 353:     output->data[4] = minutes;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _minutes ]
+"354
+[; ;canlib/can_common.c: 354:     output->data[5] = dminutes >> 8;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> >> -> _dminutes `ui -> 8 `i `uc ]
+"355
+[; ;canlib/can_common.c: 355:     output->data[6] = dminutes & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & -> _dminutes `ui -> -> 255 `i `ui `uc ]
+"356
+[; ;canlib/can_common.c: 356:     output->data[7] = direction;
+[e = *U + &U . *U _output 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _direction ]
+"358
+[; ;canlib/can_common.c: 358:     output->data_len = 8;
+[e = . *U _output 1 -> -> 8 `i `uc ]
+"360
+[; ;canlib/can_common.c: 360:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 50  ]
+"361
+[; ;canlib/can_common.c: 361: }
+[e :UE 50 ]
+}
+"363
+[; ;canlib/can_common.c: 363: _Bool build_gps_lon_msg(uint32_t timestamp,
+[v _build_gps_lon_msg `(a ~T0 @X0 1 ef6`ul`uc`uc`us`uc`*S2 ]
+"369
+[; ;canlib/can_common.c: 369: {
+{
+[e :U _build_gps_lon_msg ]
+"363
+[; ;canlib/can_common.c: 363: _Bool build_gps_lon_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"364
+[; ;canlib/can_common.c: 364:                        uint8_t degrees,
+[v _degrees `uc ~T0 @X0 1 r2 ]
+"365
+[; ;canlib/can_common.c: 365:                        uint8_t minutes,
+[v _minutes `uc ~T0 @X0 1 r3 ]
+"366
+[; ;canlib/can_common.c: 366:                        uint16_t dminutes,
+[v _dminutes `us ~T0 @X0 1 r4 ]
+"367
+[; ;canlib/can_common.c: 367:                        uint8_t direction,
+[v _direction `uc ~T0 @X0 1 r5 ]
+"368
+[; ;canlib/can_common.c: 368:                        can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r6 ]
+"369
+[; ;canlib/can_common.c: 369: {
+[f ]
+"370
+[; ;canlib/can_common.c: 370:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 53  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 52  ]
+}
+[e :U 53 ]
+"372
+[; ;canlib/can_common.c: 372:     output->sid = 0x700 | 0x0C;
+[e = . *U _output 0 -> | -> 1792 `i -> 12 `i `us ]
+"373
+[; ;canlib/can_common.c: 373:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"375
+[; ;canlib/can_common.c: 375:     output->data[3] = degrees;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _degrees ]
+"376
+[; ;canlib/can_common.c: 376:     output->data[4] = minutes;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _minutes ]
+"377
+[; ;canlib/can_common.c: 377:     output->data[5] = dminutes >> 8;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> >> -> _dminutes `ui -> 8 `i `uc ]
+"378
+[; ;canlib/can_common.c: 378:     output->data[6] = dminutes & 0xFF;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & -> _dminutes `ui -> -> 255 `i `ui `uc ]
+"379
+[; ;canlib/can_common.c: 379:     output->data[7] = direction;
+[e = *U + &U . *U _output 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _direction ]
+"381
+[; ;canlib/can_common.c: 381:     output->data_len = 8;
+[e = . *U _output 1 -> -> 8 `i `uc ]
+"383
+[; ;canlib/can_common.c: 383:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 52  ]
+"384
+[; ;canlib/can_common.c: 384: }
+[e :UE 52 ]
+}
+"386
+[; ;canlib/can_common.c: 386: _Bool build_gps_alt_msg(uint32_t timestamp,
+[v _build_gps_alt_msg `(a ~T0 @X0 1 ef5`ul`us`uc`uc`*S2 ]
+"391
+[; ;canlib/can_common.c: 391: {
+{
+[e :U _build_gps_alt_msg ]
+"386
+[; ;canlib/can_common.c: 386: _Bool build_gps_alt_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"387
+[; ;canlib/can_common.c: 387:                        uint16_t altitude,
+[v _altitude `us ~T0 @X0 1 r2 ]
+"388
+[; ;canlib/can_common.c: 388:                        uint8_t daltitude,
+[v _daltitude `uc ~T0 @X0 1 r3 ]
+"389
+[; ;canlib/can_common.c: 389:                        uint8_t units,
+[v _units `uc ~T0 @X0 1 r4 ]
+"390
+[; ;canlib/can_common.c: 390:                        can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r5 ]
+"391
+[; ;canlib/can_common.c: 391: {
+[f ]
+"392
+[; ;canlib/can_common.c: 392:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 55  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 54  ]
+}
+[e :U 55 ]
+"394
+[; ;canlib/can_common.c: 394:     output->sid = 0x720 | 0x0C;
+[e = . *U _output 0 -> | -> 1824 `i -> 12 `i `us ]
+"395
+[; ;canlib/can_common.c: 395:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"397
+[; ;canlib/can_common.c: 397:     output->data[3] = (altitude >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> _altitude `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"398
+[; ;canlib/can_common.c: 398:     output->data[4] = (altitude >> 0) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> _altitude `ui -> 0 `i -> -> 255 `i `ui `uc ]
+"399
+[; ;canlib/can_common.c: 399:     output->data[5] = daltitude;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _daltitude ]
+"400
+[; ;canlib/can_common.c: 400:     output->data[6] = units;
+[e = *U + &U . *U _output 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _units ]
+"402
+[; ;canlib/can_common.c: 402:     output->data_len = 7;
+[e = . *U _output 1 -> -> 7 `i `uc ]
+"404
+[; ;canlib/can_common.c: 404:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 54  ]
+"405
+[; ;canlib/can_common.c: 405: }
+[e :UE 54 ]
+}
+"407
+[; ;canlib/can_common.c: 407: _Bool build_gps_info_msg(uint32_t timestamp,
+[v _build_gps_info_msg `(a ~T0 @X0 1 ef4`ul`uc`uc`*S2 ]
+"411
+[; ;canlib/can_common.c: 411: {
+{
+[e :U _build_gps_info_msg ]
+"407
+[; ;canlib/can_common.c: 407: _Bool build_gps_info_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"408
+[; ;canlib/can_common.c: 408:                         uint8_t num_sat,
+[v _num_sat `uc ~T0 @X0 1 r2 ]
+"409
+[; ;canlib/can_common.c: 409:                         uint8_t quality,
+[v _quality `uc ~T0 @X0 1 r3 ]
+"410
+[; ;canlib/can_common.c: 410:                         can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"411
+[; ;canlib/can_common.c: 411: {
+[f ]
+"412
+[; ;canlib/can_common.c: 412:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 57  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 56  ]
+}
+[e :U 57 ]
+"414
+[; ;canlib/can_common.c: 414:     output->sid = 0x740 | 0x0C;
+[e = . *U _output 0 -> | -> 1856 `i -> 12 `i `us ]
+"415
+[; ;canlib/can_common.c: 415:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"417
+[; ;canlib/can_common.c: 417:     output->data[3] = num_sat;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _num_sat ]
+"418
+[; ;canlib/can_common.c: 418:     output->data[4] = quality;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _quality ]
+"420
+[; ;canlib/can_common.c: 420:     output->data_len = 5;
+[e = . *U _output 1 -> -> 5 `i `uc ]
+"422
+[; ;canlib/can_common.c: 422:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 56  ]
+"423
+[; ;canlib/can_common.c: 423: }
+[e :UE 56 ]
+}
+"425
+[; ;canlib/can_common.c: 425: _Bool build_state_est_calibration_msg(uint32_t timestamp,
+[v _build_state_est_calibration_msg `(a ~T0 @X0 1 ef4`ul`uc`us`*S2 ]
+"429
+[; ;canlib/can_common.c: 429: {
+{
+[e :U _build_state_est_calibration_msg ]
+"425
+[; ;canlib/can_common.c: 425: _Bool build_state_est_calibration_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"426
+[; ;canlib/can_common.c: 426:           uint8_t ack_flag,
+[v _ack_flag `uc ~T0 @X0 1 r2 ]
+"427
+[; ;canlib/can_common.c: 427:           uint16_t apogee,
+[v _apogee `us ~T0 @X0 1 r3 ]
+"428
+[; ;canlib/can_common.c: 428:           can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"429
+[; ;canlib/can_common.c: 429: {
+[f ]
+"430
+[; ;canlib/can_common.c: 430:  if(!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 59  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 58  ]
+}
+[e :U 59 ]
+"432
+[; ;canlib/can_common.c: 432:  output->sid = 0x620 | 0x0C;
+[e = . *U _output 0 -> | -> 1568 `i -> 12 `i `us ]
+"433
+[; ;canlib/can_common.c: 433:  write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"435
+[; ;canlib/can_common.c: 435:  output->data[3] = ack_flag;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _ack_flag ]
+"436
+[; ;canlib/can_common.c: 436:  output->data[4] = (apogee >> 8) & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & >> -> _apogee `ui -> 8 `i -> -> 255 `i `ui `uc ]
+"437
+[; ;canlib/can_common.c: 437:  output->data[5] = apogee & 0xff;
+[e = *U + &U . *U _output 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux -> & -> _apogee `ui -> -> 255 `i `ui `uc ]
+"439
+[; ;canlib/can_common.c: 439:  output->data_len = 6;
+[e = . *U _output 1 -> -> 6 `i `uc ]
+"441
+[; ;canlib/can_common.c: 441:  return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 58  ]
+"442
+[; ;canlib/can_common.c: 442: }
+[e :UE 58 ]
+}
+"444
+[; ;canlib/can_common.c: 444: _Bool build_fill_msg(uint32_t timestamp,
+[v _build_fill_msg `(a ~T0 @X0 1 ef4`ul`uc`uc`*S2 ]
+"448
+[; ;canlib/can_common.c: 448: {
+{
+[e :U _build_fill_msg ]
+"444
+[; ;canlib/can_common.c: 444: _Bool build_fill_msg(uint32_t timestamp,
+[v _timestamp `ul ~T0 @X0 1 r1 ]
+"445
+[; ;canlib/can_common.c: 445:                     uint8_t lvl,
+[v _lvl `uc ~T0 @X0 1 r2 ]
+"446
+[; ;canlib/can_common.c: 446:                     uint8_t direction,
+[v _direction `uc ~T0 @X0 1 r3 ]
+"447
+[; ;canlib/can_common.c: 447:                     can_msg_t *output)
+[v _output `*S2 ~T0 @X0 1 r4 ]
+"448
+[; ;canlib/can_common.c: 448: {
+[f ]
+"449
+[; ;canlib/can_common.c: 449:     if (!output) { return 0; }
+[e $ ! ! != _output -> -> 0 `i `*S2 61  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 60  ]
+}
+[e :U 61 ]
+"451
+[; ;canlib/can_common.c: 451:     output->sid = 0x780 | 0x0C;
+[e = . *U _output 0 -> | -> 1920 `i -> 12 `i `us ]
+"452
+[; ;canlib/can_common.c: 452:     write_timestamp_3bytes(timestamp, output);
+[e ( _write_timestamp_3bytes (2 , _timestamp _output ]
+"454
+[; ;canlib/can_common.c: 454:     output->data[3] = lvl;
+[e = *U + &U . *U _output 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _lvl ]
+"455
+[; ;canlib/can_common.c: 455:     output->data[4] = direction;
+[e = *U + &U . *U _output 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _output 2 `ui `ux _direction ]
+"457
+[; ;canlib/can_common.c: 457:     output->data_len = 5;
+[e = . *U _output 1 -> -> 5 `i `uc ]
+"459
+[; ;canlib/can_common.c: 459:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 60  ]
+"460
+[; ;canlib/can_common.c: 460: }
+[e :UE 60 ]
+}
+"463
+[; ;canlib/can_common.c: 463: _Bool get_fill_info(const can_msg_t *msg,
+[v _get_fill_info `(a ~T0 @X0 1 ef3`*CS2`*uc`*uc ]
+"466
+[; ;canlib/can_common.c: 466: {
+{
+[e :U _get_fill_info ]
+"463
+[; ;canlib/can_common.c: 463: _Bool get_fill_info(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"464
+[; ;canlib/can_common.c: 464:                    uint8_t *lvl,
+[v _lvl `*uc ~T0 @X0 1 r2 ]
+"465
+[; ;canlib/can_common.c: 465:                    uint8_t *direction)
+[v _direction `*uc ~T0 @X0 1 r3 ]
+"466
+[; ;canlib/can_common.c: 466: {
+[f ]
+"467
+[; ;canlib/can_common.c: 467:     if ((!msg) | (!lvl) | (!direction)) { return 0; }
+[e $ ! | | ! != _msg -> -> 0 `i `*CS2 ! != _lvl -> -> 0 `i `*uc ! != _direction -> -> 0 `i `*uc 63  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 62  ]
+}
+[e :U 63 ]
+"469
+[; ;canlib/can_common.c: 469:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"470
+[; ;canlib/can_common.c: 470:     if (msg_type == 0x780) {
+[e $ ! == -> _msg_type `ui -> -> 1920 `i `ui 64  ]
+{
+"471
+[; ;canlib/can_common.c: 471:         *lvl = msg->data[3];
+[e = *U _lvl *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"472
+[; ;canlib/can_common.c: 472:         *direction = msg->data[4];
+[e = *U _direction *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"473
+[; ;canlib/can_common.c: 473:         return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 62  ]
+"474
+[; ;canlib/can_common.c: 474:     }
+}
+[e :U 64 ]
+"476
+[; ;canlib/can_common.c: 476:     return 0;
+[e ) -> -> 0 `i `a ]
+[e $UE 62  ]
+"477
+[; ;canlib/can_common.c: 477: }
+[e :UE 62 ]
+}
+"479
+[; ;canlib/can_common.c: 479: int get_general_cmd_type(const can_msg_t *msg) {
+[v _get_general_cmd_type `(i ~T0 @X0 1 ef1`*CS2 ]
+{
+[e :U _get_general_cmd_type ]
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[f ]
+"480
+[; ;canlib/can_common.c: 480:     if (!msg) { return -1; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 66  ]
+{
+[e ) -U -> 1 `i ]
+[e $UE 65  ]
+}
+[e :U 66 ]
+"482
+[; ;canlib/can_common.c: 482:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"483
+[; ;canlib/can_common.c: 483:     if (msg_type == 0x060) {
+[e $ ! == -> _msg_type `ui -> -> 96 `i `ui 67  ]
+{
+"484
+[; ;canlib/can_common.c: 484:         return msg->data[3];
+[e ) -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i ]
+[e $UE 65  ]
+"485
+[; ;canlib/can_common.c: 485:     } else {
+}
+[e $U 68  ]
+[e :U 67 ]
+{
+"486
+[; ;canlib/can_common.c: 486:         return -1;
+[e ) -U -> 1 `i ]
+[e $UE 65  ]
+"487
+[; ;canlib/can_common.c: 487:     }
+}
+[e :U 68 ]
+"488
+[; ;canlib/can_common.c: 488: }
+[e :UE 65 ]
+}
+"490
+[; ;canlib/can_common.c: 490: int get_reset_board_id(const can_msg_t *msg){
+[v _get_reset_board_id `(i ~T0 @X0 1 ef1`*CS2 ]
+{
+[e :U _get_reset_board_id ]
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[f ]
+"491
+[; ;canlib/can_common.c: 491:     if (!msg) { return -1; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 70  ]
+{
+[e ) -U -> 1 `i ]
+[e $UE 69  ]
+}
+[e :U 70 ]
+"493
+[; ;canlib/can_common.c: 493:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"494
+[; ;canlib/can_common.c: 494:     if (msg_type == 0x160) {
+[e $ ! == -> _msg_type `ui -> -> 352 `i `ui 71  ]
+{
+"495
+[; ;canlib/can_common.c: 495:         return msg->data[3];
+[e ) -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i ]
+[e $UE 69  ]
+"496
+[; ;canlib/can_common.c: 496:     } else {
+}
+[e $U 72  ]
+[e :U 71 ]
+{
+"498
+[; ;canlib/can_common.c: 498:         return -1;
+[e ) -U -> 1 `i ]
+[e $UE 69  ]
+"499
+[; ;canlib/can_common.c: 499:     }
+}
+[e :U 72 ]
+"500
+[; ;canlib/can_common.c: 500: }
+[e :UE 69 ]
+}
+"502
+[; ;canlib/can_common.c: 502: int get_actuator_id(const can_msg_t *msg) {
+[v _get_actuator_id `(i ~T0 @X0 1 ef1`*CS2 ]
+{
+[e :U _get_actuator_id ]
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[f ]
+"503
+[; ;canlib/can_common.c: 503:     if (!msg) { return -1; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 74  ]
+{
+[e ) -U -> 1 `i ]
+[e $UE 73  ]
+}
+[e :U 74 ]
+"505
+[; ;canlib/can_common.c: 505:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"506
+[; ;canlib/can_common.c: 506:     switch (msg_type) {
+[e $U 76  ]
+{
+"507
+[; ;canlib/can_common.c: 507:         case 0x0C0:
+[e :U 77 ]
+"508
+[; ;canlib/can_common.c: 508:         case 0x460:
+[e :U 78 ]
+"509
+[; ;canlib/can_common.c: 509:         case 0x220:
+[e :U 79 ]
+"510
+[; ;canlib/can_common.c: 510:             return msg->data[3];
+[e ) -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i ]
+[e $UE 73  ]
+"512
+[; ;canlib/can_common.c: 512:         default:
+[e :U 80 ]
+"514
+[; ;canlib/can_common.c: 514:             return -1;
+[e ) -U -> 1 `i ]
+[e $UE 73  ]
+"515
+[; ;canlib/can_common.c: 515:     }
+}
+[e $U 75  ]
+[e :U 76 ]
+[e [\ -> _msg_type `ui , $ -> -> 192 `i `ui 77
+ , $ -> -> 1120 `i `ui 78
+ , $ -> -> 544 `i `ui 79
+ 80 ]
+[e :U 75 ]
+"516
+[; ;canlib/can_common.c: 516: }
+[e :UE 73 ]
+}
+"518
+[; ;canlib/can_common.c: 518: int get_curr_actuator_state(const can_msg_t *msg)
+[v _get_curr_actuator_state `(i ~T0 @X0 1 ef1`*CS2 ]
+"519
+[; ;canlib/can_common.c: 519: {
+{
+[e :U _get_curr_actuator_state ]
+"518
+[; ;canlib/can_common.c: 518: int get_curr_actuator_state(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"519
+[; ;canlib/can_common.c: 519: {
+[f ]
+"520
+[; ;canlib/can_common.c: 520:     if (!msg) { return -1; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 82  ]
+{
+[e ) -U -> 1 `i ]
+[e $UE 81  ]
+}
+[e :U 82 ]
+"522
+[; ;canlib/can_common.c: 522:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"523
+[; ;canlib/can_common.c: 523:     if (msg_type == 0x460) {
+[e $ ! == -> _msg_type `ui -> -> 1120 `i `ui 83  ]
+{
+"524
+[; ;canlib/can_common.c: 524:         return msg->data[4];
+[e ) -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i ]
+[e $UE 81  ]
+"525
+[; ;canlib/can_common.c: 525:     } else {
+}
+[e $U 84  ]
+[e :U 83 ]
+{
+"527
+[; ;canlib/can_common.c: 527:         return -1;
+[e ) -U -> 1 `i ]
+[e $UE 81  ]
+"528
+[; ;canlib/can_common.c: 528:     }
+}
+[e :U 84 ]
+"529
+[; ;canlib/can_common.c: 529: }
+[e :UE 81 ]
+}
+"531
+[; ;canlib/can_common.c: 531: int get_req_actuator_state(const can_msg_t *msg)
+[v _get_req_actuator_state `(i ~T0 @X0 1 ef1`*CS2 ]
+"532
+[; ;canlib/can_common.c: 532: {
+{
+[e :U _get_req_actuator_state ]
+"531
+[; ;canlib/can_common.c: 531: int get_req_actuator_state(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"532
+[; ;canlib/can_common.c: 532: {
+[f ]
+"533
+[; ;canlib/can_common.c: 533:     if (!msg) { return -1; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 86  ]
+{
+[e ) -U -> 1 `i ]
+[e $UE 85  ]
+}
+[e :U 86 ]
+"535
+[; ;canlib/can_common.c: 535:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"536
+[; ;canlib/can_common.c: 536:     switch (msg_type) {
+[e $U 88  ]
+{
+"537
+[; ;canlib/can_common.c: 537:         case 0x460:
+[e :U 89 ]
+"538
+[; ;canlib/can_common.c: 538:             return msg->data[5];
+[e ) -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i ]
+[e $UE 85  ]
+"540
+[; ;canlib/can_common.c: 540:         case 0x0C0:
+[e :U 90 ]
+"541
+[; ;canlib/can_common.c: 541:             return msg->data[4];
+[e ) -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i ]
+[e $UE 85  ]
+"543
+[; ;canlib/can_common.c: 543:         default:
+[e :U 91 ]
+"545
+[; ;canlib/can_common.c: 545:             return -1;
+[e ) -U -> 1 `i ]
+[e $UE 85  ]
+"546
+[; ;canlib/can_common.c: 546:     }
+}
+[e $U 87  ]
+[e :U 88 ]
+[e [\ -> _msg_type `ui , $ -> -> 1120 `i `ui 89
+ , $ -> -> 192 `i `ui 90
+ 91 ]
+[e :U 87 ]
+"547
+[; ;canlib/can_common.c: 547: }
+[e :UE 85 ]
+}
+"549
+[; ;canlib/can_common.c: 549: uint8_t get_req_actuator_state_analog(const can_msg_t *msg)
+[v _get_req_actuator_state_analog `(uc ~T0 @X0 1 ef1`*CS2 ]
+"550
+[; ;canlib/can_common.c: 550: {
+{
+[e :U _get_req_actuator_state_analog ]
+"549
+[; ;canlib/can_common.c: 549: uint8_t get_req_actuator_state_analog(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"550
+[; ;canlib/can_common.c: 550: {
+[f ]
+"551
+[; ;canlib/can_common.c: 551:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 93  ]
+{
+[e ) -> -> 0 `i `uc ]
+[e $UE 92  ]
+}
+[e :U 93 ]
+"553
+[; ;canlib/can_common.c: 553:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"554
+[; ;canlib/can_common.c: 554:  switch (msg_type) {
+[e $U 95  ]
+{
+"555
+[; ;canlib/can_common.c: 555:         case 0x220:
+[e :U 96 ]
+"556
+[; ;canlib/can_common.c: 556:             return msg->data[4];
+[e ) *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+[e $UE 92  ]
+"558
+[; ;canlib/can_common.c: 558:         default:
+[e :U 97 ]
+"560
+[; ;canlib/can_common.c: 560:             return 0;
+[e ) -> -> 0 `i `uc ]
+[e $UE 92  ]
+"561
+[; ;canlib/can_common.c: 561:     }
+}
+[e $U 94  ]
+[e :U 95 ]
+[e [\ -> _msg_type `ui , $ -> -> 544 `i `ui 96
+ 97 ]
+[e :U 94 ]
+"562
+[; ;canlib/can_common.c: 562: }
+[e :UE 92 ]
+}
+"564
+[; ;canlib/can_common.c: 564: _Bool get_curr_arm_state(const can_msg_t *msg, uint8_t *alt_num, enum ARM_STATE *arm_state)
+[v _get_curr_arm_state `(a ~T0 @X0 1 ef3`*CS2`*uc`*E57 ]
+"565
+[; ;canlib/can_common.c: 565: {
+{
+[e :U _get_curr_arm_state ]
+"564
+[; ;canlib/can_common.c: 564: _Bool get_curr_arm_state(const can_msg_t *msg, uint8_t *alt_num, enum ARM_STATE *arm_state)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[v _alt_num `*uc ~T0 @X0 1 r2 ]
+[v _arm_state `*E57 ~T0 @X0 1 r3 ]
+"565
+[; ;canlib/can_common.c: 565: {
+[f ]
+"566
+[; ;canlib/can_common.c: 566:     if( !msg || !alt_num || !arm_state) { return 0; }
+[e $ ! || || ! != _msg -> -> 0 `i `*CS2 ! != _alt_num -> -> 0 `i `*uc ! != _arm_state -> -> 0 `i `*E57 99  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 98  ]
+}
+[e :U 99 ]
+"567
+[; ;canlib/can_common.c: 567:     if(get_message_type(msg) != 0x440) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1088 `i `ui 100  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 98  ]
+}
+[e :U 100 ]
+"568
+[; ;canlib/can_common.c: 568:     *alt_num = msg->data[3] & 0x0F;
+[e = *U _alt_num -> & -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 15 `i `uc ]
+"569
+[; ;canlib/can_common.c: 569:     *arm_state = msg->data[3] >> 4;
+[e = *U _arm_state -> >> -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 4 `i `E57 ]
+"571
+[; ;canlib/can_common.c: 571:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 98  ]
+"572
+[; ;canlib/can_common.c: 572: }
+[e :UE 98 ]
+}
+"574
+[; ;canlib/can_common.c: 574: _Bool get_req_arm_state(const can_msg_t *msg, uint8_t *alt_num, enum ARM_STATE *arm_state)
+[v _get_req_arm_state `(a ~T0 @X0 1 ef3`*CS2`*uc`*E57 ]
+"575
+[; ;canlib/can_common.c: 575: {
+{
+[e :U _get_req_arm_state ]
+"574
+[; ;canlib/can_common.c: 574: _Bool get_req_arm_state(const can_msg_t *msg, uint8_t *alt_num, enum ARM_STATE *arm_state)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[v _alt_num `*uc ~T0 @X0 1 r2 ]
+[v _arm_state `*E57 ~T0 @X0 1 r3 ]
+"575
+[; ;canlib/can_common.c: 575: {
+[f ]
+"576
+[; ;canlib/can_common.c: 576:     if( !msg || !alt_num || !arm_state) { return 0; }
+[e $ ! || || ! != _msg -> -> 0 `i `*CS2 ! != _alt_num -> -> 0 `i `*uc ! != _arm_state -> -> 0 `i `*E57 102  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 101  ]
+}
+[e :U 102 ]
+"577
+[; ;canlib/can_common.c: 577:     if(get_message_type(msg) != 0x140) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 320 `i `ui 103  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 101  ]
+}
+[e :U 103 ]
+"578
+[; ;canlib/can_common.c: 578:     *alt_num = msg->data[3] & 0x0F;
+[e = *U _alt_num -> & -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 15 `i `uc ]
+"579
+[; ;canlib/can_common.c: 579:     *arm_state = msg->data[3] >> 4;
+[e = *U _arm_state -> >> -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 4 `i `E57 ]
+"581
+[; ;canlib/can_common.c: 581:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 101  ]
+"582
+[; ;canlib/can_common.c: 582: }
+[e :UE 101 ]
+}
+"584
+[; ;canlib/can_common.c: 584: uint16_t get_message_type(const can_msg_t *msg)
+[v _get_message_type `(us ~T0 @X0 1 ef1`*CS2 ]
+"585
+[; ;canlib/can_common.c: 585: {
+{
+[e :U _get_message_type ]
+"584
+[; ;canlib/can_common.c: 584: uint16_t get_message_type(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"585
+[; ;canlib/can_common.c: 585: {
+[f ]
+"587
+[; ;canlib/can_common.c: 587:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 105  ]
+{
+[e ) -> -> 0 `i `us ]
+[e $UE 104  ]
+}
+[e :U 105 ]
+"589
+[; ;canlib/can_common.c: 589:     return (msg->sid & 0x7E0);
+[e ) -> & -> . *U _msg 0 `ui -> -> 2016 `i `ui `us ]
+[e $UE 104  ]
+"590
+[; ;canlib/can_common.c: 590: }
+[e :UE 104 ]
+}
+"592
+[; ;canlib/can_common.c: 592: uint8_t get_board_unique_id(const can_msg_t *msg)
+[v _get_board_unique_id `(uc ~T0 @X0 1 ef1`*CS2 ]
+"593
+[; ;canlib/can_common.c: 593: {
+{
+[e :U _get_board_unique_id ]
+"592
+[; ;canlib/can_common.c: 592: uint8_t get_board_unique_id(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"593
+[; ;canlib/can_common.c: 593: {
+[f ]
+"595
+[; ;canlib/can_common.c: 595:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 107  ]
+{
+[e ) -> -> 0 `i `uc ]
+[e $UE 106  ]
+}
+[e :U 107 ]
+"597
+[; ;canlib/can_common.c: 597:     return ((uint8_t) (msg->sid & 0x1F));
+[e ) -> & -> . *U _msg 0 `ui -> -> 31 `i `ui `uc ]
+[e $UE 106  ]
+"598
+[; ;canlib/can_common.c: 598: }
+[e :UE 106 ]
+}
+"600
+[; ;canlib/can_common.c: 600: uint32_t get_timestamp(const can_msg_t *msg)
+[v _get_timestamp `(ul ~T0 @X0 1 ef1`*CS2 ]
+"601
+[; ;canlib/can_common.c: 601: {
+{
+[e :U _get_timestamp ]
+"600
+[; ;canlib/can_common.c: 600: uint32_t get_timestamp(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"601
+[; ;canlib/can_common.c: 601: {
+[f ]
+"603
+[; ;canlib/can_common.c: 603:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 109  ]
+{
+[e ) -> -> -> 0 `i `l `ul ]
+[e $UE 108  ]
+}
+[e :U 109 ]
+"605
+[; ;canlib/can_common.c: 605:     uint16_t msg_type = get_message_type(msg);
+[v _msg_type `us ~T0 @X0 1 a ]
+[e = _msg_type ( _get_message_type (1 _msg ]
+"606
+[; ;canlib/can_common.c: 606:     switch(msg_type) {
+[e $U 111  ]
+{
+"608
+[; ;canlib/can_common.c: 608:         case 0x060:
+[e :U 112 ]
+"609
+[; ;canlib/can_common.c: 609:         case 0x0C0:
+[e :U 113 ]
+"610
+[; ;canlib/can_common.c: 610:         case 0x140:
+[e :U 114 ]
+"611
+[; ;canlib/can_common.c: 611:         case 0x180:
+[e :U 115 ]
+"612
+[; ;canlib/can_common.c: 612:         case 0x460:
+[e :U 116 ]
+"613
+[; ;canlib/can_common.c: 613:         case 0x440:
+[e :U 117 ]
+"614
+[; ;canlib/can_common.c: 614:         case 0x520:
+[e :U 118 ]
+"615
+[; ;canlib/can_common.c: 615:         case 0x6C0:
+[e :U 119 ]
+"616
+[; ;canlib/can_common.c: 616:         case 0x6E0:
+[e :U 120 ]
+"617
+[; ;canlib/can_common.c: 617:         case 0x700:
+[e :U 121 ]
+"618
+[; ;canlib/can_common.c: 618:         case 0x540:
+[e :U 122 ]
+"619
+[; ;canlib/can_common.c: 619:         case 0x720:
+[e :U 123 ]
+"620
+[; ;canlib/can_common.c: 620:         case 0x740:
+[e :U 124 ]
+"621
+[; ;canlib/can_common.c: 621:         case 0x160:
+[e :U 125 ]
+"622
+[; ;canlib/can_common.c: 622:         case 0x780:
+[e :U 126 ]
+"623
+[; ;canlib/can_common.c: 623:         case 0x560:
+[e :U 127 ]
+"624
+[; ;canlib/can_common.c: 624:         case 0x7A0:
+[e :U 128 ]
+"625
+[; ;canlib/can_common.c: 625:         case 0x220:
+[e :U 129 ]
+"626
+[; ;canlib/can_common.c: 626:         case 0x620:
+[e :U 130 ]
+"627
+[; ;canlib/can_common.c: 627:             return (uint32_t)msg->data[0] << 16 | msg->data[1] << 8 | msg->data[2];
+[e ) | | << -> *U + &U . *U _msg 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul -> 16 `i -> -> << -> *U + &U . *U _msg 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 8 `i `l `ul -> *U + &U . *U _msg 2 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul ]
+[e $UE 108  ]
+"630
+[; ;canlib/can_common.c: 630:         case 0x580:
+[e :U 131 ]
+"631
+[; ;canlib/can_common.c: 631:         case 0x5A0:
+[e :U 132 ]
+"632
+[; ;canlib/can_common.c: 632:         case 0x5E0:
+[e :U 133 ]
+"633
+[; ;canlib/can_common.c: 633:         case 0x640:
+[e :U 134 ]
+"634
+[; ;canlib/can_common.c: 634:         case 0x6A0:
+[e :U 135 ]
+"635
+[; ;canlib/can_common.c: 635:             return (uint32_t)msg->data[0] << 8 | msg->data[1];
+[e ) | << -> *U + &U . *U _msg 2 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul ]
+[e $UE 108  ]
+"638
+[; ;canlib/can_common.c: 638:         case 0x1E0:
+[e :U 136 ]
+"639
+[; ;canlib/can_common.c: 639:         case 0x7E0:
+[e :U 137 ]
+"640
+[; ;canlib/can_common.c: 640:         case 0x7C0:
+[e :U 138 ]
+"641
+[; ;canlib/can_common.c: 641:             return 0;
+[e ) -> -> -> 0 `i `l `ul ]
+[e $UE 108  ]
+"644
+[; ;canlib/can_common.c: 644:         default:
+[e :U 139 ]
+"646
+[; ;canlib/can_common.c: 646:             return 0;
+[e ) -> -> -> 0 `i `l `ul ]
+[e $UE 108  ]
+"647
+[; ;canlib/can_common.c: 647:     }
+}
+[e $U 110  ]
+[e :U 111 ]
+[e [\ -> _msg_type `ui , $ -> -> 96 `i `ui 112
+ , $ -> -> 192 `i `ui 113
+ , $ -> -> 320 `i `ui 114
+ , $ -> -> 384 `i `ui 115
+ , $ -> -> 1120 `i `ui 116
+ , $ -> -> 1088 `i `ui 117
+ , $ -> -> 1312 `i `ui 118
+ , $ -> -> 1728 `i `ui 119
+ , $ -> -> 1760 `i `ui 120
+ , $ -> -> 1792 `i `ui 121
+ , $ -> -> 1344 `i `ui 122
+ , $ -> -> 1824 `i `ui 123
+ , $ -> -> 1856 `i `ui 124
+ , $ -> -> 352 `i `ui 125
+ , $ -> -> 1920 `i `ui 126
+ , $ -> -> 1376 `i `ui 127
+ , $ -> -> 1952 `i `ui 128
+ , $ -> -> 544 `i `ui 129
+ , $ -> -> 1568 `i `ui 130
+ , $ -> -> 1408 `i `ui 131
+ , $ -> -> 1440 `i `ui 132
+ , $ -> -> 1504 `i `ui 133
+ , $ -> -> 1600 `i `ui 134
+ , $ -> -> 1696 `i `ui 135
+ , $ -> -> 480 `i `ui 136
+ , $ -> -> 2016 `i `ui 137
+ , $ -> -> 1984 `i `ui 138
+ 139 ]
+[e :U 110 ]
+"648
+[; ;canlib/can_common.c: 648: }
+[e :UE 108 ]
+}
+"650
+[; ;canlib/can_common.c: 650: _Bool is_sensor_data(const can_msg_t *msg)
+[v _is_sensor_data `(a ~T0 @X0 1 ef1`*CS2 ]
+"651
+[; ;canlib/can_common.c: 651: {
+{
+[e :U _is_sensor_data ]
+"650
+[; ;canlib/can_common.c: 650: _Bool is_sensor_data(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"651
+[; ;canlib/can_common.c: 651: {
+[f ]
+"652
+[; ;canlib/can_common.c: 652:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 141  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 140  ]
+}
+[e :U 141 ]
+"654
+[; ;canlib/can_common.c: 654:     uint16_t type = get_message_type(msg);
+[v _type `us ~T0 @X0 1 a ]
+[e = _type ( _get_message_type (1 _msg ]
+"655
+[; ;canlib/can_common.c: 655:     if (type == 0x580 ||
+[e $ ! || || || || == -> _type `ui -> -> 1408 `i `ui == -> _type `ui -> -> 1440 `i `ui == -> _type `ui -> -> 1504 `i `ui == -> _type `ui -> -> 1600 `i `ui == -> _type `ui -> -> 1696 `i `ui 142  ]
+"659
+[; ;canlib/can_common.c: 659:         type == 0x6A0) {
+{
+"660
+[; ;canlib/can_common.c: 660:         return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 140  ]
+"661
+[; ;canlib/can_common.c: 661:     } else {
+}
+[e $U 143  ]
+[e :U 142 ]
+{
+"662
+[; ;canlib/can_common.c: 662:         return 0;
+[e ) -> -> 0 `i `a ]
+[e $UE 140  ]
+"663
+[; ;canlib/can_common.c: 663:     }
+}
+[e :U 143 ]
+"664
+[; ;canlib/can_common.c: 664: }
+[e :UE 140 ]
+}
+"666
+[; ;canlib/can_common.c: 666: _Bool get_imu_data(const can_msg_t *msg, uint16_t *output_x, uint16_t *output_y, uint16_t *output_z)
+[v _get_imu_data `(a ~T0 @X0 1 ef4`*CS2`*us`*us`*us ]
+"667
+[; ;canlib/can_common.c: 667: {
+{
+[e :U _get_imu_data ]
+"666
+[; ;canlib/can_common.c: 666: _Bool get_imu_data(const can_msg_t *msg, uint16_t *output_x, uint16_t *output_y, uint16_t *output_z)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[v _output_x `*us ~T0 @X0 1 r2 ]
+[v _output_y `*us ~T0 @X0 1 r3 ]
+[v _output_z `*us ~T0 @X0 1 r4 ]
+"667
+[; ;canlib/can_common.c: 667: {
+[f ]
+"668
+[; ;canlib/can_common.c: 668:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 145  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 144  ]
+}
+[e :U 145 ]
+"669
+[; ;canlib/can_common.c: 669:     if (!output_x) { return 0; }
+[e $ ! ! != _output_x -> -> 0 `i `*us 146  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 144  ]
+}
+[e :U 146 ]
+"670
+[; ;canlib/can_common.c: 670:     if (!output_y) { return 0; }
+[e $ ! ! != _output_y -> -> 0 `i `*us 147  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 144  ]
+}
+[e :U 147 ]
+"671
+[; ;canlib/can_common.c: 671:     if (!output_z) { return 0; }
+[e $ ! ! != _output_z -> -> 0 `i `*us 148  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 144  ]
+}
+[e :U 148 ]
+"672
+[; ;canlib/can_common.c: 672:     if (!is_sensor_data(msg)) { return 0; }
+[e $ ! ! != -> ( _is_sensor_data (1 _msg `i -> 0 `i 149  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 144  ]
+}
+[e :U 149 ]
+"673
+[; ;canlib/can_common.c: 673:     if (get_message_type(msg) == 0x6A0) { return 0; }
+[e $ ! == -> ( _get_message_type (1 _msg `ui -> -> 1696 `i `ui 150  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 144  ]
+}
+[e :U 150 ]
+"675
+[; ;canlib/can_common.c: 675:     *output_x = (uint16_t)msg->data[2] << 8 | msg->data[3];
+[e = *U _output_x -> | << -> -> *U + &U . *U _msg 2 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `us `ui -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ui `us ]
+"676
+[; ;canlib/can_common.c: 676:     *output_y = (uint16_t)msg->data[4] << 8 | msg->data[5];
+[e = *U _output_y -> | << -> -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `us `ui -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ui `us ]
+"677
+[; ;canlib/can_common.c: 677:     *output_z = (uint16_t)msg->data[6] << 8 | msg->data[7];
+[e = *U _output_z -> | << -> -> *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `us `ui -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ui `us ]
+"679
+[; ;canlib/can_common.c: 679:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 144  ]
+"680
+[; ;canlib/can_common.c: 680: }
+[e :UE 144 ]
+}
+"682
+[; ;canlib/can_common.c: 682: _Bool get_state_est_data(const can_msg_t *msg, float *data, enum STATE_ID *data_id){
+[v _get_state_est_data `(a ~T0 @X0 1 ef3`*CS2`*f`*E127 ]
+{
+[e :U _get_state_est_data ]
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[v _data `*f ~T0 @X0 1 r2 ]
+[v _data_id `*E127 ~T0 @X0 1 r3 ]
+[f ]
+"683
+[; ;canlib/can_common.c: 683:  if(!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 152  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 151  ]
+}
+[e :U 152 ]
+"684
+[; ;canlib/can_common.c: 684:  if(!data) { return 0; }
+[e $ ! ! != _data -> -> 0 `i `*f 153  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 151  ]
+}
+[e :U 153 ]
+"685
+[; ;canlib/can_common.c: 685:  if(!data_id) { return 0; }
+[e $ ! ! != _data_id -> -> 0 `i `*E127 154  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 151  ]
+}
+[e :U 154 ]
+"686
+[; ;canlib/can_common.c: 686:  if(get_message_type(msg) != 0x7A0) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1952 `i `ui 155  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 151  ]
+}
+[e :U 155 ]
+"688
+[; ;canlib/can_common.c: 688:  memcpy(data, msg->data + 3, sizeof(*data));
+[e ( _memcpy (3 , , -> _data `*v -> + &U . *U _msg 2 * -> -> 3 `i `x -> -> # *U &U . *U _msg 2 `i `x `*Cv -> # *U _data `ui ]
+"689
+[; ;canlib/can_common.c: 689:  *data_id = msg->data[7];
+[e = *U _data_id -> *U + &U . *U _msg 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `E127 ]
+"691
+[; ;canlib/can_common.c: 691:  return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 151  ]
+"692
+[; ;canlib/can_common.c: 692: }
+[e :UE 151 ]
+}
+"694
+[; ;canlib/can_common.c: 694: _Bool get_analog_data(const can_msg_t *msg, enum SENSOR_ID *sensor_id, uint16_t *output_data)
+[v _get_analog_data `(a ~T0 @X0 1 ef3`*CS2`*E84`*us ]
+"695
+[; ;canlib/can_common.c: 695: {
+{
+[e :U _get_analog_data ]
+"694
+[; ;canlib/can_common.c: 694: _Bool get_analog_data(const can_msg_t *msg, enum SENSOR_ID *sensor_id, uint16_t *output_data)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[v _sensor_id `*E84 ~T0 @X0 1 r2 ]
+[v _output_data `*us ~T0 @X0 1 r3 ]
+"695
+[; ;canlib/can_common.c: 695: {
+[f ]
+"696
+[; ;canlib/can_common.c: 696:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 157  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 156  ]
+}
+[e :U 157 ]
+"697
+[; ;canlib/can_common.c: 697:     if (!output_data) { return 0; }
+[e $ ! ! != _output_data -> -> 0 `i `*us 158  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 156  ]
+}
+[e :U 158 ]
+"698
+[; ;canlib/can_common.c: 698:     if (get_message_type(msg) != 0x6A0) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1696 `i `ui 159  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 156  ]
+}
+[e :U 159 ]
+"700
+[; ;canlib/can_common.c: 700:     *sensor_id = msg->data[2];
+[e = *U _sensor_id -> *U + &U . *U _msg 2 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `E84 ]
+"701
+[; ;canlib/can_common.c: 701:     *output_data = (uint16_t)msg->data[3] << 8 | msg->data[4];
+[e = *U _output_data -> | << -> -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `us `ui -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ui `us ]
+"703
+[; ;canlib/can_common.c: 703:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 156  ]
+"704
+[; ;canlib/can_common.c: 704: }
+[e :UE 156 ]
+}
+"706
+[; ;canlib/can_common.c: 706: _Bool get_temp_data(const can_msg_t *msg,
+[v _get_temp_data `(a ~T0 @X0 1 ef3`*CS2`*uc`*l ]
+"709
+[; ;canlib/can_common.c: 709: {
+{
+[e :U _get_temp_data ]
+"706
+[; ;canlib/can_common.c: 706: _Bool get_temp_data(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"707
+[; ;canlib/can_common.c: 707:                    uint8_t *sensor_num,
+[v _sensor_num `*uc ~T0 @X0 1 r2 ]
+"708
+[; ;canlib/can_common.c: 708:                    int32_t *temp)
+[v _temp `*l ~T0 @X0 1 r3 ]
+"709
+[; ;canlib/can_common.c: 709: {
+[f ]
+"710
+[; ;canlib/can_common.c: 710:     if (!msg || !sensor_num || !temp) { return 0; }
+[e $ ! || || ! != _msg -> -> 0 `i `*CS2 ! != _sensor_num -> -> 0 `i `*uc ! != _temp -> -> 0 `i `*l 161  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 160  ]
+}
+[e :U 161 ]
+"711
+[; ;canlib/can_common.c: 711:     if (get_message_type(msg) != 0x540) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1344 `i `ui 162  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 160  ]
+}
+[e :U 162 ]
+"713
+[; ;canlib/can_common.c: 713:     *sensor_num = msg->data[3];
+[e = *U _sensor_num *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"715
+[; ;canlib/can_common.c: 715:     *temp = (msg->data[4] & 0x80)? 0xFF << 24 : 0;
+[e = *U _temp -> ? != & -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 128 `i -> 0 `i : << -> 255 `i -> 24 `i -> 0 `i `l ]
+"716
+[; ;canlib/can_common.c: 716:     *temp |= ((uint32_t)msg->data[4] << 16);
+[e =| *U _temp -> << -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul -> 16 `i `l ]
+"717
+[; ;canlib/can_common.c: 717:     *temp |= ((uint32_t)msg->data[5] << 8);
+[e =| *U _temp -> << -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul -> 8 `i `l ]
+"718
+[; ;canlib/can_common.c: 718:     *temp |= msg->data[6];
+[e =| *U _temp -> *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `l ]
+"720
+[; ;canlib/can_common.c: 720:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 160  ]
+"721
+[; ;canlib/can_common.c: 721: }
+[e :UE 160 ]
+}
+"723
+[; ;canlib/can_common.c: 723: _Bool get_altitude_data(const can_msg_t *msg, int32_t *altitude)
+[v _get_altitude_data `(a ~T0 @X0 1 ef2`*CS2`*l ]
+"724
+[; ;canlib/can_common.c: 724: {
+{
+[e :U _get_altitude_data ]
+"723
+[; ;canlib/can_common.c: 723: _Bool get_altitude_data(const can_msg_t *msg, int32_t *altitude)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+[v _altitude `*l ~T0 @X0 1 r2 ]
+"724
+[; ;canlib/can_common.c: 724: {
+[f ]
+"725
+[; ;canlib/can_common.c: 725:     if (!msg || !altitude) { return 0; }
+[e $ ! || ! != _msg -> -> 0 `i `*CS2 ! != _altitude -> -> 0 `i `*l 164  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 163  ]
+}
+[e :U 164 ]
+"726
+[; ;canlib/can_common.c: 726:     if (get_message_type(msg) != 0x560) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1376 `i `ui 165  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 163  ]
+}
+[e :U 165 ]
+"728
+[; ;canlib/can_common.c: 728:     *altitude = ((uint32_t)msg->data[3] << 24);
+[e = *U _altitude -> << -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul -> 24 `i `l ]
+"729
+[; ;canlib/can_common.c: 729:     *altitude |= ((uint32_t)msg->data[4] << 16);
+[e =| *U _altitude -> << -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul -> 16 `i `l ]
+"730
+[; ;canlib/can_common.c: 730:     *altitude |= ((uint32_t)msg->data[5] << 8);
+[e =| *U _altitude -> << -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ul -> 8 `i `l ]
+"731
+[; ;canlib/can_common.c: 731:     *altitude |= msg->data[6];
+[e =| *U _altitude -> *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `l ]
+"733
+[; ;canlib/can_common.c: 733:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 163  ]
+"734
+[; ;canlib/can_common.c: 734: }
+[e :UE 163 ]
+}
+"736
+[; ;canlib/can_common.c: 736: _Bool get_pyro_voltage_data(const can_msg_t *msg,
+[v _get_pyro_voltage_data `(a ~T0 @X0 1 ef3`*CS2`*us`*us ]
+"739
+[; ;canlib/can_common.c: 739: {
+{
+[e :U _get_pyro_voltage_data ]
+"736
+[; ;canlib/can_common.c: 736: _Bool get_pyro_voltage_data(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"737
+[; ;canlib/can_common.c: 737:                            uint16_t *v_drogue,
+[v _v_drogue `*us ~T0 @X0 1 r2 ]
+"738
+[; ;canlib/can_common.c: 738:                            uint16_t *v_main)
+[v _v_main `*us ~T0 @X0 1 r3 ]
+"739
+[; ;canlib/can_common.c: 739: {
+[f ]
+"740
+[; ;canlib/can_common.c: 740:     if (!msg || !v_drogue || !v_main) { return 0; }
+[e $ ! || || ! != _msg -> -> 0 `i `*CS2 ! != _v_drogue -> -> 0 `i `*us ! != _v_main -> -> 0 `i `*us 167  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 166  ]
+}
+[e :U 167 ]
+"741
+[; ;canlib/can_common.c: 741:     if (get_message_type(msg) != 0x440) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1088 `i `ui 168  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 166  ]
+}
+[e :U 168 ]
+"743
+[; ;canlib/can_common.c: 743:     *v_drogue = (msg->data[4] << 8);
+[e = *U _v_drogue -> << -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 8 `i `us ]
+"744
+[; ;canlib/can_common.c: 744:     *v_drogue += msg->data[5];
+[e =+ *U _v_drogue -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `us ]
+"745
+[; ;canlib/can_common.c: 745:     *v_main = (msg->data[6] << 8);
+[e = *U _v_main -> << -> *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 8 `i `us ]
+"746
+[; ;canlib/can_common.c: 746:     *v_main += msg->data[7];
+[e =+ *U _v_main -> *U + &U . *U _msg 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `us ]
+"748
+[; ;canlib/can_common.c: 748:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 166  ]
+"749
+[; ;canlib/can_common.c: 749: }
+[e :UE 166 ]
+}
+"751
+[; ;canlib/can_common.c: 751: _Bool get_gps_time(const can_msg_t *msg,
+[v _get_gps_time `(a ~T0 @X0 1 ef5`*CS2`*uc`*uc`*uc`*uc ]
+"756
+[; ;canlib/can_common.c: 756: {
+{
+[e :U _get_gps_time ]
+"751
+[; ;canlib/can_common.c: 751: _Bool get_gps_time(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"752
+[; ;canlib/can_common.c: 752:                   uint8_t *utc_hours,
+[v _utc_hours `*uc ~T0 @X0 1 r2 ]
+"753
+[; ;canlib/can_common.c: 753:                   uint8_t *utc_mins,
+[v _utc_mins `*uc ~T0 @X0 1 r3 ]
+"754
+[; ;canlib/can_common.c: 754:                   uint8_t *utc_secs,
+[v _utc_secs `*uc ~T0 @X0 1 r4 ]
+"755
+[; ;canlib/can_common.c: 755:                   uint8_t *utc_dsecs)
+[v _utc_dsecs `*uc ~T0 @X0 1 r5 ]
+"756
+[; ;canlib/can_common.c: 756: {
+[f ]
+"757
+[; ;canlib/can_common.c: 757:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 170  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 169  ]
+}
+[e :U 170 ]
+"758
+[; ;canlib/can_common.c: 758:     if (!utc_hours) { return 0; }
+[e $ ! ! != _utc_hours -> -> 0 `i `*uc 171  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 169  ]
+}
+[e :U 171 ]
+"759
+[; ;canlib/can_common.c: 759:     if (!utc_mins) { return 0; }
+[e $ ! ! != _utc_mins -> -> 0 `i `*uc 172  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 169  ]
+}
+[e :U 172 ]
+"760
+[; ;canlib/can_common.c: 760:     if (!utc_secs) { return 0; }
+[e $ ! ! != _utc_secs -> -> 0 `i `*uc 173  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 169  ]
+}
+[e :U 173 ]
+"761
+[; ;canlib/can_common.c: 761:     if (!utc_dsecs) { return 0; }
+[e $ ! ! != _utc_dsecs -> -> 0 `i `*uc 174  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 169  ]
+}
+[e :U 174 ]
+"762
+[; ;canlib/can_common.c: 762:     if (get_message_type(msg) != 0x6C0) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1728 `i `ui 175  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 169  ]
+}
+[e :U 175 ]
+"764
+[; ;canlib/can_common.c: 764:     *utc_hours = msg->data[3];
+[e = *U _utc_hours *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"765
+[; ;canlib/can_common.c: 765:     *utc_mins = msg->data[4];
+[e = *U _utc_mins *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"766
+[; ;canlib/can_common.c: 766:     *utc_secs = msg->data[5];
+[e = *U _utc_secs *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"767
+[; ;canlib/can_common.c: 767:     *utc_dsecs = msg->data[6];
+[e = *U _utc_dsecs *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"769
+[; ;canlib/can_common.c: 769:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 169  ]
+"770
+[; ;canlib/can_common.c: 770: }
+[e :UE 169 ]
+}
+"772
+[; ;canlib/can_common.c: 772: _Bool get_gps_lat(const can_msg_t *msg,
+[v _get_gps_lat `(a ~T0 @X0 1 ef5`*CS2`*uc`*uc`*us`*uc ]
+"777
+[; ;canlib/can_common.c: 777: {
+{
+[e :U _get_gps_lat ]
+"772
+[; ;canlib/can_common.c: 772: _Bool get_gps_lat(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"773
+[; ;canlib/can_common.c: 773:                  uint8_t *degrees,
+[v _degrees `*uc ~T0 @X0 1 r2 ]
+"774
+[; ;canlib/can_common.c: 774:                  uint8_t *minutes,
+[v _minutes `*uc ~T0 @X0 1 r3 ]
+"775
+[; ;canlib/can_common.c: 775:                  uint16_t *dminutes,
+[v _dminutes `*us ~T0 @X0 1 r4 ]
+"776
+[; ;canlib/can_common.c: 776:                  uint8_t *direction)
+[v _direction `*uc ~T0 @X0 1 r5 ]
+"777
+[; ;canlib/can_common.c: 777: {
+[f ]
+"778
+[; ;canlib/can_common.c: 778:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 177  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 176  ]
+}
+[e :U 177 ]
+"779
+[; ;canlib/can_common.c: 779:     if (!degrees) { return 0; }
+[e $ ! ! != _degrees -> -> 0 `i `*uc 178  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 176  ]
+}
+[e :U 178 ]
+"780
+[; ;canlib/can_common.c: 780:     if (!minutes) { return 0; }
+[e $ ! ! != _minutes -> -> 0 `i `*uc 179  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 176  ]
+}
+[e :U 179 ]
+"781
+[; ;canlib/can_common.c: 781:     if (!dminutes) { return 0; }
+[e $ ! ! != _dminutes -> -> 0 `i `*us 180  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 176  ]
+}
+[e :U 180 ]
+"782
+[; ;canlib/can_common.c: 782:     if (!direction) { return 0; }
+[e $ ! ! != _direction -> -> 0 `i `*uc 181  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 176  ]
+}
+[e :U 181 ]
+"783
+[; ;canlib/can_common.c: 783:     if (get_message_type(msg) != 0x6E0) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1760 `i `ui 182  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 176  ]
+}
+[e :U 182 ]
+"785
+[; ;canlib/can_common.c: 785:     *degrees = msg->data[3];
+[e = *U _degrees *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"786
+[; ;canlib/can_common.c: 786:     *minutes = msg->data[4];
+[e = *U _minutes *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"787
+[; ;canlib/can_common.c: 787:     *dminutes = msg->data[5] << 8 | msg->data[6];
+[e = *U _dminutes -> | << -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i `us ]
+"788
+[; ;canlib/can_common.c: 788:     *direction = msg->data[7];
+[e = *U _direction *U + &U . *U _msg 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"790
+[; ;canlib/can_common.c: 790:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 176  ]
+"791
+[; ;canlib/can_common.c: 791: }
+[e :UE 176 ]
+}
+"793
+[; ;canlib/can_common.c: 793: _Bool get_gps_lon(const can_msg_t *msg,
+[v _get_gps_lon `(a ~T0 @X0 1 ef5`*CS2`*uc`*uc`*us`*uc ]
+"798
+[; ;canlib/can_common.c: 798: {
+{
+[e :U _get_gps_lon ]
+"793
+[; ;canlib/can_common.c: 793: _Bool get_gps_lon(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"794
+[; ;canlib/can_common.c: 794:                  uint8_t *degrees,
+[v _degrees `*uc ~T0 @X0 1 r2 ]
+"795
+[; ;canlib/can_common.c: 795:                  uint8_t *minutes,
+[v _minutes `*uc ~T0 @X0 1 r3 ]
+"796
+[; ;canlib/can_common.c: 796:                  uint16_t *dminutes,
+[v _dminutes `*us ~T0 @X0 1 r4 ]
+"797
+[; ;canlib/can_common.c: 797:                  uint8_t *direction)
+[v _direction `*uc ~T0 @X0 1 r5 ]
+"798
+[; ;canlib/can_common.c: 798: {
+[f ]
+"799
+[; ;canlib/can_common.c: 799:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 184  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 183  ]
+}
+[e :U 184 ]
+"800
+[; ;canlib/can_common.c: 800:     if (!degrees) { return 0; }
+[e $ ! ! != _degrees -> -> 0 `i `*uc 185  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 183  ]
+}
+[e :U 185 ]
+"801
+[; ;canlib/can_common.c: 801:     if (!minutes) { return 0; }
+[e $ ! ! != _minutes -> -> 0 `i `*uc 186  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 183  ]
+}
+[e :U 186 ]
+"802
+[; ;canlib/can_common.c: 802:     if (!dminutes) { return 0; }
+[e $ ! ! != _dminutes -> -> 0 `i `*us 187  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 183  ]
+}
+[e :U 187 ]
+"803
+[; ;canlib/can_common.c: 803:     if (!direction) { return 0; }
+[e $ ! ! != _direction -> -> 0 `i `*uc 188  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 183  ]
+}
+[e :U 188 ]
+"804
+[; ;canlib/can_common.c: 804:     if (get_message_type(msg) != 0x700) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1792 `i `ui 189  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 183  ]
+}
+[e :U 189 ]
+"806
+[; ;canlib/can_common.c: 806:     *degrees = msg->data[3];
+[e = *U _degrees *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"807
+[; ;canlib/can_common.c: 807:     *minutes = msg->data[4];
+[e = *U _minutes *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"808
+[; ;canlib/can_common.c: 808:     *dminutes = msg->data[5] << 8 | msg->data[6];
+[e = *U _dminutes -> | << -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i `us ]
+"809
+[; ;canlib/can_common.c: 809:     *direction = msg->data[7];
+[e = *U _direction *U + &U . *U _msg 2 * -> -> -> 7 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"811
+[; ;canlib/can_common.c: 811:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 183  ]
+"812
+[; ;canlib/can_common.c: 812: }
+[e :UE 183 ]
+}
+"814
+[; ;canlib/can_common.c: 814: _Bool get_gps_alt(const can_msg_t *msg,
+[v _get_gps_alt `(a ~T0 @X0 1 ef4`*CS2`*us`*uc`*uc ]
+"818
+[; ;canlib/can_common.c: 818: {
+{
+[e :U _get_gps_alt ]
+"814
+[; ;canlib/can_common.c: 814: _Bool get_gps_alt(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"815
+[; ;canlib/can_common.c: 815:                  uint16_t *altitude,
+[v _altitude `*us ~T0 @X0 1 r2 ]
+"816
+[; ;canlib/can_common.c: 816:                  uint8_t *daltitude,
+[v _daltitude `*uc ~T0 @X0 1 r3 ]
+"817
+[; ;canlib/can_common.c: 817:                  uint8_t *units)
+[v _units `*uc ~T0 @X0 1 r4 ]
+"818
+[; ;canlib/can_common.c: 818: {
+[f ]
+"819
+[; ;canlib/can_common.c: 819:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 191  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 190  ]
+}
+[e :U 191 ]
+"820
+[; ;canlib/can_common.c: 820:     if (!altitude) { return 0; }
+[e $ ! ! != _altitude -> -> 0 `i `*us 192  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 190  ]
+}
+[e :U 192 ]
+"821
+[; ;canlib/can_common.c: 821:     if (!daltitude) { return 0; }
+[e $ ! ! != _daltitude -> -> 0 `i `*uc 193  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 190  ]
+}
+[e :U 193 ]
+"822
+[; ;canlib/can_common.c: 822:     if (!units) { return 0; }
+[e $ ! ! != _units -> -> 0 `i `*uc 194  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 190  ]
+}
+[e :U 194 ]
+"823
+[; ;canlib/can_common.c: 823:     if (get_message_type(msg) != 0x720) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1824 `i `ui 195  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 190  ]
+}
+[e :U 195 ]
+"825
+[; ;canlib/can_common.c: 825:     *altitude = (uint16_t)msg->data[3] << 8 | msg->data[4];
+[e = *U _altitude -> | << -> -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `us `ui -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `ui `us ]
+"826
+[; ;canlib/can_common.c: 826:     *daltitude = msg->data[5];
+[e = *U _daltitude *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"827
+[; ;canlib/can_common.c: 827:     *units = msg->data[6];
+[e = *U _units *U + &U . *U _msg 2 * -> -> -> 6 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"829
+[; ;canlib/can_common.c: 829:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 190  ]
+"830
+[; ;canlib/can_common.c: 830: }
+[e :UE 190 ]
+}
+"832
+[; ;canlib/can_common.c: 832: _Bool get_gps_info(const can_msg_t *msg,
+[v _get_gps_info `(a ~T0 @X0 1 ef3`*CS2`*uc`*uc ]
+"835
+[; ;canlib/can_common.c: 835: {
+{
+[e :U _get_gps_info ]
+"832
+[; ;canlib/can_common.c: 832: _Bool get_gps_info(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"833
+[; ;canlib/can_common.c: 833:                  uint8_t *num_sat,
+[v _num_sat `*uc ~T0 @X0 1 r2 ]
+"834
+[; ;canlib/can_common.c: 834:                  uint8_t *quality)
+[v _quality `*uc ~T0 @X0 1 r3 ]
+"835
+[; ;canlib/can_common.c: 835: {
+[f ]
+"836
+[; ;canlib/can_common.c: 836:     if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 197  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 196  ]
+}
+[e :U 197 ]
+"837
+[; ;canlib/can_common.c: 837:     if (!num_sat) { return 0; }
+[e $ ! ! != _num_sat -> -> 0 `i `*uc 198  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 196  ]
+}
+[e :U 198 ]
+"838
+[; ;canlib/can_common.c: 838:     if (!quality) { return 0; }
+[e $ ! ! != _quality -> -> 0 `i `*uc 199  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 196  ]
+}
+[e :U 199 ]
+"839
+[; ;canlib/can_common.c: 839:     if (get_message_type(msg) != 0x740) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1856 `i `ui 200  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 196  ]
+}
+[e :U 200 ]
+"841
+[; ;canlib/can_common.c: 841:     *num_sat = msg->data[3];
+[e = *U _num_sat *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"842
+[; ;canlib/can_common.c: 842:     *quality = msg->data[4];
+[e = *U _quality *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"844
+[; ;canlib/can_common.c: 844:     return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 196  ]
+"845
+[; ;canlib/can_common.c: 845: }
+[e :UE 196 ]
+}
+"847
+[; ;canlib/can_common.c: 847: _Bool get_state_est_calibration_msg(const can_msg_t *msg,
+[v _get_state_est_calibration_msg `(a ~T0 @X0 1 ef3`*CS2`*uc`*us ]
+"850
+[; ;canlib/can_common.c: 850: {
+{
+[e :U _get_state_est_calibration_msg ]
+"847
+[; ;canlib/can_common.c: 847: _Bool get_state_est_calibration_msg(const can_msg_t *msg,
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"848
+[; ;canlib/can_common.c: 848:            uint8_t *ack_flag,
+[v _ack_flag `*uc ~T0 @X0 1 r2 ]
+"849
+[; ;canlib/can_common.c: 849:            uint16_t *apogee)
+[v _apogee `*us ~T0 @X0 1 r3 ]
+"850
+[; ;canlib/can_common.c: 850: {
+[f ]
+"851
+[; ;canlib/can_common.c: 851:  if (!msg) { return 0; }
+[e $ ! ! != _msg -> -> 0 `i `*CS2 202  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 201  ]
+}
+[e :U 202 ]
+"852
+[; ;canlib/can_common.c: 852:  if (!ack_flag) { return 0; }
+[e $ ! ! != _ack_flag -> -> 0 `i `*uc 203  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 201  ]
+}
+[e :U 203 ]
+"853
+[; ;canlib/can_common.c: 853:  if (!apogee) { return 0; }
+[e $ ! ! != _apogee -> -> 0 `i `*us 204  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 201  ]
+}
+[e :U 204 ]
+"854
+[; ;canlib/can_common.c: 854:  if (get_message_type(msg) != 0x620) { return 0; }
+[e $ ! != -> ( _get_message_type (1 _msg `ui -> -> 1568 `i `ui 205  ]
+{
+[e ) -> -> 0 `i `a ]
+[e $UE 201  ]
+}
+[e :U 205 ]
+"856
+[; ;canlib/can_common.c: 856:  *ack_flag = msg->data[3];
+[e = *U _ack_flag *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux ]
+"857
+[; ;canlib/can_common.c: 857:  *apogee = msg->data[4] << 8 | msg->data[5];
+[e = *U _apogee -> | << -> *U + &U . *U _msg 2 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 8 `i -> *U + &U . *U _msg 2 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i `us ]
+"859
+[; ;canlib/can_common.c: 859:  return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 201  ]
+"860
+[; ;canlib/can_common.c: 860: }
+[e :UE 201 ]
+}
+"862
+[; ;canlib/can_common.c: 862: can_debug_level_t message_debug_level(const can_msg_t *msg)
+[v _message_debug_level `(E146 ~T0 @X0 1 ef1`*CS2 ]
+"863
+[; ;canlib/can_common.c: 863: {
+{
+[e :U _message_debug_level ]
+"862
+[; ;canlib/can_common.c: 862: can_debug_level_t message_debug_level(const can_msg_t *msg)
+[v _msg `*CS2 ~T0 @X0 1 r1 ]
+"863
+[; ;canlib/can_common.c: 863: {
+[f ]
+"864
+[; ;canlib/can_common.c: 864:     uint16_t type = get_message_type(msg);
+[v _type `us ~T0 @X0 1 a ]
+[e = _type ( _get_message_type (1 _msg ]
+"865
+[; ;canlib/can_common.c: 865:     if (type != 0x180) {
+[e $ ! != -> _type `ui -> -> 384 `i `ui 207  ]
+{
+"866
+[; ;canlib/can_common.c: 866:         return LVL_NONE;
+[e ) . `E146 0 ]
+[e $UE 206  ]
+"867
+[; ;canlib/can_common.c: 867:     } else {
+}
+[e $U 208  ]
+[e :U 207 ]
+{
+"874
+[; ;canlib/can_common.c: 874:         return ((msg->data[3] >> 4) & 0xf);
+[e ) -> & >> -> *U + &U . *U _msg 2 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _msg 2 `ui `ux `i -> 4 `i -> 15 `i `E146 ]
+[e $UE 206  ]
+"875
+[; ;canlib/can_common.c: 875:     }
+}
+[e :U 208 ]
+"876
+[; ;canlib/can_common.c: 876: }
+[e :UE 206 ]
+}
+"895
+[; ;canlib/can_common.c: 895: const char *build_printf_can_message(const char *string, can_msg_t *output)
+[v _build_printf_can_message `(*Cuc ~T0 @X0 1 ef2`*Cuc`*S2 ]
+"896
+[; ;canlib/can_common.c: 896: {
+{
+[e :U _build_printf_can_message ]
+"895
+[; ;canlib/can_common.c: 895: const char *build_printf_can_message(const char *string, can_msg_t *output)
+[v _string `*Cuc ~T0 @X0 1 r1 ]
+[v _output `*S2 ~T0 @X0 1 r2 ]
+"896
+[; ;canlib/can_common.c: 896: {
+[f ]
+"898
+[; ;canlib/can_common.c: 898:     output->sid = (0x1E0 | 0x0C);
+[e = . *U _output 0 -> | -> 480 `i -> 12 `i `us ]
+"899
+[; ;canlib/can_common.c: 899:     uint8_t i;
+[v _i `uc ~T0 @X0 1 a ]
+"900
+[; ;canlib/can_common.c: 900:     for (i = 0; i < 8; ++i) {
+{
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 8 `i 210  ]
+[e $U 211  ]
+[e :U 210 ]
+{
+"901
+[; ;canlib/can_common.c: 901:         if (*string == '\0') {
+[e $ ! == -> *U _string `ui -> 0 `ui 213  ]
+{
+"902
+[; ;canlib/can_common.c: 902:             output->data_len = i;
+[e = . *U _output 1 _i ]
+"903
+[; ;canlib/can_common.c: 903:             return string;
+[e ) _string ]
+[e $UE 209  ]
+"904
+[; ;canlib/can_common.c: 904:         }
+}
+[e :U 213 ]
+"905
+[; ;canlib/can_common.c: 905:         output->data[i] = *string;
+[e = *U + &U . *U _output 2 * -> _i `ux -> -> # *U &U . *U _output 2 `ui `ux -> *U _string `uc ]
+"906
+[; ;canlib/can_common.c: 906:         string++;
+[e ++ _string * -> -> 1 `i `x -> -> # *U _string `i `x ]
+"907
+[; ;canlib/can_common.c: 907:     }
+}
+[e =+ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 8 `i 210  ]
+[e :U 211 ]
+}
+"908
+[; ;canlib/can_common.c: 908:     output->data_len = i;
+[e = . *U _output 1 _i ]
+"909
+[; ;canlib/can_common.c: 909:     return string;
+[e ) _string ]
+[e $UE 209  ]
+"910
+[; ;canlib/can_common.c: 910: }
+[e :UE 209 ]
+}
+"912
+[; ;canlib/can_common.c: 912: const char *build_radio_cmd_can_message(const char *string, can_msg_t *output)
+[v _build_radio_cmd_can_message `(*Cuc ~T0 @X0 1 ef2`*Cuc`*S2 ]
+"913
+[; ;canlib/can_common.c: 913: {
+{
+[e :U _build_radio_cmd_can_message ]
+"912
+[; ;canlib/can_common.c: 912: const char *build_radio_cmd_can_message(const char *string, can_msg_t *output)
+[v _string `*Cuc ~T0 @X0 1 r1 ]
+[v _output `*S2 ~T0 @X0 1 r2 ]
+"913
+[; ;canlib/can_common.c: 913: {
+[f ]
+"915
+[; ;canlib/can_common.c: 915:     string = build_printf_can_message(string, output);
+[e = _string ( _build_printf_can_message (2 , _string _output ]
+"917
+[; ;canlib/can_common.c: 917:     output->sid = (0x200 | 0x0C);
+[e = . *U _output 0 -> | -> 512 `i -> 12 `i `us ]
+"918
+[; ;canlib/can_common.c: 918:     return string;
+[e ) _string ]
+[e $UE 214  ]
+"919
+[; ;canlib/can_common.c: 919: }
+[e :UE 214 ]
+}
