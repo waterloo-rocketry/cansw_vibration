@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <xc.h>
 
 #include "canlib.h"
@@ -21,6 +22,10 @@ static char GLOBAL_FILENAME[20];
 
 // memory pool for the CAN tx buffer
 uint8_t tx_pool[400];
+
+// File write buffer
+char file_write_buf[1500];
+uint16_t file_write_buf_ptr = 0;
 
 static inline void SET_ACCEL_I2C_ADDR(uint8_t addr) {
     LATC2 = (addr == 0x19); // SA0 pin of FXLS set LSB of 7-bit I2C Address
@@ -90,7 +95,7 @@ int main(void) {
     sprintf(GLOBAL_FILENAME, "PAY_%04x.txt", root_dir_files);
 
     if (f_open(&Fil, GLOBAL_FILENAME, FA_CREATE_NEW | FA_WRITE) == FR_OK) {
-        f_write(&Fil, "BEGIN LOG\r\n", 10, &bw);
+        f_write(&Fil, "BEGIN PAYLOAD LOG\n", 18, &bw);
         f_close(&Fil);
     }
 
@@ -128,11 +133,9 @@ int main(void) {
             txb_enqueue(&msg);
 
             char buf[25];
-            size_t len = snprintf(buf, 25, "A%hu,%hu,%hu\n", a[0], a[1], a[2]);
-            if (f_open(&Fil, GLOBAL_FILENAME, FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
-                f_write(&Fil, buf, len, &bw);
-                f_close(&Fil);
-            }
+            int len = snprintf(buf, 25, "A%hu,%hu,%hu\n", a[0], a[1], a[2]);
+            memcpy(file_write_buf + file_write_buf_ptr, buf, len);
+            file_write_buf_ptr += len;
         }
 
         if ((millis() - last_flow_millis) > FLOW_TIME_DIFF_ms) {
@@ -150,14 +153,20 @@ int main(void) {
             txb_enqueue(&msg);
 
             char buf[25];
-            size_t len = snprintf(buf, 25, "F%hu,%hu\n", flow, temp);
-            if (f_open(&Fil, GLOBAL_FILENAME, FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
-                f_write(&Fil, buf, len, &bw);
-                f_close(&Fil);
-            }
+            int len = snprintf(buf, 25, "F%hu,%hu\n", flow, temp);
+            memcpy(file_write_buf + file_write_buf_ptr, buf, len);
+            file_write_buf_ptr += len;
         }
 
         txb_heartbeat();
+
+        if (file_write_buf_ptr > 1400) {
+            if (f_open(&Fil, GLOBAL_FILENAME, FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
+                f_write(&Fil, file_write_buf, file_write_buf_ptr, &bw);
+                f_close(&Fil);
+            }
+            file_write_buf_ptr = 0;
+        }
     }
 }
 
