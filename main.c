@@ -45,7 +45,7 @@ int main(void) {
     TRISA4 = 0; // Red LED output enable
     TRISC2 = 0; // Acccelerometer I2C select pin output enable
 
-    if (f_mount(&FatFs, "", 1) == FR_OK) { /* Mount SD */
+    if (f_mount(&FatFs, "", 1) == FR_OK) {
         if (f_open(&Fil, "PAYLOAD.txt", FA_CREATE_NEW | FA_READ | FA_WRITE) == FR_OK) {
             f_write(&Fil, "BEGIN LOG\r\n", 10, &bw);
             f_close(&Fil);
@@ -86,7 +86,7 @@ int main(void) {
         can_send(&msg);
 
         while (!can_send_rdy()) {}
-        build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP_1, adc_value, &msg);
+        build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, adc_value, &msg);
         can_send(&msg);
     }
 }

@@ -37,12 +37,12 @@
 
 void PIN_MANAGER_Initialize(void)
 {
-   /**
+	/**
     LATx registers
     */
-    LATA = 0x0;
-    LATB = 0x6;
-    LATC = 0x0;
+    LATA = 0x00;
+    LATB = 0x06;
+    LATC = 0x00;
 
     /**
     TRISx registers
@@ -54,24 +54,24 @@ void PIN_MANAGER_Initialize(void)
     /**
     ANSELx registers
     */
-    ANSELA = 0xC7;
+    ANSELC = 0xC7;
     ANSELB = 0xF9;
-    ANSELC = 0xDF;
+    ANSELA = 0xDF;
 
     /**
     WPUx registers
     */
-    WPUA = 0x0;
-    WPUB = 0x0;
-    WPUC = 0x0;
-    WPUE = 0x0;
+    WPUE = 0x00;
+    WPUB = 0x00;
+    WPUA = 0x00;
+    WPUC = 0x00;
 
     /**
     ODx registers
     */
-    ODCONA = 0x0;
-    ODCONB = 0x6;
-    ODCONC = 0x0;
+    ODCONA = 0x00;
+    ODCONB = 0x06;
+    ODCONC = 0x00;
 
     /**
     SLRCONx registers
@@ -86,7 +86,7 @@ void PIN_MANAGER_Initialize(void)
     INLVLA = 0xFF;
     INLVLB = 0xFF;
     INLVLC = 0xFF;
-    INLVLE = 0x8;
+    INLVLE = 0x08;
 
    /**
     RxyI2C | RxyFEAT registers   
