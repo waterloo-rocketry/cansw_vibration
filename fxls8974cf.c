@@ -21,9 +21,8 @@ void fxls_init(void) {
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2, sens_config2);
     //
     // BUF_CONFIG1: Disable buffer mode
-    BUF_MODE_MASK 0x60;
     uint8_t buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1);
-    buf_config1 &= ~BUF_MODE_MASK; // Clear BUF_MODE1 and BUF_MODE0 bits
+    buf_config1 &= ~0x60; // Clear BUF_MODE1 and BUF_MODE0 bits
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, buf_config1);
     //
     // SENS_CONFIG3: Set ODR to 100Hz: set bits 7:4 to 0101
@@ -51,27 +50,21 @@ void fxls_init(void) {
 }
 
 uint8_t fxls_get_prod_rev(void) {
-    i2c_init(0b000); // Initialize I2C at 100 kHz
     return i2c_read_reg8(FXLS_I2C_ADDR, FXLS_PROD_REV);
 }
 
 uint8_t fxls_get_whoami(void) {
-    i2c_init(0b000); // Initialize I2C at 100 kHz
     return i2c_read_reg8(FXLS_I2C_ADDR, FXLS_WHO_AM_I);
 }
 
 // Do I need this if ISR handles interrupts from INT2?
 int data_ready() {
-    // INT_STATUS_REG = 0x00
-    i2c_init(0b000); // I2C at 100 kHz SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
     uint8_t status = i2c_read_reg8(FXLS_I2C_ADDR, INT_STATUS_REG);
     return (status & SRC_DRDY_MASK) ? 1 : 0;
 }
 
 void fxls_read_accel_data(int16_t *x, int16_t *y, int16_t *z) {
     uint8_t x_lsb, x_msb, y_lsb, y_msb, z_lsb, z_msb;
-
-    i2c_init(0b000); // Initialize I2C at 100 kHz
 
     // Read each byte of accelerometer data individually
     x_lsb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_X_LSB);
