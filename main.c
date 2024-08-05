@@ -27,6 +27,13 @@ uint8_t tx_pool[400];
 char file_write_buf[1500];
 uint16_t file_write_buf_ptr = 0;
 
+// Sensor CAN rate limiting
+uint8_t flow_poll_count = 0;
+uint8_t accel_poll_count = 0;
+
+#define FLOW_SEND_DIVISOR 5
+#define ACCEL_SEND_DIVISOR 50
+
 static inline void SET_ACCEL_I2C_ADDR(uint8_t addr) {
     LATC2 = (addr == 0x19); // SA0 pin of FXLS set LSB of 7-bit I2C Address
 }
@@ -129,8 +136,12 @@ int main(void) {
             // Read accelerometer data
             fxls_read_accel_data(a, a + 1, a + 2);
 
-            build_imu_data_msg(MSG_SENSOR_ACC, millis(), a, &msg);
-            txb_enqueue(&msg);
+            if (accel_poll_count == 0) {
+                build_imu_data_msg(MSG_SENSOR_ACC, millis(), a, &msg);
+                txb_enqueue(&msg);
+            }
+            accel_poll_count =
+                (accel_poll_count == ACCEL_SEND_DIVISOR) ? 0 : (accel_poll_count + 1);
 
             char buf[25];
             int len = snprintf(buf, 25, "A%hu,%hu,%hu\n", a[0], a[1], a[2]);
@@ -146,11 +157,14 @@ int main(void) {
             uint16_t flow, temp; // Temp factor 200
             read_flow_sensor_data(&flow, &temp);
 
-            build_analog_data_msg(millis(), SENSOR_PAYLOAD_FLOW_RATE, flow, &msg);
-            txb_enqueue(&msg);
+            if (flow_poll_count == 0) {
+                build_analog_data_msg(millis(), SENSOR_PAYLOAD_FLOW_RATE, flow, &msg);
+                txb_enqueue(&msg);
 
-            build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, temp, &msg);
-            txb_enqueue(&msg);
+                build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, temp, &msg);
+                txb_enqueue(&msg);
+            }
+            flow_poll_count = (flow_poll_count == FLOW_SEND_DIVISOR) ? 0 : (flow_poll_count + 1);
 
             char buf[25];
             int len = snprintf(buf, 25, "F%hu,%hu\n", flow, temp);
