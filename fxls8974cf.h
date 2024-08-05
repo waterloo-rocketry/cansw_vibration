@@ -8,5 +8,7 @@
 void fxls_init(void);
 uint8_t fxls_get_prod_rev(void);
 uint8_t fxls_get_whoami(void);
+int data_ready();
+void fxls_read_accel_data(int16_t *x, int16_t *y, int16_t *z);
 
 #endif

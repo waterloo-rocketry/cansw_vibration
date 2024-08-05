@@ -66,6 +66,8 @@ int main(void) {
 
     uint32_t last_millis = 0;
 
+    fxls_init();
+
     while (1) {
         if ((millis() - last_millis) < 500) {
             continue;
@@ -74,8 +76,8 @@ int main(void) {
 
         CLRWDT();
 
-        uint8_t whoami = fxls_get_whoami();
-        uint8_t prod_rev = fxls_get_prod_rev();
+        volatile uint8_t whoami = fxls_get_whoami();
+        volatile uint8_t prod_rev = fxls_get_prod_rev();
 
         adc_result_t adc_value = ADCC_GetSingleConversion(channel_ANA0);
 
@@ -88,6 +90,27 @@ int main(void) {
         while (!can_send_rdy()) {}
         build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, adc_value, &msg);
         can_send(&msg);
+
+        // Variables to hold accelerometer data
+        uint16_t x = 0;
+        uint16_t y = 0;
+        uint16_t z = 0;
+
+        // Read accelerometer data
+        fxls_read_accel_data(&x, &y, &z);
+
+        build_analog_data_msg(millis(), SENSOR_MAG_2, x, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
+        // for(int i = 0; i < 525; ++i);
+        build_analog_data_msg(millis(), SENSOR_VELOCITY, y, &msg);
+        can_send(&msg);
+        // while (!can_send_rdy()) {}
+        for (int i = 0; i < 525; ++i)
+            ;
+        build_analog_data_msg(millis(), SENSOR_ARM_BATT_1, z, &msg);
+        can_send(&msg);
+        while (!can_send_rdy()) {}
     }
 }
 
