@@ -17,6 +17,8 @@ FATFS FatFs; /* FatFs work area needed for each volume */
 FIL Fil;
 UINT bw;
 
+static char GLOBAL_FILENAME[20];
+
 // memory pool for the CAN tx buffer
 uint8_t tx_pool[400];
 
@@ -61,22 +63,35 @@ int main(void) {
     uint32_t last_flow_millis = millis();
     uint32_t last_accel_millis = millis();
 
-    if (f_mount(&FatFs, "", 1) == FR_OK) {
-        if (f_open(&Fil, "PAYLOAD.txt", FA_CREATE_NEW | FA_WRITE) == FR_OK) {
-            f_write(&Fil, "BEGIN LOG\r\n", 10, &bw);
-            f_close(&Fil);
+    while (f_mount(&FatFs, "", 1) != FR_OK) {
+        if (millis() - last_status_millis > STATUS_TIME_DIFF_ms) {
+            last_status_millis = millis();
+            can_msg_t msg;
+            build_board_stat_msg(millis(), E_LOGGING, NULL, 0, &msg);
+            txb_enqueue(&msg);
         }
-    } else {
-        while (f_mount(&FatFs, "", 1) != FR_OK) {
-            if (millis() - last_status_millis > STATUS_TIME_DIFF_ms) {
-                last_status_millis = millis();
-                can_msg_t msg;
-                build_board_stat_msg(millis(), E_LOGGING, NULL, 0, &msg);
-                txb_enqueue(&msg);
-            }
 
-            txb_heartbeat();
-        }
+        txb_heartbeat();
+    }
+
+    // count the number of flies in the root directory of the SD card
+    uint16_t root_dir_files = 0;
+    FFDIR dir;
+    if (f_opendir(&dir, "/") != FR_OK) {
+        // error(E_SD_FAIL_FS_INIT);
+    }
+
+    FILINFO finfo;
+    while (f_readdir(&dir, &finfo) == FR_OK && finfo.fname[0] != '\0') {
+        root_dir_files++;
+    }
+    f_closedir(&dir);
+
+    sprintf(GLOBAL_FILENAME, "PAY_%04x.txt", root_dir_files);
+
+    if (f_open(&Fil, GLOBAL_FILENAME, FA_CREATE_NEW | FA_WRITE) == FR_OK) {
+        f_write(&Fil, "BEGIN LOG\r\n", 10, &bw);
+        f_close(&Fil);
     }
 
     SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
@@ -114,7 +129,7 @@ int main(void) {
 
             char buf[25];
             size_t len = snprintf(buf, 25, "A%hu,%hu,%hu\n", a[0], a[1], a[2]);
-            if (f_open(&Fil, "PAYLOAD.txt", FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
+            if (f_open(&Fil, GLOBAL_FILENAME, FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
                 f_write(&Fil, buf, len, &bw);
                 f_close(&Fil);
             }
@@ -125,7 +140,7 @@ int main(void) {
 
             BLUE_LED_TOGGLE();
 
-            uint16_t flow, temp;
+            uint16_t flow, temp; // Temp factor 200
             read_flow_sensor_data(&flow, &temp);
 
             build_analog_data_msg(millis(), SENSOR_PAYLOAD_FLOW_RATE, flow, &msg);
@@ -136,7 +151,7 @@ int main(void) {
 
             char buf[25];
             size_t len = snprintf(buf, 25, "F%hu,%hu\n", flow, temp);
-            if (f_open(&Fil, "PAYLOAD.txt", FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
+            if (f_open(&Fil, GLOBAL_FILENAME, FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
                 f_write(&Fil, buf, len, &bw);
                 f_close(&Fil);
             }
