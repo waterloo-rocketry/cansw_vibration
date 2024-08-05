@@ -9,6 +9,10 @@
 #include "mcc_generated_files/system/system.h"
 #include "slf3s.h"
 
+#define STATUS_TIME_DIFF_ms 500 // 2 Hz
+#define FLOW_TIME_DIFF_ms 100 // 10 Hz
+#define ACCEL_TIME_DIFF_ms 10 // 100 Hz
+
 FATFS FatFs; /* FatFs work area needed for each volume */
 FIL Fil;
 UINT bw;
@@ -53,47 +57,51 @@ int main(void) {
     TRISA4 = 0; // Red LED output enable
     TRISC2 = 0; // Acccelerometer I2C select pin output enable
 
+    uint32_t last_status_millis = millis();
+    uint32_t last_flow_millis = millis();
+    uint32_t last_accel_millis = millis();
+
     if (f_mount(&FatFs, "", 1) == FR_OK) {
-        if (f_open(&Fil, "PAYLOAD.txt", FA_CREATE_NEW | FA_READ | FA_WRITE) == FR_OK) {
+        if (f_open(&Fil, "PAYLOAD.txt", FA_CREATE_NEW | FA_WRITE) == FR_OK) {
             f_write(&Fil, "BEGIN LOG\r\n", 10, &bw);
             f_close(&Fil);
         }
     } else {
         while (f_mount(&FatFs, "", 1) != FR_OK) {
-            /*if (millis() - last_status_millis > STATUS_TIME_DIF_ms) {
+            if (millis() - last_status_millis > STATUS_TIME_DIFF_ms) {
                 last_status_millis = millis();
-                send_status_err();
+                can_msg_t msg;
+                build_board_stat_msg(millis(), E_LOGGING, NULL, 0, &msg);
+                txb_enqueue(&msg);
             }
 
-            txb_heartbeat();*/
+            txb_heartbeat();
         }
     }
 
     SET_ACCEL_I2C_ADDR(FXLS_I2C_ADDR);
     i2c_init(0b000); // I2C at 100 kHz
 
-    uint32_t last_millis = 0;
-
     fxls_init();
     slf3s_init();
 
     while (1) {
-        if ((millis() - last_millis) > 200) {
-            last_millis = millis();
+        can_msg_t msg;
+        CLRWDT();
 
-            CLRWDT();
+        if ((millis() - last_status_millis) > STATUS_TIME_DIFF_ms) {
+            last_status_millis = millis();
 
-            //adc_result_t adc_value = ADCC_GetSingleConversion(channel_ANA0);
+            RED_LED_TOGGLE();
 
-            BLUE_LED_TOGGLE();
-
-            can_msg_t msg;
             build_board_stat_msg(millis(), E_NOMINAL, NULL, 0, &msg);
             txb_enqueue(&msg);
+        }
 
-			/*
-            build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, adc_value, &msg);
-            txb_enqueue(&msg);*/
+        if ((millis() - last_accel_millis) > ACCEL_TIME_DIFF_ms) {
+            last_accel_millis = millis();
+
+            GREEN_LED_TOGGLE();
 
             // Variables to hold accelerometer data
             uint16_t a[3];
@@ -103,15 +111,35 @@ int main(void) {
 
             build_imu_data_msg(MSG_SENSOR_ACC, millis(), a, &msg);
             txb_enqueue(&msg);
-            
+
+            char buf[25];
+            size_t len = snprintf(buf, 25, "A%hu,%hu,%hu\n", a[0], a[1], a[2]);
+            if (f_open(&Fil, "PAYLOAD.txt", FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
+                f_write(&Fil, buf, len, &bw);
+                f_close(&Fil);
+            }
+        }
+
+        if ((millis() - last_flow_millis) > FLOW_TIME_DIFF_ms) {
+            last_flow_millis = millis();
+
+            BLUE_LED_TOGGLE();
+
             uint16_t flow, temp;
             read_flow_sensor_data(&flow, &temp);
-            
-            build_analog_data_msg(millis(), SENSOR_PAYLOAD_FLOW_RATE, flow, &msg);
-			txb_enqueue(&msg);
 
-			build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, temp, &msg);
+            build_analog_data_msg(millis(), SENSOR_PAYLOAD_FLOW_RATE, flow, &msg);
             txb_enqueue(&msg);
+
+            build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, temp, &msg);
+            txb_enqueue(&msg);
+
+            char buf[25];
+            size_t len = snprintf(buf, 25, "F%hu,%hu\n", flow, temp);
+            if (f_open(&Fil, "PAYLOAD.txt", FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
+                f_write(&Fil, buf, len, &bw);
+                f_close(&Fil);
+            }
         }
 
         txb_heartbeat();

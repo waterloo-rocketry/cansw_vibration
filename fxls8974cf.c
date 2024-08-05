@@ -9,7 +9,7 @@ void fxls_init(void) {
     sens_config1 |= SENS_CONFIG1_MASK;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG1, sens_config1);
 
-    volatile uint8_t sys_mode = i2c_read_reg8(FXLS_I2C_ADDR, 0x14);
+    uint8_t sys_mode = i2c_read_reg8(FXLS_I2C_ADDR, 0x14);
 
     // SENS_CONFIG2: Configure wake and sleep modes, endian format, and read mode
     uint8_t sens_config2 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2);
