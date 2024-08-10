@@ -180,14 +180,15 @@ int main(void) {
 
             BLUE_LED_TOGGLE();
 
-            uint16_t flow, temp; // Temp factor 200
+            uint16_t flow, temp;
             read_flow_sensor_data(&flow, &temp);
 
             if (flow_poll_count == 0) {
                 build_analog_data_msg(millis(), SENSOR_PAYLOAD_FLOW_RATE, flow, &msg);
                 txb_enqueue(&msg);
 
-                build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, temp, &msg);
+                // Scale to degree C for CAN message, but keep original raw data for logging
+                build_analog_data_msg(millis(), SENSOR_PAYLOAD_TEMP, temp / 200, &msg);
                 txb_enqueue(&msg);
             }
             flow_poll_count = (flow_poll_count == FLOW_SEND_DIVISOR) ? 0 : (flow_poll_count + 1);
