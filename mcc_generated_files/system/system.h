@@ -43,6 +43,7 @@
 #include "../system/pins.h"
 #include "../adc/adcc.h"
 #include "../system/interrupt.h"
+#include "../../mcc_fatfs/spi1.h"
 
 /**
  * @ingroup systemdriver
