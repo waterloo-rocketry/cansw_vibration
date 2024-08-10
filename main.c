@@ -38,7 +38,33 @@ static inline void SET_ACCEL_I2C_ADDR(uint8_t addr) {
     LATC2 = (addr == 0x19); // SA0 pin of FXLS set LSB of 7-bit I2C Address
 }
 
-static void can_msg_handler(const can_msg_t *msg) {}
+static void can_msg_handler(const can_msg_t *msg) {
+    if (get_board_unique_id(msg) == BOARD_UNIQUE_ID) {
+        return;
+    }
+
+    int dest_id = -1;
+    switch (get_message_type(msg)) {
+        case MSG_LEDS_ON:
+            BLUE_LED_ON();
+            GREEN_LED_ON();
+            RED_LED_ON();
+            break;
+        case MSG_LEDS_OFF:
+            BLUE_LED_OFF();
+            GREEN_LED_OFF();
+            RED_LED_OFF();
+            break;
+        case MSG_RESET_CMD:
+            dest_id = get_reset_board_id(msg);
+            if (dest_id == BOARD_UNIQUE_ID || dest_id == 0) {
+                RESET();
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 int main(void) {
     SYSTEM_Initialize();
