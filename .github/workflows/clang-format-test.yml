@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install clang-format
+      - name: Install clang-format 19
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
           sudo ./llvm.sh 19
           sudo apt install clang-format-19
+      - name: Download Waterloo Rocketry team-wide clang-format config
+        run: wget https://raw.githubusercontent.com/waterloo-rocketry/rocketlib/refs/heads/master/.clang-format
       - name: clang-format code formatting check
         run: clang-format-19 --dry-run -Werror *.c *.h
