@@ -5,7 +5,7 @@
 #define FXLS_WHO_AM_I 0x13
 
 #define INT_STATUS_REG 0x00
-#define SRC_DRDY_MASK 0x80  // 10000000 in binary, bit 7 mask
+#define SRC_DRDY_MASK 0x80 // 10000000 in binary, bit 7 mask
 
 #define FXLS_SENS_CONFIG1 0x15
 #define SENS_CONFIG1_MASK 0x01
