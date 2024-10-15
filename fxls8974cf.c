@@ -5,14 +5,19 @@
 
 void fxls_init(void) {
     // SENS_CONFIG1: Enable Active Mode for I2C communication
-    uint8_t sens_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG1);
+    uint8_t sens_config1;
+    bool success_sens_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG1, &sens_config1);
+    
     sens_config1 |= SENS_CONFIG1_MASK;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG1, sens_config1);
-
-    uint8_t sys_mode = i2c_read_reg8(FXLS_I2C_ADDR, 0x14);
+    
+    uint8_t sys_mode;
+    bool success_sys_mode = i2c_read_reg8(FXLS_I2C_ADDR, 0x14, &sys_mode);
 
     // SENS_CONFIG2: Configure wake and sleep modes, endian format, and read mode
-    uint8_t sens_config2 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2);
+    uint8_t sens_config2;
+    bool success_sens_config2 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2, &sens_config2);
+    
     sens_config2 &= ~(0x01 << 3); // Clear LE_BE bit
     sens_config2 &= ~(0x01 << 1); // Clear AINC_TEMP bit
     sens_config2 &= ~(0x01); // Clear F_READ bit
@@ -21,58 +26,72 @@ void fxls_init(void) {
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG2, sens_config2);
     //
     // BUF_CONFIG1: Disable buffer mode
-    uint8_t buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1);
+    uint8_t buf_config1;
+    bool success_buf_config1 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, &buf_config1);
+    
     buf_config1 &= ~0x60; // Clear BUF_MODE1 and BUF_MODE0 bits
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_BUF_CONFIG1, buf_config1);
     //
     // SENS_CONFIG3: Set ODR to 100Hz: set bits 7:4 to 0101
-    uint8_t sens_config3 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG3);
+    uint8_t sens_config3;
+    bool success_sens_config3 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG3, &sens_config3);
     sens_config3 &= 0x0F;
     sens_config3 |= 0b01010000;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG3, sens_config3);
     //
     // Set the DRDY_EN bit (bit 7) in the INT_EN register to enable the data-ready interrupt.
-    uint8_t int_en = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_EN);
+    uint8_t int_en;
+    bool success_int_en= i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_EN, &int_en);
     int_en |= 0x80;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_INT_EN, int_en);
     //
     // Set the DRDY_INT2 bit (bit 7) in the INT_PIN_SEL register to route the data-ready interrupt
     // to the INT2 pin.
-    uint8_t int_pin_sel = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_PIN_SEL);
+    uint8_t int_pin_sel;
+    bool success_int_pin_sel= i2c_read_reg8(FXLS_I2C_ADDR, FXLS_INT_PIN_SEL, &int_pin_sel);
     int_pin_sel |= 0x80;
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_INT_PIN_SEL, int_pin_sel);
     //
     // Set the INT_POL bit (bit 0) in the SENS_CONFIG4 register to configure the polarity of the
     // interrupt (default active high).
-    uint8_t sens_config4 = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4);
+    uint8_t sens_config4;
+    bool success_sens_config4= i2c_read_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4, &sens_config4);
     sens_config4 |= INT_POL_MASK; // Set INT_POL bit to 1 (active high interrupt on INT2 pin)
     i2c_write_reg8(FXLS_I2C_ADDR, FXLS_SENS_CONFIG4, sens_config4);
 }
 
 uint8_t fxls_get_prod_rev(void) {
-    return i2c_read_reg8(FXLS_I2C_ADDR, FXLS_PROD_REV);
+    uint8_t prod_rev;
+    bool success_prod_rev = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_PROD_REV, &prod_rev);
+    return prod_rev;
 }
 
 uint8_t fxls_get_whoami(void) {
-    return i2c_read_reg8(FXLS_I2C_ADDR, FXLS_WHO_AM_I);
+    uint8_t whoami;
+    bool success_whoami = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_WHO_AM_I, &whoami);
+    return whoami;
 }
 
 // Do I need this if ISR handles interrupts from INT2?
 int data_ready() {
-    uint8_t status = i2c_read_reg8(FXLS_I2C_ADDR, INT_STATUS_REG);
+    uint8_t status;
+    bool success_status = i2c_read_reg8(FXLS_I2C_ADDR, INT_STATUS_REG, &status);
     return (status & SRC_DRDY_MASK) ? 1 : 0;
 }
+
 
 void fxls_read_accel_data(int16_t *x, int16_t *y, int16_t *z) {
     uint8_t x_lsb, x_msb, y_lsb, y_msb, z_lsb, z_msb;
 
+    
     // Read each byte of accelerometer data individually
-    x_lsb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_X_LSB);
-    x_msb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_X_MSB);
-    y_lsb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Y_LSB);
-    y_msb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Y_MSB);
-    z_lsb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Z_LSB);
-    z_msb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Z_MSB);
+    bool success_x_lsb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_X_LSB, &x_lsb);
+    bool success_x_msb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_X_MSB, &x_msb);
+    bool success_y_lsb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Y_LSB, &y_lsb);
+    bool success_y_msb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Y_MSB, &y_msb);
+    bool success_z_lsb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Z_LSB, &z_lsb);
+    bool success_z_msb = i2c_read_reg8(FXLS_I2C_ADDR, FXLS_REG_OUT_Z_MSB, &z_msb);
+
 
     // Combine the LSB and MSB for each axis
     *x = (((int16_t)x_msb << 8) | x_lsb);

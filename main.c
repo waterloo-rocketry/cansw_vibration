@@ -10,6 +10,7 @@
 #include "mcc_generated_files/system/system.h"
 #include "slf3s.h"
 
+
 #define STATUS_TIME_DIFF_ms 500 // 2 Hz
 #define FLOW_TIME_DIFF_ms 100 // 10 Hz
 #define ACCEL_TIME_DIFF_ms 10 // 100 Hz
@@ -139,8 +140,10 @@ int main(void) {
     slf3s_init();
 
     while (1) {
+        volatile uint8_t whoiam = fxls_get_whoami() ;
         can_msg_t msg;
         CLRWDT();
+        
 
         if ((millis() - last_status_millis) > STATUS_TIME_DIFF_ms) {
             last_status_millis = millis();
@@ -175,6 +178,7 @@ int main(void) {
             file_write_buf_ptr += len;
         }
 
+
         if ((millis() - last_flow_millis) > FLOW_TIME_DIFF_ms) {
             last_flow_millis = millis();
 
@@ -200,6 +204,8 @@ int main(void) {
         }
 
         txb_heartbeat();
+        
+        
 
         if (file_write_buf_ptr > 1400) {
             if (f_open(&Fil, GLOBAL_FILENAME, FA_OPEN_APPEND | FA_WRITE) == FR_OK) {
